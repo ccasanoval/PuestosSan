@@ -15,26 +15,18 @@ DATA:
 
 workstations
 	id: whatever
-	COLLECTIONS:
-	vacancies
-		iniDate: String
-		endDate: String
-		description: String
-	reservations
-		iniData: String
-		endDate: String
-		idUser: String
-		description: String
 	FIELDS:
-	idOwner: String
+	idOwner: String (email from Auth)
+	idUser: String  (email from Auth)
 	name: String
 	position: GeoPoint
+	status: { Unavailable | Free | Occupied }
 	
 users
 	id: email from Auth
 	FIELDS
 	name: String
-	type: String
+	type: String { Admin | Fixed | Interim }
 	
 	
 	

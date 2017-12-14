@@ -31,9 +31,9 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 	private var camino: Array<PointF>? = null
 
 	private var puestos: List<Workstation>? = null
-	private var imgLibre: Bitmap? = null
-	private var imgOcupado: Bitmap? = null
-
+	private var imgFree: Bitmap? = null
+	private var imgOccupied: Bitmap? = null
+	private var imgUnavailable: Bitmap? = null
 
 	//______________________________________________________________________________________________
 	init {
@@ -44,8 +44,8 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 		val density = resources.displayMetrics.densityDpi.toFloat()
 
 		/// Desde Hasta
-		imgIni = BitmapFactory.decodeResource(this.resources, drawable.ini)
-		imgEnd = BitmapFactory.decodeResource(this.resources, drawable.end)
+		imgIni = BitmapFactory.decodeResource(this.resources, drawable.rute_ini)
+		imgEnd = BitmapFactory.decodeResource(this.resources, drawable.rute_end)
 Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 		var w = density / 420f * imgIni!!.width
 		var h = density / 420f * imgIni!!.height
@@ -53,12 +53,14 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 		imgEnd = Bitmap.createScaledBitmap(imgEnd!!, w.toInt(), h.toInt(), true)
 
 		/// Libre Ocupado
-		imgLibre = BitmapFactory.decodeResource(this.resources, drawable.libre)
-		imgOcupado = BitmapFactory.decodeResource(this.resources, drawable.ocupado)
-		w = density / 420f * imgLibre!!.width
-		h = density / 420f * imgLibre!!.height
-		imgLibre = Bitmap.createScaledBitmap(imgLibre!!, w.toInt(), h.toInt(), true)
-		imgOcupado = Bitmap.createScaledBitmap(imgOcupado!!, w.toInt(), h.toInt(), true)
+		imgFree = BitmapFactory.decodeResource(this.resources, drawable.pto_free)
+		imgOccupied = BitmapFactory.decodeResource(this.resources, drawable.pto_occupied)
+		imgUnavailable = BitmapFactory.decodeResource(this.resources, drawable.pto_unavailable)
+		w = density / 420f * imgFree!!.width
+		h = density / 420f * imgFree!!.height
+		imgFree = Bitmap.createScaledBitmap(imgFree!!, w.toInt(), h.toInt(), true)
+		imgOccupied = Bitmap.createScaledBitmap(imgOccupied!!, w.toInt(), h.toInt(), true)
+		imgUnavailable = Bitmap.createScaledBitmap(imgUnavailable!!, w.toInt(), h.toInt(), true)
 
 		/// Camino
 		strokeWidth = (density / 60f).toInt()
@@ -186,10 +188,14 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 		if(puestos != null) {
 			for(puesto in puestos!!) {
 				sourceToViewCoord(PointF(puesto.x, puesto.y), ptoView)
-				val x = ptoView.x - imgLibre!!.width / 2
-				val y = ptoView.y - imgLibre!!.height /2
-				//TODO: esta libre u ocupado ????
-				canvas.drawBitmap(imgLibre!!, x, y, paint)
+				val img = when(puesto.status) {
+					Workstation.Status.Free -> imgFree!!
+					Workstation.Status.Occupied -> imgOccupied!!
+					Workstation.Status.Unavailable -> imgUnavailable!!
+				}
+				val x = ptoView.x - img.width / 2
+				val y = ptoView.y - img.height /2
+				canvas.drawBitmap(img, x, y, paint)
 			}
 		}
 	}

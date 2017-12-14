@@ -72,12 +72,13 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 			Modo.Ruta -> ruta(pto, pto100)
 			Modo.Info -> info(pto, pto100)
 			//Modo.Todos ->
+			else -> Log.e(TAG, "punto: IGNORADO------------------------------------------------")
 		}
 	}
 
 	//______________________________________________________________________________________________
 	private fun getPuestos(callback: () -> Unit = {}) {
-		WorkstationFire.getAll(fire, { lista, error ->
+		WorkstationFire.getAllRT(fire, { lista, error ->
 			if(error == null) {
 				puestos.value = lista.toList()
 				callback()
