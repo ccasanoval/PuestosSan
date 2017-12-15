@@ -7,54 +7,33 @@ import android.support.annotation.VisibleForTesting
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import com.bancosantander.puestos.util.Log
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.application.App
 import com.bancosantander.puestos.data.firebase.auth.Auth
-import com.bancosantander.puestos.ui.views.ViewField.enlaza
 import com.bancosantander.puestos.ui.activities.map.MapaActivity
+import kotlinx.android.synthetic.main.act_login.*
+import org.jetbrains.anko.sdk25.coroutines.onClick
 
-//TODO: MVVM
-/**
- * Created by ccasanova on 30/11/2017
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
-class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
-	private val txtStatus: TextView by enlaza(R.id.txtLoginStatus)
-	private val txtEmail: EditText by enlaza(R.id.txtLoginEmail)
-	private val txtClave: EditText by enlaza(R.id.txtLoginClave)
+class LoginActivity : AppCompatActivity(){
 
 	private lateinit var auth: Auth
 
-	//______________________________________________________________________________________________
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.act_login)
-
-//		txtStatus = findViewById(R.id.txtLoginStatus)
-//		txtEmail = findViewById(R.id.txtLoginEmail)
-//		txtClave = findViewById(R.id.txtLoginClave)
-
-		val btnLogin: Button = findViewById(R.id.btnLogin)
-		btnLogin.setOnClickListener(this)
-		val btnLogout: Button = findViewById(R.id.btnLogout)
-		btnLogout.setOnClickListener(this)
-
+		btnLogin.onClick { signIn(txtLoginEmail.text.toString(), txtLoginClave.text.toString()) }
+		btnLogout.onClick { signOut() }
 		auth = (application as App).auth
 	}
 
-	//______________________________________________________________________________________________
 	override fun onStart() {
 		super.onStart()
 		updateUI(auth.getEmail())
 	}
 
-	//______________________________________________________________________________________________
 	private fun signIn(email: String, password: String) {
 		Log.e(TAG, "signIn:----------------------------------------" + email)
 		if(!validateForm()) {
@@ -73,48 +52,45 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 			}
 			else {
 				Log.e(TAG, "signInWithEmail:failure-------------------------", exception)
-					Toast.makeText(this@LoginActivity, R.string.error_login, Toast.LENGTH_SHORT).show()
+					Toast.makeText(this, R.string.error_login, Toast.LENGTH_SHORT).show()
 					updateUI(null)
-					txtStatus.setText(R.string.error_login)
+				txtLoginStatus.setText(R.string.error_login)
 			}
 		})
 	}
 
-	//______________________________________________________________________________________________
 	private fun signOut() {
 		auth.logout()
 		updateUI(null)
 	}
 
-	//______________________________________________________________________________________________
 	private fun validateForm(): Boolean {
 		var valid = true
-		val email = txtEmail.text.toString()
+		val email = txtLoginEmail.text.toString()
 		if(TextUtils.isEmpty(email)) {
-			txtEmail.error = getString(R.string.campo_obligatorio)
+			txtLoginEmail.error = getString(R.string.campo_obligatorio)
 			valid = false
 		}
 		else {
-			txtEmail.error = null
+			txtLoginEmail.error = null
 		}
 
-		val password = txtClave.text.toString()
+		val password = txtLoginClave.text.toString()
 		if(TextUtils.isEmpty(password)) {
-			txtClave.error = getString(R.string.campo_obligatorio)
+			txtLoginClave.error = getString(R.string.campo_obligatorio)
 			valid = false
 		}
 		else {
-			txtClave.error = null
+			txtLoginClave.error = null
 		}
 
 		return valid
 	}
 
-	//______________________________________________________________________________________________
 	private fun updateUI(userEmail: String?, isVerifiedEmail: Boolean? = false) {
 		hideProgressDialog()
 		if(userEmail != null) {
-			txtStatus.text = getString(R.string.ok_login, userEmail, isVerifiedEmail)
+			txtLoginStatus.text = getString(R.string.ok_login, userEmail, isVerifiedEmail)
 
 			var view: View = findViewById(R.id.layLoginBotones)
 			view.visibility=(View.GONE)
@@ -126,7 +102,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 			finish()
 		}
 		else {
-			txtStatus.setText(R.string.sesion_cerrada)
+			txtLoginStatus.setText(R.string.sesion_cerrada)
 
 			var view: View = findViewById(R.id.layLoginBotones)
 			view.visibility=(View.VISIBLE)
@@ -137,19 +113,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 		}
 	}
 
-	//______________________________________________________________________________________________
-	override fun onClick(v: View) {
-		val i = v.id
-		if(i == R.id.btnLogin) {
-			signIn(txtEmail.text.toString(), txtClave.text.toString())
-		}
-		else if(i == R.id.btnLogout) {
-			signOut()
-		}
-	}
 
-
-	//______________________________________________________________________________________________
 	//TODO: cambiar progressDialog
 	@VisibleForTesting
 	var mProgressDialog: ProgressDialog? = null
@@ -175,7 +139,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 		hideProgressDialog()
 	}
 
-	//______________________________________________________________________________________________
 	companion object {
 		private val TAG = LoginActivity::class.java.simpleName
 	}

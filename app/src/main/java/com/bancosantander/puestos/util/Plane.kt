@@ -9,18 +9,12 @@ import java.io.InputStreamReader
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
-
-/**
- * Created by ccasanova on 04/12/2017
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
 class Plane(context: Context) {
 	private var isReady: Boolean = false
 	private val data:  MutableList<Byte> = mutableListOf()
 	private var cols = 0
 	private var rows = 0
 
-	//______________________________________________________________________________________________
 	init {
 		var reader: BufferedReader? = null
 		try {
@@ -36,7 +30,6 @@ class Plane(context: Context) {
 				rows++
 			}
 			Log.e(TAG, "init:---------------SIZE:"+cols+"--"+rows+"--------------------------------------")
-			//for(b:Byte in data)Log.e(TAG, ""+b+", ")
 			isReady = true
 		}
 		catch(e: IOException) {
@@ -49,8 +42,6 @@ class Plane(context: Context) {
 			}
 		}
 	}
-
-	//______________________________________________________________________________________________
 	private val isValid: Boolean
 	get() {
 		Log.e(TAG, "isValid:---------------"+(cols*rows)+" === "+data.size)
@@ -58,20 +49,16 @@ class Plane(context: Context) {
 			return false
 		return true
 	}
-
-	//______________________________________________________________________________________________
 	fun coordIn(pto: PointF): PointF {
 		val x = pto.x *cols/100f
 		val y = pto.y *rows/100f
 		return PointF(x, y)
 	}
-	//______________________________________________________________________________________________
 	fun coordOut(pto: Point): PointF {
 		val x = pto.x *100f/cols
 		val y = pto.y *100f/rows
 		return PointF(x, y)
 	}
-	//______________________________________________________________________________________________
 	fun calcRuta(ini: PointF, end: PointF): Solution {
 		Log.e(TAG, "calc0:------------0----------------"+data.size)
 
@@ -90,12 +77,8 @@ class Plane(context: Context) {
 
 		Log.e(TAG, "CALC: ------------"+iniMap+" === "+data[iniMap.y.toInt()*cols+iniMap.x.toInt()]+" / "+endMap +" === "+data[endMap.y.toInt()*cols+endMap.x.toInt()])
 		val res = Astar().calcMapa(iniMap, endMap, data.toByteArray(), cols, rows)
-		//val sol = translateRes(res)
-		//if( ! sol.isOk)
-		//Log.e(TAG, res)/////*************************************
 		return translateRes(res)
 	}
-	//______________________________________________________________________________________________
 	private fun evitarMuros(ptoIn: PointF): PointF {
 		val ptoOut = PointF()
 		ptoOut.set(ptoIn)
@@ -151,17 +134,6 @@ class Plane(context: Context) {
 			return sol
 		}
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	/*
-		 { "solucion": {
-		  	"resultado": "ok",
-		  	 "camino": [
-			  [ "15", "26" ]
-			 , [ "15", "27" ]
-		   ..........................
-			 , [ "61", "34" ]
-			  ], "pasos":"56", "pasosBusqueda": "187" } }
-        */
 	data class Solution(
 		@Transient var isOk: Boolean,
 		@Transient var data: Array<PointF>? = null)
@@ -173,7 +145,6 @@ class Plane(context: Context) {
 	}
 
 
-	//______________________________________________________________________________________________
 	companion object {
 		private val TAG: String = Plane::class.java.simpleName
 	}

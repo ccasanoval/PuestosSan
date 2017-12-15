@@ -11,63 +11,42 @@ import com.bancosantander.puestos.util.Log
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.data.models.Workstation
 import com.bancosantander.puestos.base.BaseActivity
-import com.bancosantander.puestos.ui.views.ViewField.enlaza
 import com.bancosantander.puestos.ui.dialogs.SiNoDialog
 import com.davemorrissey.labs.subscaleview.ImageSource
 import android.content.Intent
 import com.bancosantander.puestos.ui.dialogs.PuestoDialog
 import com.bancosantander.puestos.util.WorkstationParcelable
 import com.bancosantander.puestos.ui.viewModels.map.MapaViewModel
-import com.bancosantander.puestos.ui.views.map.CesImgView
+import kotlinx.android.synthetic.main.act_main.*
 
 
-/**
- * Created by ccasanova on 29/11/2017
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
 class MapaActivity : BaseActivity() {
 
 	private lateinit var viewModel : MapaViewModel
-	private val imgPlano: CesImgView by enlaza(R.id.imgPlano)
 	private var imgListener: View.OnTouchListener ?=null
 
-
-	//______________________________________________________________________________________________
 	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)//BaseActivity@onCreate(savedInstanceState)
+		super.onCreate(savedInstanceState)
 		setContentView(R.layout.act_main)
 
 		val toolbar: Toolbar = findViewById(R.id.toolbar)
 		setSupportActionBar(toolbar)
-
-		//imgPlano = findViewById(R.id.imgPlano)//https://medium.com/@quiro91/improving-findviewbyid-with-kotlin-4cf2f8f779bb
-		//imgPlano.setImage(ImageSource.resource(R.drawable.plano))
 		imgPlano.setImage(ImageSource.asset("plano.jpg"))
-		//imgPlano.setImage(ImageSource.uri("/sdcard/DCIM/DSCM00123.JPG"));
-
-		//imgPlano.setDoubleTapZoomDuration(200)
-		//imgPlano.setDoubleTapZoomScale()
-		//imgPlano.setOnTouchListener { _, motionEvent -> getGestureDetector().onTouchEvent(motionEvent) }
-
 		val gesture = getGestureDetector()//Si no uso esta variable, deja de funcionar bien ¿?¿?
 		imgListener = View.OnTouchListener { _, motionEvent ->
 			gesture.onTouchEvent(motionEvent)
 		}
 		imgPlano.setOnTouchListener(imgListener)
-		//setMinimumDpi
-		//registerForContextMenu(imgPlano)
 
 		iniViewModel()
 	}
-	//______________________________________________________________________________________________
+
 	override fun onDestroy() {
 		super.onDestroy()
 		imgPlano.destroyDrawingCache()
 		imgPlano.recycle()
-		//System.gc()
 	}
 
-	//______________________________________________________________________________________________
 	private fun iniViewModel() {
 		viewModel = ViewModelProviders.of(this).get(MapaViewModel::class.java)
 		viewModel.mensaje.observe(this, Observer { mensaje ->
@@ -93,8 +72,8 @@ class MapaActivity : BaseActivity() {
 			}
 		})
 		viewModel.selected.observe(this, Observer<Workstation>{ pto -> showSeleccionado(pto) })
-		viewModel.ini.observe(this, Observer<PointF>{ pto -> showIni(pto) })
-		viewModel.end.observe(this, Observer<PointF>{ pto -> showEnd(pto) })
+		viewModel.ini.observe(this, Observer<PointF>{ pto -> showPointF(true,pto) })
+		viewModel.end.observe(this, Observer<PointF>{ pto -> showPointF(false,pto) })
 	}
 
 	//______________________________________________________________________________________________
@@ -139,25 +118,6 @@ class MapaActivity : BaseActivity() {
 		return true
 	}
 
-	//______________________________________________________________________________________________
-	/*override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-		super.onRestoreInstanceState(savedInstanceState)
-		Log.e(TAG, "onRestoreInstanceState:-------------------------------------------------")
-		//if (savedInstanceState?.containsKey(BUNDLE_PAGE) == true)page = savedInstanceState.getInt(BUNDLE_PAGE)
-	}
-	override fun onRestoreInstanceState(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-		super.onRestoreInstanceState(savedInstanceState, persistentState)
-		Log.e(TAG, "onRestoreInstanceState:2-------------------------------------------------")
-	}
-	//______________________________________________________________________________________________
-	override fun onSaveInstanceState(outState: Bundle?) {
-		super.onSaveInstanceState(outState)
-		//outState?.putInt(BUNDLE_PAGE, page)
-		Log.e(TAG, "onSaveInstanceState:-------------------------------------------------")
-
-	}*/
-
-	//______________________________________________________________________________________________
 	private fun getGestureDetector() =
 		GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
 			override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
@@ -169,35 +129,25 @@ class MapaActivity : BaseActivity() {
 			}
 		})
 
-	//______________________________________________________________________________________________
 	private fun singleTapConfirmed(me: MotionEvent) {
 		val pto = imgPlano.viewToSourceCoord(me.x, me.y)
 		val pto100 = imgPlano.coordImgTo100(pto)
 		viewModel.punto(pto, pto100)
 	}
 
-
-	////////////////// IMG VIEW
-	//______________________________________________________________________________________________
 	private fun showCamino(camino: Array<PointF>) {
 		imgPlano.setCamino(camino)
 	}
 	private fun delCamino() {
 		imgPlano.delCamino()
 	}
-	//______________________________________________________________________________________________
-	private fun showIni(pto: PointF?) {
-		imgPlano.setIni(pto)
+	private fun showPointF(initial:Boolean, pto:PointF?){
+		imgPlano.setPoint(initial,pto)
 	}
-	//______________________________________________________________________________________________
-	private fun showEnd(pto: PointF?) {
-		imgPlano.setEnd(pto)
-	}
-	//______________________________________________________________________________________________
 	private fun showPuestos(puestos: List<Workstation>) {
 		imgPlano.setPuestos(puestos)
 	}
-	//______________________________________________________________________________________________
+
 	private fun showSeleccionado(puesto: Workstation?) {
 		imgPlano.setSeleccionado(puesto)
 		if(puesto != null) {
@@ -207,8 +157,6 @@ class MapaActivity : BaseActivity() {
 		}
 	}
 
-
-	//______________________________________________________________________________________________
 	companion object {
 		private val TAG: String = MapaActivity::class.java.simpleName
 	}

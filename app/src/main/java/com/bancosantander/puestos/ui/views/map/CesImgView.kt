@@ -9,10 +9,6 @@ import com.bancosantander.puestos.R.drawable
 import com.bancosantander.puestos.data.models.Workstation
 
 
-/**
- * Created by ccasanova on 07/12/2017
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
 class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet? = null)
 	: SubsamplingScaleImageView(context, attr) {
 
@@ -26,7 +22,6 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 
 	private var strokeWidth: Int = 0
 	private val path = Path()
-	//private var sPoints: MutableList<PointF>? = null
 	private var caminoOrg: Array<PointF>? = null
 	private var camino: Array<PointF>? = null
 
@@ -37,19 +32,16 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 	private var seleccionado: Workstation? = null
 	private var imgSelected: Bitmap? = null
 
-
-	//______________________________________________________________________________________________
 	init {
 		initialise()
 	}
 	private fun initialise() {
-		//val a = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
 		val density = resources.displayMetrics.densityDpi.toFloat()
 
 		/// Desde Hasta
 		imgIni = BitmapFactory.decodeResource(this.resources, drawable.rute_ini)
 		imgEnd = BitmapFactory.decodeResource(this.resources, drawable.rute_end)
-Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
+		Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 		var w = density / 420f * imgIni!!.width
 		var h = density / 420f * imgIni!!.height
 		imgIni = Bitmap.createScaledBitmap(imgIni!!, w.toInt(), h.toInt(), true)
@@ -70,23 +62,16 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 		/// Camino
 		strokeWidth = (density / 60f).toInt()
 	}
-	//______________________________________________________________________________________________
+
 	override fun onReady() {
 		super.onReady()
 		setCamino(caminoOrg)
 	}
-
-	//______________________________________________________________________________________________
-	fun setIni(pto: PointF?) {
-		ptoIni = pto
+	fun setPoint(init:Boolean, pto: PointF?){
+		if (init) ptoIni = pto
+		else {ptoEnd = pto}
 		invalidate()
 	}
-	//______________________________________________________________________________________________
-	fun setEnd(pto: PointF?) {
-		ptoEnd = pto
-		invalidate()
-	}
-	//______________________________________________________________________________________________
 	fun setCamino(valor: Array<PointF>?) {
 		caminoOrg = valor
 		if(!isReady || valor == null || valor.size < 2)return
@@ -94,22 +79,18 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 		Log.e(TAG, "setCamino:--------------------a-----"+valor.size+"----"+valor[0]+" : "+camino!![0])
 		invalidate()
 	}
-	//______________________________________________________________________________________________
 	fun delCamino() {
 		camino = Array(0, { PointF(0f,0f) })
 		caminoOrg = camino
 		invalidate()
 	}
-	//______________________________________________________________________________________________
 	fun setPuestos(puestos: List<Workstation>) {
 		this.puestos = List(puestos.size, { it ->
 			val coord: PointF = coord100ToImg(PointF(puestos[it].x, puestos[it].y))
 			puestos[it].copy(coord.x, coord.y)
-			//Workstation(puestos[it].idOwner, puestos[it].idUser, puestos[it].name, puestos[it].status, coord.x, coord.y)
 		})
 		invalidate()
 	}
-	//______________________________________________________________________________________________
 	fun setSeleccionado(puesto: Workstation?) {
 		if(puesto != null) {
 			val coord: PointF = coord100ToImg(PointF(puesto.x, puesto.y))
@@ -118,21 +99,18 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 		invalidate()
 	}
 
-	//______________________________________________________________________________________________
 	private fun coord100ToImg(pto: PointF): PointF {
 		if( ! isReady)return PointF(0f,0f)
 		val x = pto.x *sWidth/100f
 		val y = pto.y * sHeight/100f
 		return PointF(x, y)
 	}
-	//______________________________________________________________________________________________
 	fun coordImgTo100(pto: PointF): PointF {
 		val x = pto.x *100f/sWidth
 		val y = pto.y *100f/sHeight
 		return PointF(x, y)
 	}
 
-	//______________________________________________________________________________________________
 	private var preView = PointF()
 	override fun onDraw(canvas: Canvas) {
 		super.onDraw(canvas)
@@ -140,9 +118,9 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 		paint.isAntiAlias = true
 
 		/// PTO INICIO
-		drawIni(canvas)
+		draw(true,canvas)
 		/// PTO DESTINO
-		drawEnd(canvas)
+		draw(false,canvas)
 		/// CAMINO
 		drawCamino(canvas)
 		/// PUESTOS
@@ -150,37 +128,38 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 		/// SELECCIONADO
 		drawSeleccionado(canvas)
 	}
-	//______________________________________________________________________________________________
-	private fun drawIni(canvas: Canvas) {
-		if(ptoIni != null) {
-			sourceToViewCoord(ptoIni!!, ptoView)
-			//Log.e(TAG, "onDraw:ini:---------------------------src:"+ptoIni+" : view:"+ptoView)
-			val x = ptoView.x - imgIni!!.width / 2
-			val y = ptoView.y - imgIni!!.height
-			canvas.drawBitmap(imgIni!!, x, y, paint)
-		}
-	}
-	//______________________________________________________________________________________________
-	private fun drawEnd(canvas: Canvas) {
-		if(ptoEnd != null) {
-			sourceToViewCoord(ptoEnd!!, ptoView)
-			//Log.e(TAG, "onDraw:end:---------------------------src:"+ptoEnd+" : view:"+ptoView)
-			val x = ptoView.x - imgEnd!!.width / 2
-			val y = ptoView.y - imgEnd!!.height
-			canvas.drawBitmap(imgEnd!!, x, y, paint)
-		}
-	}
-	//______________________________________________________________________________________________
+    private fun draw(isInitial: Boolean,canvas: Canvas){
+        val pto: PointF
+        val img: Bitmap
+        if (ptoIni == null || ptoEnd == null || imgEnd == null || imgIni == null){
+            Log.e(TAG,"ERROR pto o img null")
+            return
+        }
+        if (isInitial){
+            pto = ptoIni!!
+            img = imgIni!!
+        }else {
+            pto = ptoEnd!!
+            img = imgEnd!!
+        }
+        drawBitmap(pto, img, canvas)
+    }
+
+    private fun drawBitmap(pto: PointF, img: Bitmap, canvas: Canvas) {
+        sourceToViewCoord(pto, ptoView)
+        val x = ptoView.x - img.width / 2
+        val y = ptoView.y - img.height
+        canvas.drawBitmap(img, x, y, paint)
+    }
+
 	private fun drawCamino(canvas: Canvas) {
 		path.reset()
 		if(camino != null && camino!!.size >= 2) {
 			path.reset()
 			sourceToViewCoord(camino!![0].x, camino!![0].y, preView)
 			path.moveTo(preView.x, preView.y)
-			//Log.e(TAG, "onDraw:camino:-----------------------src:"+camino!![0]+" : view:"+preView)
 			for(i in 1 until camino!!.size) {
 				sourceToViewCoord(camino!![i].x, camino!![i].y, ptoView)
-				//Log.e(TAG, "camino:-----------------------src:"+camino!![i]+" : view:"+ptoView)
 				path.quadTo(preView.x, preView.y, (ptoView.x + preView.x) / 2, (ptoView.y + preView.y) / 2)
 				preView = ptoView
 			}
@@ -194,7 +173,6 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 			canvas.drawPath(path, paint)
 		}
 	}
-	//______________________________________________________________________________________________
 	private fun drawPuestos(canvas: Canvas) {
 		if(puestos != null) {
 			for(puesto in puestos!!) {
@@ -210,7 +188,6 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 			}
 		}
 	}
-	//______________________________________________________________________________________________
 	fun drawSeleccionado(canvas: Canvas) {
 		if(seleccionado != null) {
 			sourceToViewCoord(PointF(seleccionado!!.x, seleccionado!!.y), ptoView)
@@ -221,7 +198,6 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 		}
 	}
 
-	//______________________________________________________________________________________________
 	companion object {
 		private val TAG: String = CesImgView::class.java.simpleName
 	}

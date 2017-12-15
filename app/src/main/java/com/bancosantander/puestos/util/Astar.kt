@@ -2,10 +2,6 @@ package com.bancosantander.puestos.util
 
 import android.graphics.PointF
 
-/**
- * Created by ccasanova on 05/12/2017
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
 class Astar {
 	fun calcMapa(ini: PointF, end: PointF, mapa: ByteArray, cols: Int, rows: Int)
 			= calcMapa(ini.x.toInt(), ini.y.toInt(), end.x.toInt(), end.y.toInt(), mapa, cols, rows)

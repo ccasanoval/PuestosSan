@@ -19,19 +19,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.lang.Math.abs
 
-/**
- * Created by ccasanova on 29/11/2017
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
 class MapaViewModel(app: Application) : AndroidViewModel(app) {
 	private val auth: Auth = getApplication<App>().auth
 	private val fire: Fire = getApplication<App>().fire
 
 	val mensaje = MutableLiveData<String>()
-	val usuario = MutableLiveData<String>()//<List<Boolean>>? = null
+	val usuario = MutableLiveData<String>()
 	val puestos = MutableLiveData<List<Workstation>>()
 	val selected = MutableLiveData<Workstation>()
-	//val puestos100 = arrayListOf<Workstation>()
 	val camino = MutableLiveData<Array<PointF>>()
 	val ini = MutableLiveData<PointF>()
 	val end = MutableLiveData<PointF>()
@@ -48,7 +43,6 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 			}
 		}
 
-	//______________________________________________________________________________________________
 	init {
 		puestos.value = listOf()
 		//val fire = Fire()
@@ -64,21 +58,17 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 		})
 	}
 
-	//______________________________________________________________________________________________
 	fun logout() { auth.logout() }
 
-	//______________________________________________________________________________________________
 	fun punto(pto: PointF, pto100: PointF) {
 
 		when(modo) {
 			Modo.Ruta -> ruta(pto, pto100)
 			Modo.Info -> info(pto, pto100)
 			else -> info(pto, pto100)
-				//Log.e(TAG, "punto: IGNORADO------------------------------------------------")
 		}
 	}
 
-	//______________________________________________________________________________________________
 	private fun getPuestosRT() {
 		WorkstationFire.getAllRT(fire, { lista, error ->
 			if(error == null) {
@@ -91,7 +81,6 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 			}
 		})
 	}
-	//______________________________________________________________________________________________
 	private fun getPuestos(callback: (List<Workstation>) -> Unit = {}) {
 		WorkstationFire.getAll(fire, { lista, error ->
 			if(error == null) {
@@ -106,7 +95,6 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 		})
 	}
 
-	//______________________________________________________________________________________________
 	private fun info(pto: PointF, pto100: PointF) {
 		Log.e(TAG, "info:----------------------------"+pto100+" / "+pto)
 		//TODO: Mostrar pantalla que permite eliminar, modificar o crear puesto: Dependiendo de user y type user
@@ -118,7 +106,6 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 			getPuestos({ lospuestos -> infoHelper(lospuestos, pto, pto100) })
 		}
 	}
-	//______________________________________________________________________________________________
 	private fun infoHelper(puestos: List<Workstation>, pto: PointF, pto100: PointF) {
 		//TODO: usar pto + tamaño bits icono...... ¿?
 		val MAX = 3f
@@ -138,10 +125,7 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 		}
 		selected.value = seleccionado
 	}
-
-	//______________________________________________________________________________________________
 	private fun ruta(pto: PointF, pto100: PointF) {
-		//Log.e(TAG, "punto:-----0-----------"+pto100+" :: "+ini.value+" : "+end.value)
 		camino.value = null
 		if(pto100.x < 0 || pto100.x >= 100 || pto100.y < 0 || pto100.y >= 100) {
 			mensaje.value = getApplication<App>().getString(R.string.error_outside_bounds)
@@ -173,8 +157,6 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 				})
 		}
 	}
-
-	//______________________________________________________________________________________________
 	companion object {
 		private val TAG: String = MapaViewModel::class.java.simpleName
 	}
