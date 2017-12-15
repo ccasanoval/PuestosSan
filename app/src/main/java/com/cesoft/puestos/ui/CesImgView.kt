@@ -34,6 +34,9 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 	private var imgFree: Bitmap? = null
 	private var imgOccupied: Bitmap? = null
 	private var imgUnavailable: Bitmap? = null
+	private var seleccionado: Workstation? = null
+	private var imgSelected: Bitmap? = null
+
 
 	//______________________________________________________________________________________________
 	init {
@@ -56,11 +59,13 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 		imgFree = BitmapFactory.decodeResource(this.resources, drawable.pto_free)
 		imgOccupied = BitmapFactory.decodeResource(this.resources, drawable.pto_occupied)
 		imgUnavailable = BitmapFactory.decodeResource(this.resources, drawable.pto_unavailable)
+		imgSelected = BitmapFactory.decodeResource(this.resources, drawable.pto_selected)
 		w = density / 420f * imgFree!!.width
 		h = density / 420f * imgFree!!.height
 		imgFree = Bitmap.createScaledBitmap(imgFree!!, w.toInt(), h.toInt(), true)
 		imgOccupied = Bitmap.createScaledBitmap(imgOccupied!!, w.toInt(), h.toInt(), true)
 		imgUnavailable = Bitmap.createScaledBitmap(imgUnavailable!!, w.toInt(), h.toInt(), true)
+		imgSelected = Bitmap.createScaledBitmap(imgSelected!!, w.toInt(), h.toInt(), true)
 
 		/// Camino
 		strokeWidth = (density / 60f).toInt()
@@ -99,8 +104,17 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 	fun setPuestos(puestos: List<Workstation>) {
 		this.puestos = List(puestos.size, { it ->
 			val coord: PointF = coord100ToImg(PointF(puestos[it].x, puestos[it].y))
-			Workstation(puestos[it].idOwner, puestos[it].idUser, puestos[it].name, puestos[it].status, coord.x, coord.y)
+			puestos[it].copy(coord.x, coord.y)
+			//Workstation(puestos[it].idOwner, puestos[it].idUser, puestos[it].name, puestos[it].status, coord.x, coord.y)
 		})
+		invalidate()
+	}
+	//______________________________________________________________________________________________
+	fun setSeleccionado(puesto: Workstation?) {
+		if(puesto != null) {
+			val coord: PointF = coord100ToImg(PointF(puesto.x, puesto.y))
+			seleccionado = puesto.copy(coord.x, coord.y)
+		}
 		invalidate()
 	}
 
@@ -133,6 +147,8 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 		drawCamino(canvas)
 		/// PUESTOS
 		drawPuestos(canvas)
+		/// SELECCIONADO
+		drawSeleccionado(canvas)
 	}
 	//______________________________________________________________________________________________
 	private fun drawIni(canvas: Canvas) {
@@ -192,6 +208,16 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 				val y = ptoView.y - img.height /2
 				canvas.drawBitmap(img, x, y, paint)
 			}
+		}
+	}
+	//______________________________________________________________________________________________
+	fun drawSeleccionado(canvas: Canvas) {
+		if(seleccionado != null) {
+			sourceToViewCoord(PointF(seleccionado!!.x, seleccionado!!.y), ptoView)
+			val img = imgSelected!!
+			val x = ptoView.x - img.width / 2
+			val y = ptoView.y - img.height /2
+			canvas.drawBitmap(img, x, y, paint)
 		}
 	}
 

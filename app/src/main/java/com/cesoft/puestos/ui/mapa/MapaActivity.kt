@@ -13,8 +13,11 @@ import com.cesoft.puestos.models.Workstation
 import com.cesoft.puestos.ui.BaseActivity
 import com.cesoft.puestos.ui.CesImgView
 import com.cesoft.puestos.ui.ViewField.enlaza
-import com.cesoft.puestos.ui.dlg.Dlg
+import com.cesoft.puestos.ui.dlg.SiNoDialog
 import com.davemorrissey.labs.subscaleview.ImageSource
+import android.content.Intent
+import com.cesoft.puestos.ui.puesto.PuestoDialog
+import com.cesoft.puestos.ui.puesto.WorkstationParcelable
 
 
 /**
@@ -78,7 +81,7 @@ class MapaActivity : BaseActivity() {
 		})
 		viewModel.puestos.observe(this, Observer<List<Workstation>> { puestos ->
 			when {
-				viewModel.modo != MapaViewModel.Modo.Puestos && viewModel.modo != MapaViewModel.Modo.Info ->
+				viewModel.modo != MapaViewModel.Modo.Puestos -> // && viewModel.modo != MapaViewModel.Modo.Info ->
 					Log.e(TAG, "iniViewModel:puestos:observe:-----------------SIN MODO PUESTOS")
 				puestos == null ->
 					Toast.makeText(this@MapaActivity, getString(R.string.puestos_get_error), Toast.LENGTH_SHORT).show()
@@ -88,8 +91,9 @@ class MapaActivity : BaseActivity() {
 					showPuestos(puestos)
 			}
 		})
-		viewModel.ini.observe(this, Observer<PointF>{ pto -> drawIni(pto) })
-		viewModel.end.observe(this, Observer<PointF>{ pto -> drawEnd(pto) })
+		viewModel.selected.observe(this, Observer<Workstation>{ pto -> showSeleccionado(pto) })
+		viewModel.ini.observe(this, Observer<PointF>{ pto -> showIni(pto) })
+		viewModel.end.observe(this, Observer<PointF>{ pto -> showEnd(pto) })
 	}
 
 	//______________________________________________________________________________________________
@@ -124,7 +128,7 @@ class MapaActivity : BaseActivity() {
 			}
 			R.id.act_logout -> {
 				Log.e(TAG, "onOptionsItemSelected:action_logout:----------------------------------------------")
-				Dlg.showSiNo(this,
+				SiNoDialog.showSiNo(this,
 						getString(R.string.seguro_logout),
 						{ si -> if(si) viewModel.logout() })
 			}
@@ -181,17 +185,25 @@ class MapaActivity : BaseActivity() {
 		imgPlano.delCamino()
 	}
 	//______________________________________________________________________________________________
-	private fun drawIni(pto: PointF?) {
+	private fun showIni(pto: PointF?) {
 		imgPlano.setIni(pto)
 	}
 	//______________________________________________________________________________________________
-	private fun drawEnd(pto: PointF?) {
+	private fun showEnd(pto: PointF?) {
 		imgPlano.setEnd(pto)
 	}
 	//______________________________________________________________________________________________
 	private fun showPuestos(puestos: List<Workstation>) {
-		val temp = puestos.toMutableList()
-		imgPlano.setPuestos(temp)
+		imgPlano.setPuestos(puestos)
+	}
+	//______________________________________________________________________________________________
+	private fun showSeleccionado(puesto: Workstation?) {
+		imgPlano.setSeleccionado(puesto)
+		if(puesto != null) {
+			val intent = Intent(this, PuestoDialog::class.java)
+			intent.putExtra(Workstation::class.java.name, WorkstationParcelable(puesto))
+			startActivity(intent)
+		}
 	}
 
 

@@ -6,11 +6,11 @@ import com.cesoft.puestos.data.fire.Fire
 import com.squareup.leakcanary.LeakCanary
 
 
-//ZOOM ImageView:
+// ZOOM ImageView:
 //https://blog.fossasia.org/implementing-a-zoomable-imageview-by-extending-the-default-viewpager-in-phimpme-android/
 //https://github.com/Piasy/BigImageViewer
 
-//Arch Comp
+// Arch Comp
 //https://developer.android.com/topic/libraries/architecture/adding-components.html
 
 // PATH FINDING
@@ -20,9 +20,12 @@ import com.squareup.leakcanary.LeakCanary
 //https://github.com/leethomason/MicroPather IN C
 //https://github.com/justinhj/astar-algorithm-cpp IN C
 
-//INDOOR LOCATION
+// INDOOR LOCATION
 //https://play.google.com/store/apps/details?id=com.microsoft.msra.followus.app
 //https://arxiv.org/ftp/arxiv/papers/1405/1405.5669.pdf & what u did
+
+// ATOMIC CALLS FIRESTORE
+//https://firebase.google.com/docs/firestore/manage-data/transactions
 
 //TODO: Login: Admin: Permite añadir puestos de trabajo, modificarlos, borrarlos...
 //						Permite añadir y editar y borrar usuarios

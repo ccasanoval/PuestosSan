@@ -30,7 +30,8 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 	val mensaje = MutableLiveData<String>()
 	val usuario = MutableLiveData<String>()//<List<Boolean>>? = null
 	val puestos = MutableLiveData<List<Workstation>>()
-	val puestos100 = arrayListOf<Workstation>()
+	val selected = MutableLiveData<Workstation>()
+	//val puestos100 = arrayListOf<Workstation>()
 	val camino = MutableLiveData<Array<PointF>>()
 	val ini = MutableLiveData<PointF>()
 	val end = MutableLiveData<PointF>()
@@ -119,17 +120,23 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 	}
 	//______________________________________________________________________________________________
 	private fun infoHelper(puestos: List<Workstation>, pto: PointF, pto100: PointF) {
-		for(puesto in puestos) {
+		//TODO: usar pto + tamaño bits icono...... ¿?
+		val MAX = 3f
+		val candidatos = puestos.filter { puesto ->
+			abs(puesto.x - pto100.x) < MAX && abs(puesto.y - pto100.y) < MAX
+		}
+		var seleccionado: Workstation? = null
+		var minDistancia = 2*MAX
+		for(puesto in candidatos) {
 			Log.e(TAG, "BUSCANDO: ------------ info: PTO="+puesto)
-			if( abs(puesto.x - pto100.x) < 3 && abs(puesto.y - pto100.y) < 3) {
+			val dis = abs(puesto.x - pto100.x) + abs(puesto.y - pto100.y)
+			if(minDistancia > dis) {
+				minDistancia = dis
+				seleccionado = puesto
 				Log.e(TAG, "ENCONTRADO------------------------- info: PTO="+puesto.name+" : "+puesto)
-				if(this.puestos.value != null && this.puestos.value!!.isEmpty()) {
-					//this.modo = Modo.Puestos
-					this.puestos.value = arrayListOf(puesto)
-				}
-				break
 			}
 		}
+		selected.value = seleccionado
 	}
 
 	//______________________________________________________________________________________________

@@ -8,7 +8,7 @@ import android.support.v7.app.AlertDialog
 /**
  * Created by ccasanova on 01/12/2017
  */
-class Dlg {
+class SiNoDialog {
 	companion object {
 		fun showSiNo(context: Context, msj: String, callback: (b: Boolean) -> Unit) {
 			val dialogClickListener = DialogInterface.OnClickListener { dialog, which ->
