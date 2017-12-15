@@ -1,12 +1,6 @@
 package com.bancosantander.puestos.data.models
 
-/**
- * Created by ccasanova on 29/11/2017
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//TODO: https://firebase.google.com/docs/firestore/manage-data/structure-data
 data class Reservation(
-	//var id: Long = 0L,
 	var id: String,
 	var idWorkstation: String,
 	var idUser: String,
