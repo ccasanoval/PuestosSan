@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "870392466023",
+    "firebase_url": "https://santander-puestos.firebaseio.com",
+    "project_id": "santander-puestos",
+    "storage_bucket": "santander-puestos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870392466023:android:0dabc999ab06d138",
+        "android_client_info": {
+          "package_name": "com.bancosantander.puestos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870392466023-38h659qn1odsv11uufiv2j8tjilkb1lr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwAJKLX9HigmTNxoDwF0RWLS5w0yE-9KE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

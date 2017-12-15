@@ -7,7 +7,7 @@ def fire = "11.6.2"
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.cesoft.puestos"
+        applicationId "com.bancosantander.puestos"
         minSdkVersion 19
         targetSdkVersion 26 //26 por SubsamplingScaleImageView
         versionCode 1

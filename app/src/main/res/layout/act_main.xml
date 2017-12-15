@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/blanco"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.cesoft.puestos.ui.mapa.MapaActivity">
+    tools:context=".ui.activities.map.MapaActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -15,7 +15,7 @@
         android:background="@color/colorPrimaryDark"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
 
-    <com.cesoft.puestos.ui.CesImgView
+    <com.bancosantander.puestos.ui.views.map.CesImgView
         android:id="@+id/imgPlano"
         android:layout_width="0dp"
         android:layout_height="0dp"
