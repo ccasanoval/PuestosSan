@@ -30,6 +30,7 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 	val mensaje = MutableLiveData<String>()
 	val usuario = MutableLiveData<String>()//<List<Boolean>>? = null
 	val puestos = MutableLiveData<List<Workstation>>()
+	val puestos100 = arrayListOf<Workstation>()
 	val camino = MutableLiveData<Array<PointF>>()
 	val ini = MutableLiveData<PointF>()
 	val end = MutableLiveData<PointF>()
@@ -42,7 +43,7 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 		set(value) {
 			field = value
 			if(modo == Modo.Puestos) {
-				getPuestos()
+				getPuestosRT()
 			}
 		}
 
@@ -71,17 +72,30 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 		when(modo) {
 			Modo.Ruta -> ruta(pto, pto100)
 			Modo.Info -> info(pto, pto100)
-			//Modo.Todos ->
-			else -> Log.e(TAG, "punto: IGNORADO------------------------------------------------")
+			else -> info(pto, pto100)
+				//Log.e(TAG, "punto: IGNORADO------------------------------------------------")
 		}
 	}
 
 	//______________________________________________________________________________________________
-	private fun getPuestos(callback: () -> Unit = {}) {
+	private fun getPuestosRT() {
 		WorkstationFire.getAllRT(fire, { lista, error ->
 			if(error == null) {
 				puestos.value = lista.toList()
-				callback()
+				Log.e(TAG, "getPuestosRT:------------------------------------------------------"+lista.size)
+			}
+			else {
+				Log.e(TAG, "getPuestosRT:e:------------------------------------------------------",error)
+				mensaje.value = getApplication<App>().getString(R.string.puestos_get_error)
+			}
+		})
+	}
+	//______________________________________________________________________________________________
+	private fun getPuestos(callback: (List<Workstation>) -> Unit = {}) {
+		WorkstationFire.getAll(fire, { lista, error ->
+			if(error == null) {
+				puestos.value = lista.toList()
+				callback(lista.toList())
 				Log.e(TAG, "getPuestos:------------------------------------------------------"+lista.size)
 			}
 			else {
@@ -93,22 +107,31 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 
 	//______________________________________________________________________________________________
 	private fun info(pto: PointF, pto100: PointF) {
-		Log.e(TAG, "TODO: info ***************************************************************")
-		//TODO: Mostrar pantalla que permite eliminar, modificar o crear puesto
-		//TODO: Buscar workstation por punto
-		// Aun no hay soporte en Firestore para consultas por cercania de GeoPoints
+		Log.e(TAG, "info:----------------------------"+pto100+" / "+pto)
+		//TODO: Mostrar pantalla que permite eliminar, modificar o crear puesto: Dependiendo de user y type user
+		//TODO: Buscar workstation cercania: Aun no hay soporte en Firestore para consultas por radio de GeoPoints
 		if(puestos.value != null && puestos.value!!.isNotEmpty()) {
-			for(puesto in puestos.value!!) {
-				if( abs(puesto.x - pto100.x) < 1 && abs(puesto.y - pto100.y) < 1) {
-					Log.e(TAG, "TODO: info: PTO="+puesto.name+" : "+puesto)
-				}
-			}
+			infoHelper(puestos.value!!, pto, pto100)
 		}
 		else {
-			getPuestos()
+			getPuestos({ lospuestos -> infoHelper(lospuestos, pto, pto100) })
 		}
-
 	}
+	//______________________________________________________________________________________________
+	private fun infoHelper(puestos: List<Workstation>, pto: PointF, pto100: PointF) {
+		for(puesto in puestos) {
+			Log.e(TAG, "BUSCANDO: ------------ info: PTO="+puesto)
+			if( abs(puesto.x - pto100.x) < 3 && abs(puesto.y - pto100.y) < 3) {
+				Log.e(TAG, "ENCONTRADO------------------------- info: PTO="+puesto.name+" : "+puesto)
+				if(this.puestos.value != null && this.puestos.value!!.isEmpty()) {
+					//this.modo = Modo.Puestos
+					this.puestos.value = arrayListOf(puesto)
+				}
+				break
+			}
+		}
+	}
+
 	//______________________________________________________________________________________________
 	private fun ruta(pto: PointF, pto100: PointF) {
 		//Log.e(TAG, "punto:-----0-----------"+pto100+" :: "+ini.value+" : "+end.value)

@@ -2,6 +2,7 @@ package com.cesoft.puestos.data.fire
 
 import com.cesoft.puestos.models.Workstation
 import com.cesoft.puestos.util.Log
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.QuerySnapshot
@@ -27,19 +28,14 @@ object WorkstationFire {
 				val res = arrayListOf<Workstation>()
 				if(task.isSuccessful) {
 					for(doc in task.result) {
-						val puesto = fire.translate(doc, Workstation::class.java) as Workstation?
-						if(puesto != null) {
-							val pos: GeoPoint = doc.get(POSITION_FIELD) as GeoPoint
-							puesto.x = pos.longitude.toFloat()
-							puesto.y = pos.latitude.toFloat()
-							res.add(puesto)
-						}
+						val puesto = createPuestoHelper(fire, doc)
+						if(puesto != null) res.add(puesto)
 					}
 					callback(res, null)
 				}
 				else {
-					Log.e(TAG, "loadComicList:Firebase:e:------------------------ ", task.exception)
 					callback(res, task.exception)
+					Log.e(TAG, "getAll:e:------------------------------------------------------", task.exception)
 				}
 			})
 	}
@@ -50,19 +46,25 @@ object WorkstationFire {
 				val res = arrayListOf<Workstation>()
 				if(error == null && data != null) {
 					data.forEach { doc ->
-						val puesto = fire.translate(doc, Workstation::class.java) as Workstation?
-						if(puesto != null) {
-							val pos: GeoPoint = doc.get(POSITION_FIELD) as GeoPoint
-							puesto.x = pos.longitude.toFloat()
-							puesto.y = pos.latitude.toFloat()
-							res.add(puesto)
-						}
+						val puesto = createPuestoHelper(fire, doc)
+						if(puesto != null) res.add(puesto)
 					}
 					callback(res, null)
 				}
-				else
+				else {
 					callback(res, error)
+					Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
+				}
 			})
-
 		}
+
+	//______________________________________________________________________________________________
+	fun createPuestoHelper(fire: Fire, doc: DocumentSnapshot): Workstation? {
+		val puesto = fire.translate(doc, Workstation::class.java) as Workstation?
+		if(puesto != null) {
+			val pos: GeoPoint = doc.get(POSITION_FIELD) as GeoPoint
+			return puesto.copy(pos.longitude.toFloat(), pos.latitude.toFloat())
+		}
+		return null
+	}
 }

@@ -78,7 +78,7 @@ class MapaActivity : BaseActivity() {
 		})
 		viewModel.puestos.observe(this, Observer<List<Workstation>> { puestos ->
 			when {
-				viewModel.modo != MapaViewModel.Modo.Puestos ->
+				viewModel.modo != MapaViewModel.Modo.Puestos && viewModel.modo != MapaViewModel.Modo.Info ->
 					Log.e(TAG, "iniViewModel:puestos:observe:-----------------SIN MODO PUESTOS")
 				puestos == null ->
 					Toast.makeText(this@MapaActivity, getString(R.string.puestos_get_error), Toast.LENGTH_SHORT).show()
@@ -162,39 +162,8 @@ class MapaActivity : BaseActivity() {
 					Toast.makeText(this@MapaActivity, getString(R.string.cargando_imagen), Toast.LENGTH_SHORT).show()
 				return false
 			}
-
-			override fun onLongPress(e: MotionEvent) {
-				if(imgPlano.isReady)
-					longPress(e)
-				else
-					Toast.makeText(this@MapaActivity, getString(R.string.cargando_imagen), Toast.LENGTH_SHORT).show()
-			}
-
-//			override fun onDoubleTap(e: MotionEvent): Boolean {
-//				if(imgPlano.isReady)
-//					doubleTap(e)
-//				else
-//					Toast.makeText(this@MapaActivity, getString(R.string.cargando_imagen), Toast.LENGTH_SHORT).show()
-//				return false
-//			}
 		})
 
-
-
-
-	//______________________________________________________________________________________________
-//	private fun doubleTap(me: MotionEvent) {
-//		//val sCoord = imgPlano.viewToSourceCoord(me.x, me.y)
-//		//Toast.makeText(this@MapaActivity, "Double tap: " + sCoord.x.toInt() + ", " + sCoord.y.toInt(), Toast.LENGTH_SHORT).show()
-//	}
-	//______________________________________________________________________________________________
-	private fun longPress(me: MotionEvent) {
-		val pto = imgPlano.viewToSourceCoord(me.x, me.y)
-		val pto100 = imgPlano.coordImgTo100(pto)
-		viewModel.punto(pto, pto100)
-		//Toast.makeText(this@MapaActivity, "Long press: "+pto.x+", "+pto.y, Toast.LENGTH_SHORT).show()
-		//TODO: Show context menu: desde aqui, hasta aqui, infoPuesto, admin:addPuesto, admin:delPuesto ...
-	}
 	//______________________________________________________________________________________________
 	private fun singleTapConfirmed(me: MotionEvent) {
 		val pto = imgPlano.viewToSourceCoord(me.x, me.y)
@@ -219,14 +188,10 @@ class MapaActivity : BaseActivity() {
 	private fun drawEnd(pto: PointF?) {
 		imgPlano.setEnd(pto)
 	}
-
 	//______________________________________________________________________________________________
 	private fun showPuestos(puestos: List<Workstation>) {
-//		for(puesto in puestos) {
-//			val coord: PointF = imgPlano.coord100ToImg(PointF(puesto.x, puesto.y))
-//			imgPlano.show
-//		}
-		imgPlano.setPuestos(puestos)
+		val temp = puestos.toMutableList()
+		imgPlano.setPuestos(temp)
 	}
 
 

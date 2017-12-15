@@ -97,19 +97,16 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 	}
 	//______________________________________________________________________________________________
 	fun setPuestos(puestos: List<Workstation>) {
-		this.puestos = puestos
-		for(puesto in puestos) {
-			val coord: PointF = coord100ToImg(PointF(puesto.x, puesto.y))
-			puesto.x = coord.x
-			puesto.y = coord.y
-		}
+		this.puestos = List(puestos.size, { it ->
+			val coord: PointF = coord100ToImg(PointF(puestos[it].x, puestos[it].y))
+			Workstation(puestos[it].idOwner, puestos[it].idUser, puestos[it].name, puestos[it].status, coord.x, coord.y)
+		})
 		invalidate()
 	}
 
 	//______________________________________________________________________________________________
 	private fun coord100ToImg(pto: PointF): PointF {
 		if( ! isReady)return PointF(0f,0f)
-		//Log.e(TAG, "coord100ToImg:-----------"+isReady+"------"+sWidth+" / "+sHeight+" ::: "+pto.x+" :: "+imgIni!!.width)
 		val x = pto.x *sWidth/100f
 		val y = pto.y * sHeight/100f
 		return PointF(x, y)
@@ -125,9 +122,7 @@ Log.e(TAG, "init:-------------------"+density+" : "+(420f/density))
 	private var preView = PointF()
 	override fun onDraw(canvas: Canvas) {
 		super.onDraw(canvas)
-
 		if(!isReady) return
-
 		paint.isAntiAlias = true
 
 		/// PTO INICIO

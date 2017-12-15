@@ -5,8 +5,8 @@ package com.cesoft.puestos.models
  */
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 data class User(
-	var id: String = "",
-	var name: String = "",
-	var type: Type = Type.Interim){
+	val id: String = "",
+	val name: String = "",
+	val type: Type = Type.Interim){
 	enum class Type(name: String) { Admin("Admin"), Fixed("Fixed"), Interim("Interim") }
 }
