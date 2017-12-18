@@ -15,8 +15,7 @@ class Router(val context:Context){
     }
 
     fun goToFillWorkstation() {
-        val intent = Intent(context, WorkstationsActivity::class.java)
-        context.startActivity(intent)
+        context.startActivity<WorkstationsActivity>()
     }
     fun goToLogin(){
         context.startActivity<LoginActivity>()
