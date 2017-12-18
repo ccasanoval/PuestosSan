@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.bancosantander.puestos">
+    package="com.bancosantander.puestos">
 
     <application
         android:name=".application.App"
@@ -9,18 +9,19 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"> <!-- pandroid:theme="@style/AppTheme" -->
-        <activity android:name="com.bancosantander.puestos.ui.activities.map.MapaActivity">
+        <activity android:name=".ui.activities.map.MapaActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activities.login.LoginActivity" />
         <activity
-            android:name="com.bancosantander.puestos.ui.activities.login.LoginActivity"/>
-        <activity
-            android:name="com.bancosantander.puestos.ui.dialogs.PuestoDialog"
+            android:name=".ui.dialogs.PuestoDialog"
             android:excludeFromRecents="true"
-            android:theme="@style/Theme.AppCompat.Dialog"/>
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity android:name=".ui.activities.main.MainActivity"></activity>
     </application>
 
 </manifest>
