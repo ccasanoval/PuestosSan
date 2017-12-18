@@ -3,6 +3,7 @@ package com.bancosantander.puestos.application
 import android.app.Application
 import com.bancosantander.puestos.data.firebase.auth.Auth
 import com.bancosantander.puestos.data.firebase.fire.Fire
+import com.bancosantander.puestos.router.Router
 import com.squareup.leakcanary.LeakCanary
 
 
@@ -34,15 +35,10 @@ import com.squareup.leakcanary.LeakCanary
 //						Permite reservar puestos de trabajo
 //TODO: showWorkstations, showFreeWorkstations(day), ...
 
-
-/**
- * Created by ccasanova on 30/11/2017
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
 class App : Application() {
 	lateinit var auth: Auth
 	lateinit var fire: Fire
-
+	var mRouter: Router = Router(this)
 	override fun onCreate() {
 		super.onCreate()
 
@@ -61,5 +57,8 @@ class App : Application() {
 		/// FIRE AUTH
 		auth = Auth.getInstance(this)
 		fire = Fire()
+	}
+	fun getRouter():Router{
+		return mRouter
 	}
 }

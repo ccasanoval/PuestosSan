@@ -13,4 +13,16 @@ class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Pr
 
 
     }
+
+    fun goToManageOwnWorkstation() {
+        router().goToManageOwnWorkstation()
+    }
+
+    fun goToFillWorkstation() {
+        router().goToFillWorkstation()
+    }
+
+    fun logout() {
+        auth().logout()
+    }
 }
