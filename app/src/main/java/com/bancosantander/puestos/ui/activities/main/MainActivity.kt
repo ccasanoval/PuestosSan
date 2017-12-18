@@ -20,7 +20,6 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
 
     }
 
-
     companion object {
         val TAG = MainActivity::class.java.simpleName
     }
