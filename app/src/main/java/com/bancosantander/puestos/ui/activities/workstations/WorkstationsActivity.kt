@@ -23,6 +23,8 @@ class WorkstationsActivity : BaseMvpActivity<MainViewContract.View,
     private var mWorkstationsPagerAdapter: WorkstationsPageAdapter? = null
     private var mViewPager: ViewPager? = null
 
+    override var mPresenter: WorkstationsPresenter  = WorkstationsPresenter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.workstations_activity)
@@ -30,6 +32,8 @@ class WorkstationsActivity : BaseMvpActivity<MainViewContract.View,
 
         val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        supportActionBar?.setDisplayShowHomeEnabled(true);
 
         val tabsList = arrayListOf(Fragment(),Fragment())
 
@@ -47,7 +51,10 @@ class WorkstationsActivity : BaseMvpActivity<MainViewContract.View,
         tabLayout.getTabAt(1)!!.setText("Mapa de puestos")
     }
 
-    override var mPresenter: WorkstationsPresenter  = WorkstationsPresenter()
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 
     override fun onDestroy() {
         super.onDestroy()
