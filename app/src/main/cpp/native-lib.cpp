@@ -162,7 +162,7 @@ float MapSearchNode::GetCost( MapSearchNode &successor )
 extern "C"
 JNIEXPORT jstring
 JNICALL
-Java_com_cesoft_puestos_util_Astar_calcMapa(JNIEnv *env, jobject,
+Java_com_bancosantander_puestos_util_Astar_calcMapa(JNIEnv *env, jobject,
                                             int iniX, int iniY,
                                             int endX, int endY,
                                             jbyteArray map,

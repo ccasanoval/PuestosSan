@@ -8,13 +8,14 @@ import com.bancosantander.puestos.application.App
 import com.bancosantander.puestos.util.Log
 import com.bancosantander.puestos.data.firebase.auth.Auth
 import com.bancosantander.puestos.ui.activities.login.LoginActivity
+import com.bancosantander.puestos.util.app
 import com.google.firebase.auth.FirebaseAuth
 
 abstract class BaseActivity: AppCompatActivity() {
 
 	private var authListener = FirebaseAuth.AuthStateListener {
 		if((application as App).auth.isNotLogedIn())
-			toLoginActivity()
+			app.getRouter().goToLogin()
 		else
 			Log.e("BaseActivity", "onCreate:-2---------------------USR:"+(application as App).auth.getEmail())
 	}
@@ -28,7 +29,7 @@ abstract class BaseActivity: AppCompatActivity() {
 		val auth: Auth = (application as App).auth
 		auth.addAuthStateListener(authListener)
 		if(auth.isNotLogedIn()) {
-			toLoginActivity()
+			app.getRouter().goToLogin()
 		}
 		else {
 			Log.e("BaseActivity", "onCreate:----------------------USR:"+auth.getEmail())
@@ -38,11 +39,5 @@ abstract class BaseActivity: AppCompatActivity() {
 		super.onDestroy()
 		Log.e("BaseActivity", "onDestroy:--------------------------------------")
 		(application as App).auth.delAuthStateListener(authListener)
-	}
-
-	private fun toLoginActivity() {
-		val intent = Intent(this, LoginActivity::class.java)
-		startActivity(intent)
-		finish()
 	}
 }

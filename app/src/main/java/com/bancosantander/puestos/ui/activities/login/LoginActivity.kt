@@ -12,6 +12,7 @@ import com.bancosantander.puestos.util.Log
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.application.App
 import com.bancosantander.puestos.data.firebase.auth.Auth
+import com.bancosantander.puestos.ui.activities.main.MainActivity
 import com.bancosantander.puestos.ui.activities.map.MapaActivity
 import kotlinx.android.synthetic.main.act_login.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -46,7 +47,7 @@ class LoginActivity : AppCompatActivity(){
 			if(auth.isLogedIn() && exception == null) {
 				Log.e(TAG, "signInWithEmail:success----------------------")
 					updateUI(auth.getEmail())
-					val intent = Intent(this, MapaActivity::class.java)
+					val intent = Intent(this, MainActivity::class.java)
 					startActivity(intent)
 					finish()
 			}
