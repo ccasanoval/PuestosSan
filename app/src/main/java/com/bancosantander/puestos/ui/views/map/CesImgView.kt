@@ -128,17 +128,21 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 		/// SELECCIONADO
 		drawSeleccionado(canvas)
 	}
-    private fun draw(isInitial: Boolean,canvas: Canvas){
+    private fun draw(isInitial: Boolean, canvas: Canvas){
         val pto: PointF
         val img: Bitmap
-        if (ptoIni == null || ptoEnd == null || imgEnd == null || imgIni == null){
-            Log.e(TAG,"ERROR pto o img null")
-            return
-        }
-        if (isInitial){
+        if(isInitial){
+			if(ptoIni == null || imgIni == null){
+				//Log.e(TAG,"ERROR:INI: pto o img null: "+ptoIni+", "+imgIni)
+				return
+			}
             pto = ptoIni!!
             img = imgIni!!
         }else {
+			if(ptoEnd == null || imgEnd == null){
+				//Log.e(TAG,"ERROR:END: pto o img null: "+ptoEnd+", "+imgEnd)
+				return
+			}
             pto = ptoEnd!!
             img = imgEnd!!
         }

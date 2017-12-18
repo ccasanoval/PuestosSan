@@ -25,7 +25,6 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
         btnLogout.onClick { mPresenter.logout() }
     }
 
-
     companion object {
         val TAG = MainActivity::class.java.simpleName
     }
