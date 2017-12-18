@@ -1,5 +1,6 @@
 package com.bancosantander.puestos.ui.views
 
+import com.bancosantander.puestos.data.models.Workstation
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpPresenter
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpView
 
@@ -10,6 +11,7 @@ import com.mibaldi.viewmodelexamplemvp.base.BaseMvpView
 object OwnWorkstationViewContract {
 
     interface View: BaseMvpView {
+        fun showWorkstation(idOwner: String, idUser: String, status: Workstation.Status,number: String)
 
     }
     interface Presenter : BaseMvpPresenter<View> {

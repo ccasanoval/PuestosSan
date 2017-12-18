@@ -1,6 +1,7 @@
 package com.mibaldi.viewmodelexamplemvp.base
 
 import com.bancosantander.puestos.data.firebase.auth.Auth
+import com.bancosantander.puestos.data.firebase.fire.Fire
 import com.bancosantander.puestos.router.Router
 
 /**
@@ -13,4 +14,5 @@ interface BaseMvpPresenter<in V : BaseMvpView> {
     fun detachView()
     fun router(): Router
     fun auth(): Auth
+    fun fire(): Fire
 }

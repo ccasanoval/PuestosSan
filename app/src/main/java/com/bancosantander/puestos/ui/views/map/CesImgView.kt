@@ -87,14 +87,14 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 	fun setPuestos(puestos: List<Workstation>) {
 		this.puestos = List(puestos.size, { it ->
 			val coord: PointF = coord100ToImg(PointF(puestos[it].x, puestos[it].y))
-			puestos[it].copy(coord.x, coord.y)
+			puestos[it].setPosition(coord.x, coord.y)
 		})
 		invalidate()
 	}
 	fun setSeleccionado(puesto: Workstation?) {
 		if(puesto != null) {
 			val coord: PointF = coord100ToImg(PointF(puesto.x, puesto.y))
-			seleccionado = puesto.copy(coord.x, coord.y)
+			seleccionado = puesto.setPosition(coord.x, coord.y)
 		}
 		invalidate()
 	}

@@ -1,6 +1,7 @@
 package com.mibaldi.viewmodelexamplemvp.base
 
 import com.bancosantander.puestos.data.firebase.auth.Auth
+import com.bancosantander.puestos.data.firebase.fire.Fire
 import com.bancosantander.puestos.router.Router
 import com.bancosantander.puestos.util.app
 
@@ -15,6 +16,7 @@ open class BasePresenter<V : BaseMvpView> : BaseMvpPresenter<V> {
         mView = view
     }
 
+
     override fun detachView() {
         mView = null
     }
@@ -24,5 +26,8 @@ open class BasePresenter<V : BaseMvpView> : BaseMvpPresenter<V> {
 
     override fun auth(): Auth {
         return mView?.getActivity()?.app?.auth!!
+    }
+    override fun fire(): Fire {
+        return mView?.getActivity()?.app?.fire!!
     }
 }
