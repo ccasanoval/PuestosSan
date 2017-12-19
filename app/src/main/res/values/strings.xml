@@ -51,4 +51,8 @@
     <string name="interim">Trabajador temporal</string>
     <string name="manage_own_workstation">Gestionar puesto propio</string>
 
+    <!--WORKSTATIONS ACTIVITY -->
+    <string name="workstations_list">Lista de puestos</string>
+    <string name="workstations_map">Mapa de puestos</string>
+
 </resources>

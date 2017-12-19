@@ -11,12 +11,13 @@ import com.bancosantander.puestos.R
 import com.bancosantander.puestos.ui.adapters.WorkstationsPageAdapter
 import com.bancosantander.puestos.ui.presenters.WorkstationsPresenter
 import com.bancosantander.puestos.ui.views.MainViewContract
+import com.bancosantander.puestos.ui.views.WorkstationsViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 
 /**
  * Created by bangulo on 18/12/2017.
  */
-class WorkstationsActivity : BaseMvpActivity<MainViewContract.View,
+class WorkstationsActivity : BaseMvpActivity<WorkstationsViewContract.View,
         WorkstationsPresenter>(),
         MainViewContract.View {
 
@@ -47,8 +48,8 @@ class WorkstationsActivity : BaseMvpActivity<MainViewContract.View,
         val tabLayout = findViewById<View>(R.id.tabs) as TabLayout
         tabLayout.setupWithViewPager(mViewPager)
 
-        tabLayout.getTabAt(0)!!.setText("Lista de puestos")
-        tabLayout.getTabAt(1)!!.setText("Mapa de puestos")
+        tabLayout.getTabAt(0)!!.text = getString(R.string.workstations_list)
+        tabLayout.getTabAt(1)!!.text = getString(R.string.workstations_map)
     }
 
     override fun onSupportNavigateUp(): Boolean {
