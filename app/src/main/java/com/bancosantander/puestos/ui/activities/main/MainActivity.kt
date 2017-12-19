@@ -6,7 +6,6 @@ import com.bancosantander.puestos.ui.presenters.MainPresenter
 import com.bancosantander.puestos.ui.views.MainViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class MainActivity : BaseMvpActivity<MainViewContract.View,
         MainPresenter>(),
@@ -20,9 +19,9 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
         setContentView(R.layout.activity_main)
         mPresenter.init()
 
-        btnManage.onClick { mPresenter.goToManageOwnWorkstation() }
-        btnFill.onClick { mPresenter.goToFillWorkstation() }
-        btnLogout.onClick { mPresenter.logout() }
+        btnManage.setOnClickListener { mPresenter.goToManageOwnWorkstation() }
+        btnFill.setOnClickListener { mPresenter.goToFillWorkstation() }
+        btnLogout.setOnClickListener { mPresenter.logout() }
     }
 
     companion object {

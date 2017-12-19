@@ -13,9 +13,7 @@ import com.bancosantander.puestos.R
 import com.bancosantander.puestos.application.App
 import com.bancosantander.puestos.data.firebase.auth.Auth
 import com.bancosantander.puestos.ui.activities.main.MainActivity
-import com.bancosantander.puestos.ui.activities.map.MapaActivity
 import kotlinx.android.synthetic.main.act_login.*
-import org.jetbrains.anko.sdk25.coroutines.onClick
 
 
 class LoginActivity : AppCompatActivity(){
@@ -25,8 +23,8 @@ class LoginActivity : AppCompatActivity(){
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.act_login)
-		btnLogin.onClick { signIn(txtLoginEmail.text.toString(), txtLoginClave.text.toString()) }
-		btnLogout.onClick { signOut() }
+		btnLogin.setOnClickListener { signIn(txtLoginEmail.text.toString(), txtLoginClave.text.toString()) }
+		btnLogout.setOnClickListener { signOut() }
 		auth = (application as App).auth
 	}
 

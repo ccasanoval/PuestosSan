@@ -52,8 +52,45 @@ object WorkstationFire {
 		val puesto = fire.translate(doc, Workstation::class.java) as Workstation?
 		if(puesto != null) {
 			val pos: GeoPoint = doc.get(POSITION_FIELD) as GeoPoint
-			return puesto.copy(pos.longitude.toFloat(), pos.latitude.toFloat())
+			return puesto.setPosition(pos.longitude.toFloat(), pos.latitude.toFloat())
 		}
 		return null
 	}
+	fun getWorkstation(fire:Fire,owner:String,callback: (Workstation, Throwable?) -> Unit) {
+		fire.getCol(ROOT_COLLECTION)
+                .whereEqualTo("idOwner", owner)
+				.get()
+				.addOnCompleteListener({ task ->
+					lateinit var res: Workstation
+					if(task.isSuccessful) {
+							val puesto = createPuestoHelper(fire, task.result.documents[0])
+							if (puesto?.idOwner == owner ) callback(puesto, null)
+					}
+					else {
+						callback(res, task.exception)
+						Log.e(TAG, "getAll:e:------------------------------------------------------", task.exception)
+					}
+                })
+	}
+    fun releaseMyWorkstation(fire:Fire,owner: String ,callback: (Workstation, Throwable?) -> Unit){
+        fire.getCol(ROOT_COLLECTION)
+                .whereEqualTo("idOwner", owner)
+                .get()
+                .addOnCompleteListener({task ->
+                    lateinit var res: Workstation
+                    if(task.isSuccessful) {
+                        task.result.documents[0].reference.update("status",Workstation.Status.Free.name)
+                        val puesto = createPuestoHelper(fire, task.result.documents[0])
+                        puesto?.let {
+                            puesto?.status = Workstation.Status.Free
+                            callback(puesto,null)
+                        }
+                    }
+                    else {
+                        callback(res, task.exception)
+                        Log.e(TAG, "getAll:e:------------------------------------------------------", task.exception)
+                    }
+                })
+
+    }
 }
