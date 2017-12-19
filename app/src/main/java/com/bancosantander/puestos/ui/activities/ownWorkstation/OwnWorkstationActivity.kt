@@ -7,7 +7,6 @@ import com.bancosantander.puestos.ui.presenters.OwnWorkstationPresenter
 import com.bancosantander.puestos.ui.views.OwnWorkstationViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_own_workstation.*
-import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         OwnWorkstationPresenter>(),
@@ -19,7 +18,7 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_own_workstation)
         mPresenter.init()
-        btnLiberar.onClick { mPresenter.releaseMyWorkstation() }
+        btnLiberar.setOnClickListener{ mPresenter.releaseMyWorkstation() }
     }
 
     override fun showWorkstation(idOwner: String, idUser: String, status: Workstation.Status,number: String) {
