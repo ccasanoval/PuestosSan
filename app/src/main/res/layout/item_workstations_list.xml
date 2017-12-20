@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llWorkstationItem"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="vertical">
-
     <TextView
-        android:id="@+id/estado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="HOLA"/>
+    <TextView
+        android:id="@+id/tvEstado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"/>
 
     <TextView
-        android:id="@+id/propietario"
+        android:id="@+id/tvPropietario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"/>
 
     <TextView
-        android:id="@+id/ocupante"
+        android:id="@+id/tvOcupante"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"/>

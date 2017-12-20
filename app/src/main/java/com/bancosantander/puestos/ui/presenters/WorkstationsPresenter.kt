@@ -1,12 +1,12 @@
 package com.bancosantander.puestos.ui.presenters
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import com.bancosantander.puestos.data.firebase.fire.WorkstationFire
 import com.bancosantander.puestos.ui.activities.workstations.WorkstationsActivity
-import com.bancosantander.puestos.ui.viewModels.WorkstationsListViewModel
-import com.bancosantander.puestos.ui.views.MainViewContract
+import com.bancosantander.puestos.ui.viewModels.listWorkstation.WorkstationsListViewModel
 import com.bancosantander.puestos.ui.views.WorkstationsViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
-import java.security.AccessControlContext
 
 /**
  * Created by mbalduciel on 14/12/17.
@@ -14,10 +14,24 @@ import java.security.AccessControlContext
 
 class WorkstationsPresenter(val context: WorkstationsActivity) : BasePresenter<WorkstationsViewContract.View>(), WorkstationsViewContract.Presenter {
 
-    lateinit var model :WorkstationsListViewModel
+    lateinit var model : WorkstationsListViewModel
 
     override fun init() {
         model = ViewModelProviders.of(context).get(WorkstationsListViewModel::class.java)
+        model.getWorkstationsList().observe(context, Observer { workstationList ->
+            workstationList?.let {
+                mView?.setDataAdapter(it)
+            }
+        })
+    }
+    fun setData(){
+        WorkstationFire.getAllRT(fire(),{workstationList, error ->
+            if (error != null) {
+
+            }else {
+                model.workstationsList?.value = workstationList
+            }
+        })
     }
 
 }

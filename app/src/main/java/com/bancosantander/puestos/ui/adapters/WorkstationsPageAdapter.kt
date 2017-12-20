@@ -4,11 +4,12 @@ import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import com.mibaldi.viewmodelexamplemvp.base.BaseMvpFragment
 
 /**
  * Created by bangulo on 18/12/2017.
  */
-class WorkstationsPageAdapter(fm: FragmentManager, private val context: Context,val tabs : ArrayList<Fragment>) : FragmentPagerAdapter(fm) {
+class WorkstationsPageAdapter(fm: FragmentManager, private val context: Context,val tabs : ArrayList<BaseMvpFragment<*>>) : FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
         return tabs.get(position);

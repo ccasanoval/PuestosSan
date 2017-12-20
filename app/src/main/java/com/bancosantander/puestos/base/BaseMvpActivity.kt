@@ -30,7 +30,7 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
     override fun getActivity(): AppCompatActivity {
         return this
     }
-    protected abstract var mPresenter: T
+    abstract var mPresenter: T
 
 
     override fun onDestroy() {

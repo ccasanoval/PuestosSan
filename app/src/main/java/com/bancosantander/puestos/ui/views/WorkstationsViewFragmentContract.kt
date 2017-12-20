@@ -1,6 +1,7 @@
 package com.bancosantander.puestos.ui.views
 
 import com.bancosantander.puestos.data.models.Workstation
+import com.mibaldi.viewmodelexamplemvp.base.BaseMvpFragmentView
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpPresenter
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpView
 
@@ -8,14 +9,10 @@ import com.mibaldi.viewmodelexamplemvp.base.BaseMvpView
  * Created by mbalduciel on 16/12/17.
  */
 
-object WorkstationsViewContract {
+object WorkstationsViewFragmentContract {
 
-    interface View: BaseMvpView {
+    interface View: BaseMvpFragmentView {
         fun setDataAdapter(list: ArrayList<Workstation>)
 
-    }
-
-    interface Presenter : BaseMvpPresenter<View> {
-        fun init()
     }
 }
