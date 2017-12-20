@@ -15,15 +15,15 @@
             android:name=".ui.dialogs.PuestoDialog"
             android:excludeFromRecents="true"
             android:theme="@style/Theme.AppCompat.Dialog" />
-        <activity android:name=".ui.activities.main.MainActivity" >
+        <activity android:name=".ui.activities.main.MainActivity" android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.ownWorkstation.OwnWorkstationActivity"></activity>
-        <activity android:name=".ui.activities.workstations.WorkstationsActivity"></activity>
+        <activity android:name=".ui.activities.ownWorkstation.OwnWorkstationActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.activities.workstations.WorkstationsActivity" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -34,6 +34,7 @@ object WorkstationFire {
 	}
 	fun getAllRT(fire: Fire, callback: (ArrayList<Workstation>, Throwable?) -> Unit) {
 		fire.getCol(ROOT_COLLECTION)
+                .whereEqualTo("status", Workstation.Status.Free.name)
 				.addSnapshotListener({ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
 					val res = arrayListOf<Workstation>()
 					if(error == null && data != null) {
@@ -102,7 +103,7 @@ object WorkstationFire {
                         task.result.documents[0].reference.update("status",Workstation.Status.Free.name)
                         val puesto = createPuestoHelper(fire, task.result.documents[0])
                         puesto?.let {
-                            puesto?.status = Workstation.Status.Free
+                            puesto.status = Workstation.Status.Free
                             callback(puesto,null)
                         }
                     }
@@ -113,4 +114,24 @@ object WorkstationFire {
                 })
 
     }
+	fun fillWorkstation (fire:Fire,owner: String ,callback: (Workstation, Throwable?) -> Unit) {
+		fire.getCol(ROOT_COLLECTION)
+				.whereEqualTo("idOwner", owner)
+				.get()
+				.addOnCompleteListener({task ->
+					lateinit var res: Workstation
+					if(task.isSuccessful) {
+						task.result.documents[0].reference.update("status",Workstation.Status.Occupied.name)
+						val puesto = createPuestoHelper(fire, task.result.documents[0])
+						puesto?.let {
+							puesto.status = Workstation.Status.Occupied
+							callback(puesto,null)
+						}
+					}
+					else {
+						callback(res, task.exception)
+						Log.e(TAG, "fillWorkstation:e:------------------------------------------------------", task.exception)
+					}
+				})
+	}
 }
