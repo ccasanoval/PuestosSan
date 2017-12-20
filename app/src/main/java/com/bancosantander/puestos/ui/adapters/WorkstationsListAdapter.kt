@@ -3,11 +3,12 @@ package com.bancosantander.puestos.ui.adapters
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import com.bancosantander.puestos.data.models.Workstation
 
 /**
  * Created by bangulo on 19/12/2017.
  */
-class WorkstationsListAdapter : RecyclerView.Adapter<WorkstationsListAdapter.ViewHolder>() {
+class WorkstationsListAdapter(val workstations : List<Workstation>) : RecyclerView.Adapter<WorkstationsListAdapter.ViewHolder>() {
 
     class ViewHolder(workstationView : View) : RecyclerView.ViewHolder(workstationView)
 
