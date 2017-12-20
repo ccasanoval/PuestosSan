@@ -22,6 +22,7 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
         btnManage.setOnClickListener { mPresenter.goToManageOwnWorkstation() }
         btnFill.setOnClickListener { mPresenter.goToFillWorkstation() }
         btnLogout.setOnClickListener { mPresenter.logout() }
+        btnConfiguration.setOnClickListener{mPresenter.gotToConfiguration()}
     }
 
     companion object {

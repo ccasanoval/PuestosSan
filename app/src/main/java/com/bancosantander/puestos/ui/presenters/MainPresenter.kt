@@ -25,4 +25,8 @@ class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Pr
     fun logout() {
         auth().logout()
     }
+
+    fun gotToConfiguration() {
+        router().goToConfiguration()
+    }
 }
