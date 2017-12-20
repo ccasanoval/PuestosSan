@@ -1,5 +1,7 @@
 package com.bancosantander.puestos.data.firebase.fire
 
+import android.content.Context
+import android.support.v7.app.AppCompatActivity
 import com.bancosantander.puestos.data.models.Workstation
 import com.bancosantander.puestos.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
@@ -32,20 +34,20 @@ object WorkstationFire {
 	}
 	fun getAllRT(fire: Fire, callback: (ArrayList<Workstation>, Throwable?) -> Unit) {
 		fire.getCol(ROOT_COLLECTION)
-			.addSnapshotListener({ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
-				val res = arrayListOf<Workstation>()
-				if(error == null && data != null) {
-					data.forEach { doc ->
-						val puesto = createPuestoHelper(fire, doc)
-						if(puesto != null) res.add(puesto)
+				.addSnapshotListener({ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
+					val res = arrayListOf<Workstation>()
+					if(error == null && data != null) {
+						data.forEach { doc ->
+							val puesto = createPuestoHelper(fire, doc)
+							if(puesto != null) res.add(puesto)
+						}
+						callback(res, null)
 					}
-					callback(res, null)
-				}
-				else {
-					callback(res, error)
-					Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
-				}
-			})
+					else {
+						callback(res, error)
+						Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
+					}
+				})
 		}
 
 	fun createPuestoHelper(fire: Fire, doc: DocumentSnapshot): Workstation? {
@@ -71,6 +73,24 @@ object WorkstationFire {
 						Log.e(TAG, "getAll:e:------------------------------------------------------", task.exception)
 					}
                 })
+	}
+	fun getWorkstationRT(context: AppCompatActivity, fire:Fire, owner:String, callback: (Workstation, Throwable?) -> Unit) {
+		fire.getCol(ROOT_COLLECTION)
+                .whereEqualTo("idOwner", owner)
+				.addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
+					lateinit var res: Workstation
+					if(error == null && data != null) {
+						data.forEach { doc ->
+							val puesto = createPuestoHelper(fire, doc)
+							if (puesto?.idOwner == owner ) callback(puesto, null)
+						}
+					}
+					else {
+						callback(res, error)
+						Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
+					}
+				})
+
 	}
     fun releaseMyWorkstation(fire:Fire,owner: String ,callback: (Workstation, Throwable?) -> Unit){
         fire.getCol(ROOT_COLLECTION)
