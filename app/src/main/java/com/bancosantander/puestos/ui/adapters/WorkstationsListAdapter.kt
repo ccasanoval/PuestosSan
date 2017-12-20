@@ -51,7 +51,7 @@ class WorkstationsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         fun bindItem(item: Workstation){
             workstation = item
             itemView.tvEstado.text = workstation.status.toString()
-            itemView.tvOcupante.text = workstation.idUser
+            itemView.tvPosicion.text = workstation.x.toString()+"º" + " " + workstation.y.toString()+"º"
             itemView.tvPropietario.text = workstation.idOwner
         }
     }

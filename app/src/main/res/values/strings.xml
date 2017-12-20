@@ -52,8 +52,11 @@
     <string name="manage_own_workstation">Gestionar puesto propio</string>
 
     <!--WORKSTATIONS ACTIVITY -->
-    <string name="workstations_list">Lista de puestos</string>
+    <string name="workstations_list">Lista de puestos disponibles</string>
     <string name="workstations_map">Mapa de puestos</string>
-
+    <string name="fill_workstation">¿Desea ocupar el puesto?</string>
+    <string name="status">Estado</string>
+    <string name="owner">Propietario</string>
+    <string name="position">Posición</string>
 
 </resources>
