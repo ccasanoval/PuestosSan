@@ -11,7 +11,8 @@ class Router(val context:Context){
     fun goToManageOwnWorkstation(){
         val intent = Intent(context, OwnWorkstationActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        context.startActivity(intent)    }
+        context.startActivity(intent)
+    }
 
     fun goToFillWorkstation() {
         val intent = Intent(context, WorkstationsActivity::class.java)
