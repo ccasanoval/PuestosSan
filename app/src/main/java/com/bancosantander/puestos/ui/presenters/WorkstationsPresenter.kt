@@ -8,10 +8,6 @@ import com.bancosantander.puestos.ui.viewModels.listWorkstation.WorkstationsList
 import com.bancosantander.puestos.ui.views.WorkstationsViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 
-/**
- * Created by mbalduciel on 14/12/17.
- */
-
 class WorkstationsPresenter(val context: WorkstationsActivity) : BasePresenter<WorkstationsViewContract.View>(), WorkstationsViewContract.Presenter {
 
     lateinit var model : WorkstationsListViewModel

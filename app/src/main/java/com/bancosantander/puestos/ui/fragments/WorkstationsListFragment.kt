@@ -1,8 +1,10 @@
 package com.bancosantander.puestos.ui.fragments
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +36,6 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
         adapter = WorkstationsListAdapter()
         setData()
         workstations_list.adapter = adapter
-
     }
 
     private fun setData() {
@@ -44,7 +45,8 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
     }
 
     override fun setDataAdapter(list: ArrayList<Workstation>) {
-        adapter?.setDataAndListener(list,this)
+
+        adapter?.setDataAndListener(list,this) ?: Log.d("TAG","ADAPTER NULL")
     }
     override fun onItemClickListener(view: View, workstation: Workstation) {
         Snackbar.make(getView()!!,"Click",Snackbar.LENGTH_LONG).show()

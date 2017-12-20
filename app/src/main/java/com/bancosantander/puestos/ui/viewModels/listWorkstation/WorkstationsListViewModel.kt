@@ -20,10 +20,6 @@ class WorkstationsListViewModel : ViewModel(){
         return workstationsList!!
     }
 
-//    fun add(workstation: Workstation){
-//        val valueFinal = workstationsList?.value!!
-//        valueFinal.add(workstation)
-//        workstationsList?.value = valueFinal
-//    }
+
 
 }

@@ -47,7 +47,6 @@ class OwnWorkstationPresenter(val context: OwnWorkstationActivity) : BasePresent
 
         } else {
             model.currentWorkstation?.value = workstation
-            //showCurrentWorkstation()
         }
     }
 
