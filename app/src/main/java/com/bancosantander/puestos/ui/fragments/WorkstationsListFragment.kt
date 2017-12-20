@@ -2,6 +2,7 @@ package com.bancosantander.puestos.ui.fragments
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.workstations_list_fragment.*
  */
 class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContract.View>(), WorkstationsViewFragmentContract.View, WorkstationsListAdapter.OnItemClickListener {
 
-    var adapter : WorkstationsListAdapter = WorkstationsListAdapter()
+    var adapter : WorkstationsListAdapter?  = null
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.workstations_list_fragment,container,false)
     }
@@ -27,16 +28,23 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val workstation = Workstation("aa", "sss", "fff", Workstation.Status.Free, 10F, 40F)
-        val workstation2 = Workstation("aa2", "sss2", "fff2", Workstation.Status.Free, 10F, 40F)
-        adapter.workstations =arrayListOf(workstation,workstation2)
+        workstations_list.setHasFixedSize(true);
+        val mLayoutManager = LinearLayoutManager(activity);
+        workstations_list.layoutManager = mLayoutManager;
+        adapter = WorkstationsListAdapter()
+        setData()
         workstations_list.adapter = adapter
+
+    }
+
+    private fun setData() {
         val baseMvpActivity = activity as BaseMvpActivity<*, *>
         val workstationsPresenter = baseMvpActivity.mPresenter as WorkstationsPresenter
         workstationsPresenter.setData()
     }
+
     override fun setDataAdapter(list: ArrayList<Workstation>) {
-       // adapter.setDataAndListener(list,this)
+        adapter?.setDataAndListener(list,this)
     }
     override fun onItemClickListener(view: View, workstation: Workstation) {
         Snackbar.make(getView()!!,"Click",Snackbar.LENGTH_LONG).show()

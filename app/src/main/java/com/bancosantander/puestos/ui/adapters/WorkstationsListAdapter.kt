@@ -15,13 +15,14 @@ class WorkstationsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
 
 
 
-    lateinit var workstations : List<Workstation>
+    var workstations : List<Workstation> = arrayListOf()
     lateinit var listener: OnItemClickListener
 
     interface OnItemClickListener {
         fun onItemClickListener(view: View, workstation: Workstation)
 
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_workstations_list, parent, false)
