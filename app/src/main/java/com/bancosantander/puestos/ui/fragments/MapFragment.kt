@@ -45,7 +45,7 @@ class MapFragment : Fragment() {
 		}
 		imgPlano.setOnTouchListener(imgListener)
 
-		iniViewModel(view!!)
+		iniViewModel()
 	}
 
 	//______________________________________________________________________________________________
@@ -58,8 +58,8 @@ class MapFragment : Fragment() {
 	}
 
 	//______________________________________________________________________________________________
-	private fun iniViewModel(view: View) {
-		viewModel = ViewModelProviders.of(this@MapFragment).get(MapaViewModel::class.java)
+	private fun iniViewModel() {
+		viewModel = ViewModelProviders.of(this).get(MapaViewModel::class.java)
 		viewModel.mensaje.observe(this, Observer { mensaje ->
 			Toast.makeText(activity, mensaje, Toast.LENGTH_LONG).show()
 		})
@@ -70,8 +70,7 @@ class MapFragment : Fragment() {
 		viewModel.puestos.observe(this, Observer<List<Workstation>> { puestos ->
 			Log.e(TAG, "------------------------------- PUESTOS OBSERVER")
 			when {
-				puestos == null ->
-					Toast.makeText(activity, getString(R.string.puestos_get_none), Toast.LENGTH_SHORT).show()
+				puestos == null -> null
 					//Toast.makeText(activity, getString(R.string.puestos_get_error), Toast.LENGTH_SHORT).show()
 				puestos.isEmpty() ->
 					Toast.makeText(activity, getString(R.string.puestos_get_none), Toast.LENGTH_SHORT).show()
