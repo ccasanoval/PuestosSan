@@ -54,8 +54,10 @@ class WorkstationsMapFragment : BaseMvpFragment<WorkstationsMapViewFragmentContr
 	override fun onDestroy() {
 
 		super.onDestroy()
-		imgPlano.destroyDrawingCache()
-		imgPlano.recycle()
+		if(imgPlano != null) {
+			imgPlano.destroyDrawingCache()
+			imgPlano.recycle()
+		}
 	}
 
 	private fun iniViewModel(view: View) {
