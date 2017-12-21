@@ -37,6 +37,10 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         tvNumberWorkstation.text = number
     }
 
+    override fun finishActivity() {
+        finish()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true

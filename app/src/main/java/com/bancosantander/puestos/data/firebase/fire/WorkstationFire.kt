@@ -75,15 +75,19 @@ object WorkstationFire {
 					}
                 })
 	}
-	fun getWorkstationRT(context: AppCompatActivity, fire:Fire, owner:String, callback: (Workstation, Throwable?) -> Unit) {
+	fun getWorkstationRT(context: AppCompatActivity, fire:Fire, owner:String, callback: (Workstation?, Throwable?) -> Unit) {
 		fire.getCol(ROOT_COLLECTION)
                 .whereEqualTo("idOwner", owner)
 				.addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
 					lateinit var res: Workstation
 					if(error == null && data != null) {
-						data.forEach { doc ->
-							val puesto = createPuestoHelper(fire, doc)
-							if (puesto?.idOwner == owner ) callback(puesto, null)
+						if(data.isEmpty || data.documents.isEmpty()){
+							callback(null,null)
+						}else{
+							data.forEach { doc ->
+								val puesto = createPuestoHelper(fire, doc)
+								if (puesto?.idOwner == owner ) callback(puesto, null)
+							}
 						}
 					}
 					else {
