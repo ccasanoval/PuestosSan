@@ -51,8 +51,10 @@ class MapFragment : Fragment() {
 	//______________________________________________________________________________________________
 	override fun onDestroy() {
 		super.onDestroy()
-		imgPlano.destroyDrawingCache()
-		imgPlano.recycle()
+		if(imgPlano != null) {
+			imgPlano.destroyDrawingCache()
+			imgPlano.recycle()
+		}
 	}
 
 	//______________________________________________________________________________________________
