@@ -13,7 +13,7 @@ import com.bancosantander.puestos.ui.views.map.WorkstationsMapViewFragmentContra
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 import org.jetbrains.anko.contentView
 
-class WorkstationsMapFragmentPresenter(val context: WorkstationsActivity) : BasePresenter<WorkstationsMapViewFragmentContract.View>(), WorkstationsMapViewFragmentContract.Presenter {
+class WorkstationsMapFragmentPresenter : BasePresenter<WorkstationsMapViewFragmentContract.View>(), WorkstationsMapViewFragmentContract.Presenter {
 
 
     override fun init() {
