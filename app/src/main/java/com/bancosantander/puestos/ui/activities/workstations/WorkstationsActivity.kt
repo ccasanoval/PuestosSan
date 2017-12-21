@@ -10,6 +10,7 @@ import android.view.View
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.data.models.Workstation
 import com.bancosantander.puestos.ui.adapters.WorkstationsPageAdapter
+import com.bancosantander.puestos.ui.fragments.MapFragment
 import com.bancosantander.puestos.ui.fragments.WorkstationsListFragment
 import com.bancosantander.puestos.ui.fragments.WorkstationsMapFragment
 import com.bancosantander.puestos.ui.presenters.WorkstationsPresenter
@@ -38,11 +39,12 @@ class WorkstationsActivity : BaseMvpActivity<WorkstationsViewContract.View,
         setupTabLayout()
     }
 
-    private lateinit var tabsList: ArrayList<BaseMvpFragment<*,*>>
+    private lateinit var tabsList: ArrayList<Fragment>
 
     private fun setupTabLayout() {
         //TODO realizar un new instance para los fragments
-        tabsList = arrayListOf(WorkstationsListFragment(), WorkstationsMapFragment())
+        tabsList = arrayListOf(WorkstationsListFragment(), MapFragment())
+
         mWorkstationsPagerAdapter = WorkstationsPageAdapter(supportFragmentManager,
                 this,
                 tabsList)
