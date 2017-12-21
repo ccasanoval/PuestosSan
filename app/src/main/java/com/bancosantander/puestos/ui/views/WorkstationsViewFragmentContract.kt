@@ -13,6 +13,8 @@ object WorkstationsViewFragmentContract {
 
     interface View: BaseMvpView {
         fun setDataAdapter(list: ArrayList<Workstation>)
+        fun showLoading()
+        fun hideLoading()
 
     }
     interface Presenter : BaseMvpPresenter<View> {

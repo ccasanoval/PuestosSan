@@ -23,9 +23,14 @@ class ConfigurationPresenter : BasePresenter<ConfigurationViewContract.View>(), 
 
     override fun callToChangePassword(oldPass:String, pass: String) {
         if (oldPass.length < 6 || pass.length < 6) mView?.showErrorMinLenght()
-        else auth().changePassword(oldPass,pass,{ status, error ->
-            if (status) mView?.showSuccess() else mView?.showError("Error al cambiar la contraseña")
-            Log.e("CallToChangePassword",error.toString())
-        })
+        else{
+            mView?.showLoading()
+            auth().changePassword(oldPass,pass,{ status, error ->
+                mView?.hideLoading()
+                if (status) mView?.showSuccess() else mView?.showError("Error al cambiar la contraseña")
+                Log.e("CallToChangePassword",error.toString())
+            })
+        }
+
     }
 }

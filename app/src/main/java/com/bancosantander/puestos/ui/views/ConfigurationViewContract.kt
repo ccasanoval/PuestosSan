@@ -14,6 +14,8 @@ object ConfigurationViewContract {
         fun showErrorMinLenght()
         fun showSuccess()
         fun showError(error: String)
+        fun showLoading()
+        fun hideLoading()
     }
     interface Presenter : BaseMvpPresenter<View> {
         fun init()
