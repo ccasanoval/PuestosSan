@@ -2,6 +2,10 @@ package com.bancosantander.puestos.data.firebase.auth
 
 import android.app.Application
 import android.util.Log
+import com.bancosantander.puestos.application.App
+import com.bancosantander.puestos.data.firebase.fire.Fire
+import com.bancosantander.puestos.data.firebase.fire.UserFire
+import com.bancosantander.puestos.data.models.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -13,10 +17,12 @@ import com.google.firebase.auth.AuthResult
 class Auth private constructor() {
 
 	private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+	private val fire = Fire()
 
 	fun isLogedIn(): Boolean = auth.currentUser != null
 	fun isNotLogedIn(): Boolean = !isLogedIn()
 	fun getEmail(): String? = auth.currentUser?.email
+	fun getUserFire(func: (User,Throwable?) -> Unit) { UserFire.get(fire,getEmail()!!,func) }
 
 	fun addAuthStateListener(listener: FirebaseAuth.AuthStateListener) {
 		auth.addAuthStateListener(listener)
@@ -58,6 +64,7 @@ class Auth private constructor() {
 	fun logout() {
 		auth.signOut()
 	}
+
 
 	companion object {
 		fun getInstance(app: Application): Auth {
