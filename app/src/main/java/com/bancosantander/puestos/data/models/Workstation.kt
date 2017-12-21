@@ -3,7 +3,7 @@ package com.bancosantander.puestos.data.models
 
 data class Workstation(
 		val idOwner: String = "",
-		val idUser: String = "",
+		var idUser: String = "",
 		val name: String = "",
 		var status: Status = Status.Unavailable,
 		val x: Float = 0f,

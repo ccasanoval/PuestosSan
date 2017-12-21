@@ -47,7 +47,7 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 		puestos.value = listOf()
 		//val fire = Fire()
 		/*if(auth.getEmail() != null)
-		UserFire.get(fire, auth.getEmail().toString(), { user: User, error ->
+		UserFire.get(fire, auth.getEmail().toString(), { user: idUser, error ->
 			if(error == null) {
 				usuario.value = user.name +" : "+user.type
 			}

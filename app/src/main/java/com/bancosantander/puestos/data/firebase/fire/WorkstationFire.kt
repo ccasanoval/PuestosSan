@@ -1,6 +1,7 @@
 package com.bancosantander.puestos.data.firebase.fire
 
 import android.support.v7.app.AppCompatActivity
+import com.bancosantander.puestos.data.models.User
 import com.bancosantander.puestos.data.models.Workstation
 import com.bancosantander.puestos.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
@@ -13,6 +14,24 @@ object WorkstationFire {
 	private val ROOT_COLLECTION = "workstations"
 	private val POSITION_FIELD = "position"
 
+	fun getAll(fire: Fire, callback: (ArrayList<Workstation>, Throwable?) -> Unit) {
+		fire.getCol(ROOT_COLLECTION)
+			.get()
+			.addOnCompleteListener({ task ->
+				val res = arrayListOf<Workstation>()
+				if(task.isSuccessful) {
+					for(doc in task.result) {
+						val puesto = createPuestoHelper(fire, doc)
+						if(puesto != null) res.add(puesto)
+					}
+					callback(res, null)
+				}
+				else {
+					callback(res, task.exception)
+					Log.e(TAG, "getAll:e:------------------------------------------------------", task.exception)
+				}
+			})
+	}
 	fun getAllRT(fire: Fire, callback: (ArrayList<Workstation>, Throwable?) -> Unit) {
 		fire.getCol(ROOT_COLLECTION)
                 .whereEqualTo("status", Workstation.Status.Free.name)
@@ -40,23 +59,37 @@ object WorkstationFire {
 		}
 		return null
 	}
-
-	fun getWorkstationRT(context: AppCompatActivity, fire:Fire, owner:String, callback: (Workstation?, Throwable?) -> Unit) {
+	fun getWorkstation(fire:Fire,owner:String,callback: (Workstation, Throwable?) -> Unit) {
 		fire.getCol(ROOT_COLLECTION)
                 .whereEqualTo("idOwner", owner)
+				.get()
+				.addOnCompleteListener({ task ->
+					lateinit var res: Workstation
+					if(task.isSuccessful) {
+							val puesto = createPuestoHelper(fire, task.result.documents[0])
+							if (puesto?.idOwner == owner ) callback(puesto, null)
+					}
+					else {
+						callback(res, task.exception)
+						Log.e(TAG, "getAll:e:------------------------------------------------------", task.exception)
+					}
+                })
+	}
+	fun getWorkstationRT(context: AppCompatActivity, fire:Fire, user: String,type: String, callback: (Workstation?, Throwable?) -> Unit) {
+		fire.getCol(ROOT_COLLECTION)
+				.whereEqualTo(type,user)
 				.addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
 					lateinit var res: Workstation
 					if(error == null && data != null) {
 						if(data.isEmpty || data.documents.isEmpty()){
 							callback(null,null)
-							//TODO: no se debería hacer esto, no es lo mismo nulo que vacio...
-							//TODO: el cliente deberia comprobar la nulidad y la cantidad de elementos por separado
 						}else{
 							data.forEach { doc ->
 								val puesto = createPuestoHelper(fire, doc)
-								if (puesto?.idOwner == owner ) callback(puesto, null)
+								callback(puesto, null)
 							}
 						}
+
 					}
 					else {
 						callback(res, error)
@@ -73,9 +106,11 @@ object WorkstationFire {
                     lateinit var res: Workstation
                     if(task.isSuccessful) {
                         task.result.documents[0].reference.update("status",Workstation.Status.Free.name)
+                        task.result.documents[0].reference.update("idUser","")
                         val puesto = createPuestoHelper(fire, task.result.documents[0])
                         puesto?.let {
                             puesto.status = Workstation.Status.Free
+							puesto.idUser = "";
                             callback(puesto,null)
                         }
                     }
@@ -86,7 +121,7 @@ object WorkstationFire {
                 })
 
     }
-	fun fillWorkstation (fire:Fire,owner: String ,callback: (Workstation, Throwable?) -> Unit) {
+	fun fillWorkstation (fire:Fire,owner: String,user : String ,callback: (Workstation, Throwable?) -> Unit) {
 		fire.getCol(ROOT_COLLECTION)
 				.whereEqualTo("idOwner", owner)
 				.get()
@@ -94,6 +129,7 @@ object WorkstationFire {
 					lateinit var res: Workstation
 					if(task.isSuccessful) {
 						task.result.documents[0].reference.update("status",Workstation.Status.Occupied.name)
+						task.result.documents[0].reference.update("idUser",user)
 						val puesto = createPuestoHelper(fire, task.result.documents[0])
 						puesto?.let {
 							puesto.status = Workstation.Status.Occupied
