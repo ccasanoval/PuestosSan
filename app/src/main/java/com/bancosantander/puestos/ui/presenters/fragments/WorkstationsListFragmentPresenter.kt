@@ -11,6 +11,7 @@ import com.bancosantander.puestos.ui.views.WorkstationsViewContract
 import com.bancosantander.puestos.ui.views.WorkstationsViewFragmentContract
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 import org.jetbrains.anko.contentView
+import org.jetbrains.anko.toast
 
 class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : BasePresenter<WorkstationsViewFragmentContract.View>(), WorkstationsViewFragmentContract.Presenter {
 
@@ -36,13 +37,16 @@ class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : Bas
     }
 
     fun fillWorkstation(idOwner: String) {
-        WorkstationFire.fillWorkstation(fire(), idOwner, { workstation, error ->
-            if (error != null) {
+        auth().getEmail()?.let {
+            WorkstationFire.fillWorkstation(fire(), idOwner, it, { workstation, error ->
+                if (error != null) {
 
-            } else {
-
-            }
-        })
+                } else {
+                    mView?.getMyActivity()?.toast("Has ocupado el puesto")
+                    mView?.getMyActivity()?.finish()
+                }
+            })
+        }
 
     }
 }
