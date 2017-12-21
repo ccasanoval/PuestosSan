@@ -37,11 +37,8 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
     override fun showWorkstation(idOwner: String, idUser: String, status: Workstation.Status,number: String) {
         tvOwnerWorkstation.text = idOwner
         tvStateWorkstation.text = status.name
+        tvUserWorkstation.text = idUser
         tvNumberWorkstation.text = number
-    }
-
-    override fun finishActivity() {
-        finish()
     }
 
     override fun onSupportNavigateUp(): Boolean {

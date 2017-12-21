@@ -1,6 +1,5 @@
 package com.bancosantander.puestos.data.firebase.fire
 
-import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import com.bancosantander.puestos.data.models.Workstation
 import com.bancosantander.puestos.util.Log
@@ -75,20 +74,21 @@ object WorkstationFire {
 					}
                 })
 	}
-	fun getWorkstationRT(context: AppCompatActivity, fire:Fire, owner:String, callback: (Workstation?, Throwable?) -> Unit) {
+	fun getWorkstationRT(context: AppCompatActivity, fire:Fire, user:String, callback: (Workstation?, Throwable?) -> Unit) {
 		fire.getCol(ROOT_COLLECTION)
-                .whereEqualTo("idOwner", owner)
+				.whereEqualTo("idOwner",user)
 				.addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
 					lateinit var res: Workstation
 					if(error == null && data != null) {
-						if(data.isEmpty || data.documents.isEmpty()){
-							callback(null,null)
-						}else{
-							data.forEach { doc ->
+						data.forEach { doc ->
 								val puesto = createPuestoHelper(fire, doc)
-								if (puesto?.idOwner == owner ) callback(puesto, null)
+								if (puesto?.idOwner == user || puesto?.idUser == user ){
+									callback(puesto, null)
+									return@addSnapshotListener
+								} else {
+									callback(null,null)
+								}
 							}
-						}
 					}
 					else {
 						callback(res, error)
@@ -105,9 +105,11 @@ object WorkstationFire {
                     lateinit var res: Workstation
                     if(task.isSuccessful) {
                         task.result.documents[0].reference.update("status",Workstation.Status.Free.name)
+                        task.result.documents[0].reference.update("idUser","")
                         val puesto = createPuestoHelper(fire, task.result.documents[0])
                         puesto?.let {
                             puesto.status = Workstation.Status.Free
+							puesto.idUser = "";
                             callback(puesto,null)
                         }
                     }
@@ -118,7 +120,7 @@ object WorkstationFire {
                 })
 
     }
-	fun fillWorkstation (fire:Fire,owner: String ,callback: (Workstation, Throwable?) -> Unit) {
+	fun fillWorkstation (fire:Fire,owner: String,user : String ,callback: (Workstation, Throwable?) -> Unit) {
 		fire.getCol(ROOT_COLLECTION)
 				.whereEqualTo("idOwner", owner)
 				.get()
@@ -126,6 +128,7 @@ object WorkstationFire {
 					lateinit var res: Workstation
 					if(task.isSuccessful) {
 						task.result.documents[0].reference.update("status",Workstation.Status.Occupied.name)
+						task.result.documents[0].reference.update("idUser",user)
 						val puesto = createPuestoHelper(fire, task.result.documents[0])
 						puesto?.let {
 							puesto.status = Workstation.Status.Occupied

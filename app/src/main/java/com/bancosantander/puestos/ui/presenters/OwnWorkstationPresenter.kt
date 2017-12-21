@@ -41,10 +41,13 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
         if (error != null) {
 
         } else {
-            if(workstation == null) mView?.finishActivity() else model.currentWorkstation?.value = workstation
+            //TODO("Dialog no tienes puesto ocupado")
+            if(workstation == null) mView?.getMyActivity()?.finish()
+            else {
+                model.currentWorkstation?.value = workstation
+            }
         }
     }
-
     fun releaseMyWorkstation() {
         auth().getEmail()?.let {
             WorkstationFire.releaseMyWorkstation(fire(),it,{workstation, error ->

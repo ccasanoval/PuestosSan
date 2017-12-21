@@ -13,7 +13,6 @@ object OwnWorkstationViewContract {
 
     interface View: BaseMvpView {
         fun showWorkstation(idOwner: String, idUser: String, status: Workstation.Status,number: String)
-        fun finishActivity()
 
     }
     interface Presenter : BaseMvpPresenter<View> {
