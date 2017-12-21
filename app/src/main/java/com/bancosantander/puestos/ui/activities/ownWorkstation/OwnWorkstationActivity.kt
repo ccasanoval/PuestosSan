@@ -3,6 +3,7 @@ package com.bancosantander.puestos.ui.activities.ownWorkstation
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
+import android.transition.Visibility
 import android.view.View
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.data.models.Workstation
@@ -25,6 +26,7 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         mPresenter.init(model)
         setupToolbar()
         btnLiberar.setOnClickListener{ mPresenter.releaseMyWorkstation() }
+        btnOcupar.setOnClickListener{mPresenter.fillWorkstation()}
     }
 
     private fun setupToolbar() {
@@ -46,4 +48,13 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         return true
     }
 
+    override fun showBtnLiberar() {
+        btnOcupar.visibility = View.GONE
+        btnLiberar.visibility = View.VISIBLE
+    }
+
+    override fun showBtnOcupar() {
+        btnLiberar.visibility = View.GONE
+        btnOcupar.visibility = View.VISIBLE
+    }
 }

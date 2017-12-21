@@ -95,4 +95,10 @@
         android:layout_height="wrap_content"
         android:text="@string/liberar"
         />
+    <Button
+        android:id="@+id/btnOcupar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ocupar"
+        />
 </LinearLayout>

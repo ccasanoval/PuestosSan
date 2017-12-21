@@ -13,9 +13,11 @@ object OwnWorkstationViewContract {
 
     interface View: BaseMvpView {
         fun showWorkstation(idOwner: String, idUser: String, status: Workstation.Status,number: String)
-
+        fun showBtnLiberar()
+        fun showBtnOcupar()
     }
     interface Presenter : BaseMvpPresenter<View> {
         fun init(model: OwnWorkstationViewModel)
+        fun fillWorkstation()
     }
 }

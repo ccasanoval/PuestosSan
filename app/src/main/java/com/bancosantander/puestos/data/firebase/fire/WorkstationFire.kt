@@ -1,6 +1,7 @@
 package com.bancosantander.puestos.data.firebase.fire
 
 import android.support.v7.app.AppCompatActivity
+import com.bancosantander.puestos.data.models.User
 import com.bancosantander.puestos.data.models.Workstation
 import com.bancosantander.puestos.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
@@ -74,21 +75,21 @@ object WorkstationFire {
 					}
                 })
 	}
-	fun getWorkstationRT(context: AppCompatActivity, fire:Fire, user:String, callback: (Workstation?, Throwable?) -> Unit) {
+	fun getWorkstationRT(context: AppCompatActivity, fire:Fire, user: String,type: String, callback: (Workstation?, Throwable?) -> Unit) {
 		fire.getCol(ROOT_COLLECTION)
-				.whereEqualTo("idOwner",user)
+				.whereEqualTo(type,user)
 				.addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
 					lateinit var res: Workstation
 					if(error == null && data != null) {
-						data.forEach { doc ->
+						if(data.isEmpty || data.documents.isEmpty()){
+							callback(null,null)
+						}else{
+							data.forEach { doc ->
 								val puesto = createPuestoHelper(fire, doc)
-								if (puesto?.idOwner == user || puesto?.idUser == user ){
-									callback(puesto, null)
-									return@addSnapshotListener
-								} else {
-									callback(null,null)
-								}
+								callback(puesto, null)
 							}
+						}
+
 					}
 					else {
 						callback(res, error)
