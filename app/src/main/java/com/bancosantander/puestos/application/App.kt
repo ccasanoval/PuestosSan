@@ -4,7 +4,6 @@ import android.app.Application
 import com.bancosantander.puestos.data.firebase.auth.Auth
 import com.bancosantander.puestos.data.firebase.fire.Fire
 import com.bancosantander.puestos.router.Router
-import com.squareup.leakcanary.LeakCanary
 
 
 // ZOOM ImageView:
