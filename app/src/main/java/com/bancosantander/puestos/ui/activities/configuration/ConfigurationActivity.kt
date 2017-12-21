@@ -58,5 +58,11 @@ class ConfigurationActivity :  BaseMvpActivity<ConfigurationViewContract.View,
         Snackbar.make(llConfigurationLayout,error,Snackbar.LENGTH_LONG).show()
     }
 
+    override fun showLoading() {
+        super.showLoadingDialog()
+    }
 
+    override fun hideLoading() {
+        super.hideLoadingDialog()
+    }
 }

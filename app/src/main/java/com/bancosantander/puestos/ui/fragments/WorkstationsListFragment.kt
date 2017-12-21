@@ -68,4 +68,11 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
                 { si -> if(si) mPresenter.fillWorkstation(workstation.idOwner)  })
     }
 
+    override fun showLoading() {
+        (activity as BaseMvpActivity<*,*>).showLoadingDialog()
+    }
+
+    override fun hideLoading() {
+        (activity as BaseMvpActivity<*,*>).hideLoadingDialog()
+    }
 }

@@ -27,7 +27,9 @@ class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : Bas
     }
 
     fun setData() {
+        mView?.showLoading()
         WorkstationFire.getAllRT(fire(), { workstationList, error ->
+            mView?.hideLoading()
             if (error != null) {
 
             } else {
@@ -38,7 +40,9 @@ class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : Bas
 
     fun fillWorkstation(idOwner: String) {
         auth().getEmail()?.let {
+            mView?.showLoading()
             WorkstationFire.fillWorkstation(fire(), idOwner, it, { workstation, error ->
+                mView?.hideLoading()
                 if (error != null) {
 
                 } else {

@@ -1,5 +1,6 @@
 package com.bancosantander.puestos.ui.activities.ownWorkstation
 
+import android.app.Dialog
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
@@ -12,6 +13,9 @@ import com.bancosantander.puestos.ui.viewModels.ownWorkstation.OwnWorkstationVie
 import com.bancosantander.puestos.ui.views.OwnWorkstationViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_own_workstation.*
+import android.content.DialogInterface
+import android.support.v7.app.AlertDialog
+
 
 class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         OwnWorkstationPresenter>(),
@@ -56,5 +60,24 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
     override fun showBtnOcupar() {
         btnLiberar.visibility = View.GONE
         btnOcupar.visibility = View.VISIBLE
+    }
+
+    override fun showMyDialog(title: Int) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(getString(title))
+                .setCancelable(false)
+                .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
+                    finish()
+                })
+        val alert = builder.create()
+        alert.show()
+    }
+
+    override fun showLoading() {
+        super.showLoadingDialog()
+    }
+
+    override fun hideLoading() {
+        super.hideLoadingDialog()
     }
 }

@@ -1,6 +1,7 @@
 package com.bancosantander.puestos.ui.presenters
 
 import android.arch.lifecycle.Observer
+import com.bancosantander.puestos.R
 import com.bancosantander.puestos.data.firebase.fire.WorkstationFire
 import com.bancosantander.puestos.data.models.User
 import com.bancosantander.puestos.data.models.Workstation
@@ -31,6 +32,7 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
     }
 
     private fun showCurrentWorkstation(){
+        mView?.showLoading()
         auth().getUserFire { user, throwable ->
             when(user.type){
                 User.Type.Fixed -> {
@@ -54,17 +56,18 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
                 }
             }
         }
-        auth().getEmail()?.let {
-
-        }
     }
 
     private fun retrieveWorkstation(workstation: Workstation?,error: Throwable?) {
+        mView?.hideLoading()
         if (error != null) {
 
         } else {
-            //TODO("Dialog no tienes puesto ocupado")
-            if(workstation == null) mView?.getMyActivity()?.finish()
+
+            if(workstation == null) {
+                model.currentWorkstation?.value = Workstation()
+                mView?.showMyDialog(R.string.no_tiene_puesto_ocupado)
+            }
             else {
                 model.currentWorkstation?.value = workstation
                 owner = workstation.idOwner
@@ -76,6 +79,7 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
         }
     }
     fun releaseMyWorkstation() {
+        mView?.showLoading()
         auth().getEmail()?.let {
             WorkstationFire.releaseMyWorkstation(fire(),owner,{workstation, error ->
                 retrieveWorkstation(workstation,error)
@@ -84,8 +88,10 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
     }
 
     override fun fillWorkstation() {
+        mView?.showLoading()
        auth().getEmail()?.let{
            WorkstationFire.fillWorkstation(fire(), it, it, { workstation, error ->
+               mView?.hideLoading()
                if (error != null) {
 
                } else {
