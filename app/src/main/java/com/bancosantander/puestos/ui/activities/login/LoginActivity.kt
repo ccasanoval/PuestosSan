@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity(){
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.act_login)
-		btnLogin.setOnClickListener { signIn(txtLoginEmail.text.toString(), txtLoginClave.text.toString()) }
+		btnLogin.setOnClickListener { signIn(txtLoginEmail.text.toString()+"@puestos.com", txtLoginClave.text.toString()) }
 		btnLogout.setOnClickListener { signOut() }
 		auth = (application as App).auth
 	}
