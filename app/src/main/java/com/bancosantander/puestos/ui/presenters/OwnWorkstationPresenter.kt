@@ -37,11 +37,11 @@ class OwnWorkstationPresenter(val context: OwnWorkstationActivity) : BasePresent
         }
     }
 
-    private fun retrieveWorkstation(workstation: Workstation,error: Throwable?) {
+    private fun retrieveWorkstation(workstation: Workstation?,error: Throwable?) {
         if (error != null) {
 
         } else {
-            model.currentWorkstation?.value = workstation
+            if(workstation == null) mView?.finishActivity() else model.currentWorkstation?.value = workstation
         }
     }
 
