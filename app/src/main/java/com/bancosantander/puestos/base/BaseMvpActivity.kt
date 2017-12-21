@@ -27,7 +27,7 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
         }
     }
 
-    override fun getActivity(): AppCompatActivity {
+    override fun getMyActivity(): AppCompatActivity {
         return this
     }
     abstract var mPresenter: T

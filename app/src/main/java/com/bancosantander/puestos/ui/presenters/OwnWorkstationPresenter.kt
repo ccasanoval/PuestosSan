@@ -2,15 +2,11 @@ package com.bancosantander.puestos.ui.presenters
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import com.bancosantander.puestos.data.firebase.fire.WorkstationFire
 import com.bancosantander.puestos.data.models.Workstation
-import com.bancosantander.puestos.router.Router
 import com.bancosantander.puestos.ui.activities.ownWorkstation.OwnWorkstationActivity
 import com.bancosantander.puestos.ui.viewModels.ownWorkstation.OwnWorkstationViewModel
-import com.bancosantander.puestos.ui.views.MainViewContract
 import com.bancosantander.puestos.ui.views.OwnWorkstationViewContract
-import com.bancosantander.puestos.util.app
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 
 
@@ -35,11 +31,10 @@ class OwnWorkstationPresenter(val context: OwnWorkstationActivity) : BasePresent
 
     private fun showCurrentWorkstation(){
         auth().getEmail()?.let {
-            WorkstationFire.getWorkstationRT(mView?.getActivity()!!,fire(),it,{workstation, error ->
+            WorkstationFire.getWorkstationRT(mView?.getMyActivity()!!,fire(),it,{ workstation, error ->
                 retrieveWorkstation(workstation,error)
             })
         }
-
     }
 
     private fun retrieveWorkstation(workstation: Workstation,error: Throwable?) {

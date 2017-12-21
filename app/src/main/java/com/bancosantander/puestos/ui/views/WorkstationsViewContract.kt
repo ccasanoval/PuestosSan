@@ -11,7 +11,6 @@ import com.mibaldi.viewmodelexamplemvp.base.BaseMvpView
 object WorkstationsViewContract {
 
     interface View: BaseMvpView {
-        fun setDataAdapter(list: ArrayList<Workstation>)
 
     }
 

@@ -20,7 +20,6 @@ class WorkstationsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
 
     interface OnItemClickListener {
         fun onItemClickListener(view: View, workstation: Workstation)
-
     }
 
 

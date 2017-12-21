@@ -21,13 +21,13 @@ open class BasePresenter<V : BaseMvpView> : BaseMvpPresenter<V> {
         mView = null
     }
     override fun router():Router{
-        return mView?.getActivity()?.app?.getRouter()!!
+        return mView?.getMyActivity()?.app?.getRouter()!!
     }
 
     override fun auth(): Auth {
-        return mView?.getActivity()?.app?.auth!!
+        return mView?.getMyActivity()?.app?.auth!!
     }
     override fun fire(): Fire {
-        return mView?.getActivity()?.app?.fire!!
+        return mView?.getMyActivity()?.app?.fire!!
     }
 }

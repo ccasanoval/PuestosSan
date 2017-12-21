@@ -81,6 +81,10 @@ object WorkstationFire {
 				.addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
 					lateinit var res: Workstation
 					if(error == null && data != null) {
+						if (data.isEmpty){
+							callback(res, error)
+							Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
+						}
 						data.forEach { doc ->
 							val puesto = createPuestoHelper(fire, doc)
 							if (puesto?.idOwner == owner ) callback(puesto, null)

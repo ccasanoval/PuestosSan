@@ -13,35 +13,8 @@ import org.jetbrains.anko.contentView
 
 class WorkstationsPresenter(val context: WorkstationsActivity) : BasePresenter<WorkstationsViewContract.View>(), WorkstationsViewContract.Presenter {
 
-    lateinit var model: WorkstationsListViewModel
-
     override fun init() {
-        model = ViewModelProviders.of(context).get(WorkstationsListViewModel::class.java)
-        model.getWorkstationsList().observe(context, Observer { workstationList ->
-            workstationList?.let {
-                mView?.setDataAdapter(it)
-            }
-        })
-    }
-
-    fun setData() {
-        WorkstationFire.getAllRT(fire(), { workstationList, error ->
-            if (error != null) {
-
-            } else {
-                model.workstationsList?.value = workstationList
-            }
-        })
-    }
-
-    fun fillWorkstation(idOwner: String) {
-        WorkstationFire.fillWorkstation(fire(), idOwner, { workstation, error ->
-            if (error != null) {
-
-            } else {
-
-            }
-        })
 
     }
+
 }

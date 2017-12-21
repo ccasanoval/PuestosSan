@@ -37,12 +37,11 @@ class WorkstationsActivity : BaseMvpActivity<WorkstationsViewContract.View,
         setupTabLayout()
     }
 
-    private lateinit var tabsList: ArrayList<BaseMvpFragment<*>>
+    private lateinit var tabsList: ArrayList<BaseMvpFragment<*,*>>
 
     private fun setupTabLayout() {
         //TODO realizar un new instance para los fragments
         tabsList = arrayListOf(WorkstationsListFragment(), WorkstationsListFragment())
-
         mWorkstationsPagerAdapter = WorkstationsPageAdapter(supportFragmentManager,
                 this,
                 tabsList)
@@ -65,15 +64,5 @@ class WorkstationsActivity : BaseMvpActivity<WorkstationsViewContract.View,
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
-    }
-
-    override fun setDataAdapter(list: ArrayList<Workstation>) {
-        when (tabs.selectedTabPosition){
-            0 -> {
-                val workstationsListFragment = tabsList[0] as WorkstationsListFragment
-                workstationsListFragment.setDataAdapter(list)
-            }
-        }
-
     }
 }

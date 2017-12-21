@@ -11,8 +11,11 @@ import com.mibaldi.viewmodelexamplemvp.base.BaseMvpView
 
 object WorkstationsViewFragmentContract {
 
-    interface View: BaseMvpFragmentView {
+    interface View: BaseMvpView {
         fun setDataAdapter(list: ArrayList<Workstation>)
 
+    }
+    interface Presenter : BaseMvpPresenter<View> {
+        fun init()
     }
 }
