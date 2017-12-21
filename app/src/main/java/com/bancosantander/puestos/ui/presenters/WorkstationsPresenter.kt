@@ -11,7 +11,7 @@ import com.bancosantander.puestos.ui.views.WorkstationsViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 import org.jetbrains.anko.contentView
 
-class WorkstationsPresenter(val context: WorkstationsActivity) : BasePresenter<WorkstationsViewContract.View>(), WorkstationsViewContract.Presenter {
+class WorkstationsPresenter : BasePresenter<WorkstationsViewContract.View>(), WorkstationsViewContract.Presenter {
 
     override fun init() {
 

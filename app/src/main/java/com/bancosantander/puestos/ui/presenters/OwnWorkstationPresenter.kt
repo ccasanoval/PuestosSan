@@ -10,16 +10,16 @@ import com.bancosantander.puestos.ui.views.OwnWorkstationViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 
 
-class OwnWorkstationPresenter(val context: OwnWorkstationActivity) : BasePresenter<OwnWorkstationViewContract.View>(), OwnWorkstationViewContract.Presenter {
+class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(), OwnWorkstationViewContract.Presenter {
     lateinit var model:OwnWorkstationViewModel
-    override fun init() {
+    override fun init(model:OwnWorkstationViewModel) {
+        this.model = model
         subscribeModel()
         showCurrentWorkstation()
     }
 
     private fun subscribeModel() {
-        model = ViewModelProviders.of(context).get(OwnWorkstationViewModel::class.java)
-        model.getCurrentWorkstation()?.observe(context, Observer { workstation ->
+        model.getCurrentWorkstation()?.observe(mView?.getMyActivity() as OwnWorkstationActivity, Observer { workstation ->
             workstation?.let {
                 with(it) {
                     val nameOwner = idOwner.split('@')[0]

@@ -28,7 +28,7 @@ class WorkstationsActivity : BaseMvpActivity<WorkstationsViewContract.View,
 
 
     private var mWorkstationsPagerAdapter: WorkstationsPageAdapter? = null
-    override var mPresenter: WorkstationsPresenter  = WorkstationsPresenter(this)
+    override var mPresenter: WorkstationsPresenter  = WorkstationsPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
