@@ -30,9 +30,9 @@ class Auth private constructor() {
 	fun delAuthStateListener(listener: FirebaseAuth.AuthStateListener) {
 		auth.removeAuthStateListener(listener)
 	}
-	fun changePassword(pass: String,callback: (Boolean,Throwable?)->Unit){
+	fun changePassword(oldPass: String,pass: String,callback: (Boolean,Throwable?)->Unit){
 
-		val credential = EmailAuthProvider.getCredential(getEmail()!!, pass)
+		val credential = EmailAuthProvider.getCredential(getEmail()!!, oldPass)
 		val currentUser = auth.currentUser!!
 		currentUser.reauthenticateAndRetrieveData(credential)!!
 				.addOnCompleteListener { task: Task<AuthResult> ->

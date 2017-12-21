@@ -17,7 +17,7 @@ object ConfigurationViewContract {
     }
     interface Presenter : BaseMvpPresenter<View> {
         fun init()
-        fun callToChangePassword(pass:String)
+        fun callToChangePassword(oldPass: String, pass:String)
         fun changePassword()
     }
 }

@@ -37,9 +37,8 @@ class ConfigurationActivity :  BaseMvpActivity<ConfigurationViewContract.View,
         val dialog = dialogBuilder
                 .setView(dialogView)
                 .setTitle("Cambiar contraseña")
-                .setMessage("Inserta la nueva contraseña")
                 .setPositiveButton("Cambiar", { dialog, whichButton ->
-                    mPresenter.callToChangePassword(dialogView.etPassword.text.toString())
+                    mPresenter.callToChangePassword(dialogView.etOldPassword.text.toString(),dialogView.etPassword.text.toString())
                     dialog.dismiss()
                 })
                 .setNegativeButton("Cancelar", { dialog, whichButton ->
