@@ -6,5 +6,5 @@ data class User(
 	val name: String = "",
 	val type: Type = Type.Interim){
 	enum class Type(name: String) { Admin("Admin"), Fixed("Fixed"), Interim("Interim") }
-	enum class IdType(name: String){Owner("idOwner"),User("idUser")}
+	enum class IdType(name: String){ idOwner("idOwner"), idUser("idUser")}
 }

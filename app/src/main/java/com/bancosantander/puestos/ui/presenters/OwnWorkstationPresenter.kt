@@ -1,7 +1,6 @@
 package com.bancosantander.puestos.ui.presenters
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import com.bancosantander.puestos.data.firebase.fire.WorkstationFire
 import com.bancosantander.puestos.data.models.User
 import com.bancosantander.puestos.data.models.Workstation
@@ -13,6 +12,7 @@ import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 
 class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(), OwnWorkstationViewContract.Presenter {
     lateinit var model:OwnWorkstationViewModel
+    lateinit var owner:String
     override fun init(model:OwnWorkstationViewModel) {
         this.model = model
         subscribeModel()
@@ -35,14 +35,14 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
             when(user.type){
                 User.Type.Fixed -> {
                     auth().getEmail()?.let {
-                        WorkstationFire.getWorkstationRT(mView?.getMyActivity()!!,fire(),it,User.IdType.Owner.name,{ workstation, error ->
+                        WorkstationFire.getWorkstationRT(mView?.getMyActivity()!!,fire(),it,User.IdType.idOwner.name,{ workstation, error ->
                             retrieveWorkstation(workstation,error)
                         })
                     }
                 }
                 User.Type.Interim -> {
                     auth().getEmail()?.let{
-                        WorkstationFire.getWorkstationRT(mView?.getMyActivity()!!,fire(),it,User.IdType.User.name,{ workstation, error ->
+                        WorkstationFire.getWorkstationRT(mView?.getMyActivity()!!,fire(),it,User.IdType.idUser.name,{ workstation, error ->
                             retrieveWorkstation(workstation,error)
                         })
                     }
@@ -67,6 +67,7 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
             if(workstation == null) mView?.getMyActivity()?.finish()
             else {
                 model.currentWorkstation?.value = workstation
+                owner = workstation.idOwner
                 when(workstation.status){
                     Workstation.Status.Occupied -> mView?.showBtnLiberar()
                     Workstation.Status.Free -> mView?.showBtnOcupar()
@@ -76,7 +77,7 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
     }
     fun releaseMyWorkstation() {
         auth().getEmail()?.let {
-            WorkstationFire.releaseMyWorkstation(fire(),it,{workstation, error ->
+            WorkstationFire.releaseMyWorkstation(fire(),owner,{workstation, error ->
                 retrieveWorkstation(workstation,error)
             })
         }
