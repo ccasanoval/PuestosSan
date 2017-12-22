@@ -23,8 +23,7 @@ class LoginActivity : AppCompatActivity(){
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.act_login)
-		btnLogin.setOnClickListener { signIn(txtLoginEmail.text.toString()+"@puestos.com", txtLoginClave.text.toString()) }
-		btnLogout.setOnClickListener { signOut() }
+		btnLogin.setOnClickListener { signIn(etLoginEmail.text.toString()+"@puestos.com", etLoginClave.text.toString()) }
 		auth = (application as App).auth
 	}
 
@@ -65,22 +64,22 @@ class LoginActivity : AppCompatActivity(){
 
 	private fun validateForm(): Boolean {
 		var valid = true
-		val email = txtLoginEmail.text.toString()
+		val email = etLoginEmail.text.toString()
 		if(TextUtils.isEmpty(email)) {
-			txtLoginEmail.error = getString(R.string.campo_obligatorio)
+			etLoginEmail.error = getString(R.string.campo_obligatorio)
 			valid = false
 		}
 		else {
-			txtLoginEmail.error = null
+			etLoginEmail.error = null
 		}
 
-		val password = txtLoginClave.text.toString()
+		val password = etLoginClave.text.toString()
 		if(TextUtils.isEmpty(password)) {
-			txtLoginClave.error = getString(R.string.campo_obligatorio)
+			etLoginClave.error = getString(R.string.campo_obligatorio)
 			valid = false
 		}
 		else {
-			txtLoginClave.error = null
+			etLoginClave.error = null
 		}
 
 		return valid
@@ -95,9 +94,6 @@ class LoginActivity : AppCompatActivity(){
 			view.visibility=(View.GONE)
 			view = findViewById(R.id.layLoginFields)
 			view.visibility=(View.GONE)
-			view = findViewById(R.id.layLogoutBotones)
-			view.visibility=(View.VISIBLE)
-
 			finish()
 		}
 		else {
@@ -107,8 +103,6 @@ class LoginActivity : AppCompatActivity(){
 			view.visibility=(View.VISIBLE)
 			view = findViewById(R.id.layLoginFields)
 			view.visibility=(View.VISIBLE)
-			view = findViewById(R.id.layLogoutBotones)
-			view.visibility=(View.GONE)
 		}
 	}
 

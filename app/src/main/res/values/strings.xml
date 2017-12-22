@@ -62,5 +62,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_tiene_puesto_ocupado">No tienes un puesto ocupado</string>
+    <string name="login_title">Puestos Share</string>
+    <string name="login_subtitle">Bienvenido a Puestos Share. La plataforma de\n gestión de puestos de Santander Tecnología</string>
+    <string name="access">Acceder</string>
+    <string name="user">Usuario</string>
+    <string name="password">Password</string>
 
 </resources>
