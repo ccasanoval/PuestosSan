@@ -12,4 +12,5 @@
     <color name="very_light_grey">#31d0d0d0</color>
     <color name="light_grey">#b3b3b3</color>
     <color name="light_red">#f95f5f</color>
+    <color name="very_light_red">#45f95f5f</color>
 </resources>
