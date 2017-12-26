@@ -135,4 +135,8 @@ class LoginActivity : AppCompatActivity(){
 	companion object {
 		private val TAG = LoginActivity::class.java.simpleName
 	}
+
+	override fun onBackPressed() {
+
+	}
 }
