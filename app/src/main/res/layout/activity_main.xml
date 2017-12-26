@@ -5,31 +5,114 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bancosantander.puestos.ui.activities.main.MainActivity">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    tools:context="com.bancosantander.puestos.ui.activities.main.MainActivity"
+    android:weightSum="10"
+    android:background="@android:color/white">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
-    <Button
-        android:id="@+id/btnManage"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/profile_image"/>
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="name"/>
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/light_grey"
+            android:text="email"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/manage_own_workstation"/>
-    <Button
-        android:id="@+id/btnFill"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Lista Disponibles"/>
-    <Button
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:gravity="center"
+        android:weightSum="3"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/btnFill"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@android:drawable/ic_menu_report_image"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/available_list"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btnManage"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@android:drawable/ic_menu_report_image"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/workstation_manage"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btnConfiguration"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@android:drawable/ic_menu_report_image"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/configuration"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Deslogarse"/>
-    <Button
-        android:id="@+id/btnConfiguration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Configuración"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:clickable="true"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/accent"
+            android:text="@string/disconnect"
+            android:textSize="15sp"/>
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/ic_red_logout"/>
+    </LinearLayout>
 </LinearLayout>

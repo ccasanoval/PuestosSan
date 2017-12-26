@@ -67,5 +67,9 @@
     <string name="access">Acceder</string>
     <string name="user">Usuario</string>
     <string name="password">Password</string>
+    <string name="disconnect">Desconectar</string>
+    <string name="available_list">Lista disponibles</string>
+    <string name="workstation_manage">Gestión de puesto</string>
+    <string name="configuration">Configuración</string>
 
 </resources>

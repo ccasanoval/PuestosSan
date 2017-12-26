@@ -20,17 +20,12 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mPresenter.init()
-        setupToolbar()
         btnManage.setOnClickListener { mPresenter.goToManageOwnWorkstation() }
         btnFill.setOnClickListener { mPresenter.goToFillWorkstation() }
         btnLogout.setOnClickListener { mPresenter.logout() }
         btnConfiguration.setOnClickListener{mPresenter.gotToConfiguration()}
     }
 
-    private fun setupToolbar() {
-        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-    }
     companion object {
         val TAG = MainActivity::class.java.simpleName
     }
