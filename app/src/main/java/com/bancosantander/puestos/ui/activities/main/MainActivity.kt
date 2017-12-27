@@ -12,7 +12,9 @@ import com.bancosantander.puestos.ui.views.MainViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import android.R.id.edit
-
+import android.support.design.widget.Snackbar
+import com.bancosantander.puestos.ui.dialogs.ChangePassDialog
+import kotlinx.android.synthetic.main.activity_configuration.*
 
 
 class MainActivity : BaseMvpActivity<MainViewContract.View,
@@ -31,18 +33,31 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
 
         checkIfIsFirstLogin()
 
+        setupView()
+
         btnManage.setOnClickListener { mPresenter.goToManageOwnWorkstation() }
         btnFill.setOnClickListener { mPresenter.goToFillWorkstation() }
         btnLogout.setOnClickListener { mPresenter.logout() }
         btnConfiguration.setOnClickListener{mPresenter.gotToConfiguration()}
     }
 
+    private fun setupView() {
+        tvEmail.text = mPresenter.getEmail()
+    }
+
     private fun checkIfIsFirstLogin() {
         if(!prefs.getBoolean(mPresenter.auth().getEmail(),false)){
-            mPresenter.gotToConfiguration()
+            showChangePassDialog()
+        }
+    }
+
+    private fun showChangePassDialog() {
+        ChangePassDialog.newInstance(activity=this,title=getString(R.string.change_pass_first_time),callback={oldPass, newPass ->
+            mPresenter.callToChangePassword(oldPass,newPass)
             val editor = prefs.edit()
             editor.putBoolean(mPresenter.auth().getEmail(),true)
-        }
+            editor.commit()
+        })
     }
 
     companion object {
@@ -50,5 +65,23 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
         val PREFERENCES = "puestos_login_preferences"
     }
 
+    override fun showLoading() {
+        super.showLoadingDialog()
+    }
 
+    override fun hideLoading() {
+        super.hideLoadingDialog()
+    }
+
+    override fun showSuccess() {
+        Snackbar.make(llMain,"Contraseña cambiada correctamente", Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun showError(error: String) {
+        Snackbar.make(llMain,error,Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun showErrorMinLenght() {
+        Snackbar.make(llMain,"Contraseña no valida, longitud minima 6 caracteres",Snackbar.LENGTH_SHORT).show()
+    }
 }

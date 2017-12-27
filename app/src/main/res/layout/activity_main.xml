@@ -7,32 +7,32 @@
     android:orientation="vertical"
     tools:context="com.bancosantander.puestos.ui.activities.main.MainActivity"
     android:weightSum="10"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:id="@+id/llMain">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:gravity="center"
         android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/profile_image"/>
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="name"/>
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/light_grey"
-            android:text="email"/>
-    </LinearLayout>
+            android:src="@drawable/profile_image"
+            android:layout_centerInParent="true"/>
+
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/light_grey"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:paddingBottom="10dp"
+                android:text="email"/>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

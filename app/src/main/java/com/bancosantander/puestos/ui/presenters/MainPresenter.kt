@@ -1,5 +1,7 @@
 package com.bancosantander.puestos.ui.presenters
 
+import android.os.Bundle
+import android.util.Log
 import com.bancosantander.puestos.ui.views.MainViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 
@@ -11,7 +13,9 @@ class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Pr
 
     override fun init() {
 
-
+    }
+    override fun getEmail(): String {
+        return auth().getEmail() ?: "Undefined"
     }
 
     fun goToManageOwnWorkstation() {
@@ -28,5 +32,17 @@ class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Pr
 
     fun gotToConfiguration() {
         router().goToConfiguration()
+    }
+
+    fun callToChangePassword(oldPass: String, newPass: String) {
+        if (oldPass.length < 6 || newPass.length < 6) mView?.showErrorMinLenght()
+        else{
+            mView?.showLoading()
+            auth().changePassword(oldPass,newPass,{ status, error ->
+                mView?.hideLoading()
+                if (status) mView?.showSuccess() else mView?.showError("Error al cambiar la contraseña")
+                Log.e("CallToChangePassword",error.toString())
+            })
+        }
     }
 }

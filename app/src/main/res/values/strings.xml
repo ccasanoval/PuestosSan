@@ -71,5 +71,7 @@
     <string name="available_list">Lista disponibles</string>
     <string name="workstation_manage">Gestión de puesto</string>
     <string name="configuration">Configuración</string>
+    <string name="cambiar_password">Cambiar Password</string>
+    <string name="change_pass_first_time">Por su seguridad, cambie la contraseña por defecto</string>
 
 </resources>

@@ -10,9 +10,14 @@ import com.mibaldi.viewmodelexamplemvp.base.BaseMvpView
 object MainViewContract {
 
     interface View: BaseMvpView {
-
+        fun showLoading()
+        fun hideLoading()
+        fun showSuccess()
+        fun showError(s: String)
+        fun showErrorMinLenght()
     }
     interface Presenter : BaseMvpPresenter<View> {
         fun init()
+        fun getEmail() : String
     }
 }

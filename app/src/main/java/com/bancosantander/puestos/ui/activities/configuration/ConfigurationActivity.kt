@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import com.bancosantander.puestos.R
+import com.bancosantander.puestos.ui.dialogs.ChangePassDialog
 import com.bancosantander.puestos.ui.presenters.ConfigurationPresenter
 import com.bancosantander.puestos.ui.views.ConfigurationViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
@@ -30,22 +31,9 @@ class ConfigurationActivity :  BaseMvpActivity<ConfigurationViewContract.View,
         changePasswordDialog()
     }
     fun changePasswordDialog() {
-        val dialogBuilder = AlertDialog.Builder(this)
-        val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(R.layout.dialog_change_password, null)
-
-        val dialog = dialogBuilder
-                .setView(dialogView)
-                .setTitle("Cambiar contraseña")
-                .setPositiveButton("Cambiar", { dialog, whichButton ->
-                    mPresenter.callToChangePassword(dialogView.etOldPassword.text.toString(),dialogView.etPassword.text.toString())
-                    dialog.dismiss()
-                })
-                .setNegativeButton("Cancelar", { dialog, whichButton ->
-                    dialog.dismiss()
-                })
-                .create()
-        dialog.show()
+       ChangePassDialog.newInstance(activity = this,callback={oldPass,newPass->
+           mPresenter.callToChangePassword(oldPass,newPass)
+       })
     }
     override fun showErrorMinLenght() {
         Snackbar.make(llConfigurationLayout,"Contraseña no valida, longitud minima 6 caracteres",Snackbar.LENGTH_SHORT).show()
