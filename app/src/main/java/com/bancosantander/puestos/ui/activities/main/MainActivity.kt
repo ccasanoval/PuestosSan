@@ -12,7 +12,9 @@ import com.bancosantander.puestos.ui.views.MainViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import android.R.id.edit
+import android.graphics.Color
 import android.support.design.widget.Snackbar
+import android.support.v4.content.ContextCompat
 import com.bancosantander.puestos.ui.dialogs.ChangePassDialog
 import kotlinx.android.synthetic.main.activity_configuration.*
 
@@ -83,5 +85,17 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
 
     override fun showErrorMinLenght() {
         Snackbar.make(llMain,"Contraseña no valida, longitud minima 6 caracteres",Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun disableWorkstationList() {
+        ivFill.setColorFilter(ContextCompat.getColor(this,R.color.very_light_grey), android.graphics.PorterDuff.Mode.MULTIPLY)
+        tvFill.setTextColor(ContextCompat.getColor(this,R.color.very_light_grey))
+        btnFill.isClickable = false
+    }
+
+    override fun enableWorkstationList() {
+        ivFill.clearColorFilter()
+        tvFill.setTextColor(ContextCompat.getColor(this,R.color.light_grey))
+        btnFill.isClickable = true
     }
 }

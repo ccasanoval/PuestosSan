@@ -2,6 +2,8 @@ package com.bancosantander.puestos.ui.presenters
 
 import android.os.Bundle
 import android.util.Log
+import com.bancosantander.puestos.data.firebase.fire.WorkstationFire
+import com.bancosantander.puestos.data.models.User
 import com.bancosantander.puestos.ui.views.MainViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 
@@ -12,7 +14,21 @@ import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Presenter {
 
     override fun init() {
+        mView?.showLoading()
+        auth().getUserFire { user, throwable ->
+            when(user.type){
+                User.Type.Fixed -> {
+                    mView?.disableWorkstationList()
+                }
+                User.Type.Interim -> {
+                    mView?.enableWorkstationList()
+                }
+                User.Type.Admin -> {
 
+                }
+            }
+            mView?.hideLoading()
+        }
     }
     override fun getEmail(): String {
         return auth().getEmail() ?: "Undefined"

@@ -15,6 +15,8 @@ object MainViewContract {
         fun showSuccess()
         fun showError(s: String)
         fun showErrorMinLenght()
+        fun disableWorkstationList()
+        fun enableWorkstationList()
     }
     interface Presenter : BaseMvpPresenter<View> {
         fun init()
