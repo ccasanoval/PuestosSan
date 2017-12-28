@@ -15,6 +15,7 @@ object OwnWorkstationViewContract {
         fun showWorkstation(idOwner: String, idUser: String, status: Workstation.Status,number: String)
         fun showBtnLiberar()
         fun showBtnOcupar()
+        fun hideButtons()
         fun showMyDialog(no_tiene_puesto_ocupado: Int)
         fun showLoading()
         fun hideLoading()

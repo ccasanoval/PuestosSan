@@ -62,6 +62,11 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         btnOcupar.visibility = View.VISIBLE
     }
 
+    override fun hideButtons() {
+        btnLiberar.visibility = View.GONE
+        btnOcupar.visibility = View.GONE
+    }
+
     override fun showMyDialog(title: Int) {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(getString(title))

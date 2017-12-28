@@ -63,9 +63,9 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
         if (error != null) {
 
         } else {
-
             if(workstation == null) {
                 model.currentWorkstation?.value = Workstation()
+                mView?.hideButtons()
                 mView?.showMyDialog(R.string.no_tiene_puesto_ocupado)
             }
             else {
