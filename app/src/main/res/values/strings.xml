@@ -73,5 +73,6 @@
     <string name="configuration">Configuración</string>
     <string name="cambiar_password">Cambiar Password</string>
     <string name="change_pass_first_time">Por su seguridad, cambie la contraseña por defecto</string>
+    <string name="liberar_puesto">Debes liberar el puesto antes de ocupar otro</string>
 
 </resources>

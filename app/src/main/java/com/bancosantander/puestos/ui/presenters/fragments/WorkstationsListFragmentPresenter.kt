@@ -3,7 +3,9 @@ package com.bancosantander.puestos.ui.presenters.fragments
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.support.design.widget.Snackbar
+import com.bancosantander.puestos.R
 import com.bancosantander.puestos.data.firebase.fire.WorkstationFire
+import com.bancosantander.puestos.data.models.User
 import com.bancosantander.puestos.data.models.Workstation
 import com.bancosantander.puestos.ui.activities.workstations.WorkstationsActivity
 import com.bancosantander.puestos.ui.viewModels.listWorkstation.WorkstationsListViewModel
@@ -52,5 +54,20 @@ class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : Bas
             })
         }
 
+    }
+
+    fun checkIfUserHaveWorkstation(idOwner: String) {
+        auth().getEmail()?.let{
+            WorkstationFire.getWorkstationRT(mView?.getMyActivity()!!,fire(),it, User.IdType.idUser.name,{ workstation, error ->
+                if(workstation == null && error ==null){
+                    fillWorkstation(idOwner)
+                }
+                else{
+                    if(workstation != null){
+                        mView?.showDialog(R.string.liberar_puesto)
+                    }
+                }
+            })
+        }
     }
 }

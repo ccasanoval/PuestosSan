@@ -15,7 +15,7 @@ object WorkstationsViewFragmentContract {
         fun setDataAdapter(list: ArrayList<Workstation>)
         fun showLoading()
         fun hideLoading()
-
+        fun showDialog(title: Int)
     }
     interface Presenter : BaseMvpPresenter<View> {
         fun init()

@@ -13,6 +13,7 @@ import com.bancosantander.puestos.R
 import com.bancosantander.puestos.data.models.Workstation
 import com.bancosantander.puestos.ui.activities.workstations.WorkstationsActivity
 import com.bancosantander.puestos.ui.adapters.WorkstationsListAdapter
+import com.bancosantander.puestos.ui.dialogs.InfoDialog
 import com.bancosantander.puestos.ui.dialogs.SiNoDialog
 import com.bancosantander.puestos.ui.presenters.WorkstationsPresenter
 import com.bancosantander.puestos.ui.presenters.fragments.WorkstationsListFragmentPresenter
@@ -65,7 +66,7 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
     override fun onItemClickListener(view: View, workstation: Workstation) {
         SiNoDialog.showSiNo(context,
                 getString(R.string.fill_workstation),
-                { si -> if(si) mPresenter.fillWorkstation(workstation.idOwner)  })
+                { si -> if(si) mPresenter.checkIfUserHaveWorkstation(workstation.idOwner)  })
     }
 
     override fun showLoading() {
@@ -74,5 +75,9 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
 
     override fun hideLoading() {
         (activity as BaseMvpActivity<*,*>).hideLoadingDialog()
+    }
+
+    override fun showDialog(title: Int) {
+        InfoDialog.newInstance(context,getString(title))
     }
 }
