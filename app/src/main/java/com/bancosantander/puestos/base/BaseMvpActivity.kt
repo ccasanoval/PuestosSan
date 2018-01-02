@@ -6,16 +6,20 @@ import android.support.v7.app.AppCompatActivity
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.application.App
 import com.bancosantander.puestos.data.firebase.auth.Auth
+import com.bancosantander.puestos.ui.dialogs.InfoScreenDialog
 import com.bancosantander.puestos.util.Log
 import com.bancosantander.puestos.util.app
 import com.google.firebase.auth.FirebaseAuth
-import org.jetbrains.anko.progressDialog
 
 /**
  * Created by mbalduciel on 16/12/17.
  */
 abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
     : AppCompatActivity(), BaseMvpView {
+
+    object TAG_INFO_DIALOG{
+        val name = "InfoDialog"
+    }
 
     var progressDialog :ProgressDialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +35,7 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
         }
     }
 
-    override fun getMyActivity(): AppCompatActivity {
+    override fun getMyActivity(): BaseMvpActivity<*,*> {
         return this
     }
     abstract var mPresenter: T
@@ -59,10 +63,18 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
             progressDialog!!.isIndeterminate = true
         }
 
-        progressDialog!!.show()
+        progressDialog?.show()
     }
     fun hideLoadingDialog(){
         progressDialog?.hide()
+    }
+
+    fun showInfoScreenDialog(text: Int) {
+       InfoScreenDialog.getInstance(getString(text)).show(supportFragmentManager,TAG_INFO_DIALOG.name)
+    }
+
+    fun hideInfoScreenDialog(){
+        InfoScreenDialog.getInstance().dismiss()
     }
 
 

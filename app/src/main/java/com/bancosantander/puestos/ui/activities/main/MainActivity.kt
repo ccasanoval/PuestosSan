@@ -56,10 +56,10 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
     private fun showChangePassDialog() {
         ChangePassDialog.newInstance(activity=this,title=getString(R.string.change_pass_first_time),callback={oldPass, newPass ->
             mPresenter.callToChangePassword(oldPass,newPass)
-            val editor = prefs.edit()
-            editor.putBoolean(mPresenter.auth().getEmail(),true)
-            editor.commit()
         })
+        val editor = prefs.edit()
+        editor.putBoolean(mPresenter.auth().getEmail(),true)
+        editor.commit()
     }
 
     companion object {

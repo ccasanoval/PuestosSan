@@ -50,7 +50,7 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
         workstations_list.adapter = adapter
     }
 
-    override fun getMyActivity(): AppCompatActivity {
+    override fun getMyActivity(): BaseMvpActivity<*,*> {
         return activity as WorkstationsActivity
     }
 

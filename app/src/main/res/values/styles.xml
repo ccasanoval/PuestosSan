@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -28,6 +28,19 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-
+    <style name="InfoDialogTheme" parent="android:Theme">
+        <!--transparent-->
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item><!-- This is the color of the Status bar -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 
 </resources>

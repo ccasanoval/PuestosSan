@@ -18,6 +18,7 @@ import com.bancosantander.puestos.ui.views.map.WorkstationsMapViewFragmentContra
 import com.bancosantander.puestos.util.Log
 import com.bancosantander.puestos.util.WorkstationParcelable
 import com.davemorrissey.labs.subscaleview.ImageSource
+import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpFragment
 import kotlinx.android.synthetic.main.act_main.*
 
@@ -128,7 +129,7 @@ class WorkstationsMapFragment : BaseMvpFragment<WorkstationsMapViewFragmentContr
 			startActivity(intent)
 		}
 	}
-	override fun getMyActivity(): AppCompatActivity {
+	override fun getMyActivity(): BaseMvpActivity<*,*> {
 		return activity as WorkstationsActivity
 	}
 

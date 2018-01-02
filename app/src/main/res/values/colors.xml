@@ -13,4 +13,6 @@
     <color name="light_grey">#b3b3b3</color>
     <color name="light_red">#f95f5f</color>
     <color name="very_light_red">#45f95f5f</color>
+    <color name="dark_transparent">#aa000000</color>
+    <color name="transparent">#00ffffff</color>
 </resources>

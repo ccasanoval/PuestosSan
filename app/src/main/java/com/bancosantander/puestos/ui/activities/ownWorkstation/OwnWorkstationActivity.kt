@@ -15,6 +15,7 @@ import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_own_workstation.*
 import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
+import com.bancosantander.puestos.ui.dialogs.InfoDialog
 
 
 class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
@@ -85,4 +86,5 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
     override fun hideLoading() {
         super.hideLoadingDialog()
     }
+
 }

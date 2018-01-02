@@ -66,7 +66,7 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
             if(workstation == null) {
                 model.currentWorkstation?.value = Workstation()
                 mView?.hideButtons()
-                mView?.showMyDialog(R.string.no_tiene_puesto_ocupado)
+                mView?.getMyActivity()?.showInfoScreenDialog(R.string.no_tiene_puesto_ocupado)
             }
             else {
                 model.currentWorkstation?.value = workstation
