@@ -5,6 +5,7 @@ import android.content.Intent
 import com.bancosantander.puestos.ui.activities.configuration.ConfigurationActivity
 import com.bancosantander.puestos.ui.activities.login.LoginActivity
 import com.bancosantander.puestos.ui.activities.ownWorkstation.OwnWorkstationActivity
+import com.bancosantander.puestos.ui.activities.tutorial.TutorialActivity
 import com.bancosantander.puestos.ui.activities.workstations.WorkstationsActivity
 
 class Router(val context:Context){
@@ -27,6 +28,12 @@ class Router(val context:Context){
 
     fun goToConfiguration() {
         val intent = Intent(context, ConfigurationActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        context.startActivity(intent)
+    }
+
+    fun goToTutorial() {
+        val intent = Intent(context, TutorialActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
     }

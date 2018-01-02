@@ -98,4 +98,9 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
         tvFill.setTextColor(ContextCompat.getColor(this,R.color.light_grey))
         btnFill.isClickable = true
     }
+
+    override fun showTutorial() {
+        mPresenter.goToTutorial()
+        finish()
+    }
 }

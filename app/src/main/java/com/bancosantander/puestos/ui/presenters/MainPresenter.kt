@@ -56,9 +56,19 @@ class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Pr
             mView?.showLoading()
             auth().changePassword(oldPass,newPass,{ status, error ->
                 mView?.hideLoading()
-                if (status) mView?.showSuccess() else mView?.showError("Error al cambiar la contraseña")
-                Log.e("CallToChangePassword",error.toString())
+                if (status){
+                    mView?.showSuccess()
+                    mView?.showTutorial()
+                } else {
+                    mView?.showError("Error al cambiar la contraseña")
+                    mView?.showTutorial()
+                    Log.e("CallToChangePassword", error.toString())
+                }
             })
         }
+    }
+
+    fun goToTutorial(){
+        router().goToTutorial()
     }
 }
