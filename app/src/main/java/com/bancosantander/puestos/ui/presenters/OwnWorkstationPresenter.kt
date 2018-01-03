@@ -37,14 +37,14 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
             when(user.type){
                 User.Type.Fixed -> {
                     auth().getEmail()?.let {
-                        WorkstationFire.getWorkstationRT(mView?.getMyActivity()!!,fire(),it,User.IdType.idOwner.name,{ workstation, error ->
+                        WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idOwner.name,"040118",{ workstation, error ->
                             retrieveWorkstation(workstation,error)
                         })
                     }
                 }
                 User.Type.Interim -> {
                     auth().getEmail()?.let{
-                        WorkstationFire.getWorkstationRT(mView?.getMyActivity()!!,fire(),it,User.IdType.idUser.name,{ workstation, error ->
+                        WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idUser.name,"040118",{ workstation, error ->
                             retrieveWorkstation(workstation,error)
                         })
                     }
