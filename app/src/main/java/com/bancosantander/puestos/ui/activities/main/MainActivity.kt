@@ -3,20 +3,14 @@ package com.bancosantander.puestos.ui.activities.main
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.v7.widget.Toolbar
-import android.view.View
 import com.bancosantander.puestos.R
-import com.bancosantander.puestos.data.firebase.auth.Auth
 import com.bancosantander.puestos.ui.presenters.MainPresenter
 import com.bancosantander.puestos.ui.views.MainViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import android.R.id.edit
-import android.graphics.Color
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import com.bancosantander.puestos.ui.dialogs.ChangePassDialog
-import kotlinx.android.synthetic.main.activity_configuration.*
 
 
 class MainActivity : BaseMvpActivity<MainViewContract.View,
@@ -33,8 +27,6 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
         mPresenter.init()
         prefs = getSharedPreferences(PREFERENCES,Context.MODE_PRIVATE)
 
-        checkIfIsFirstLogin()
-
         setupView()
 
         btnManage.setOnClickListener { mPresenter.goToManageOwnWorkstation() }
@@ -47,19 +39,21 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
         tvEmail.text = mPresenter.getEmail()
     }
 
-    private fun checkIfIsFirstLogin() {
-        if(!prefs.getBoolean(mPresenter.auth().getEmail(),false)){
+    override fun hadChangedPass() {
+        if(!mPresenter.hadChangedPass()){
             showChangePassDialog()
+        }else {
+            showTutorial()
         }
     }
 
     private fun showChangePassDialog() {
         ChangePassDialog.newInstance(activity=this,title=getString(R.string.change_pass_first_time),callback={oldPass, newPass ->
             mPresenter.callToChangePassword(oldPass,newPass)
+            if(oldPass.equals("") || newPass.equals("")){
+                mPresenter?.logout()
+            }
         })
-        val editor = prefs.edit()
-        editor.putBoolean(mPresenter.auth().getEmail(),true)
-        editor.commit()
     }
 
     companion object {
@@ -100,7 +94,11 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
     }
 
     override fun showTutorial() {
-        mPresenter.goToTutorial()
-        finish()
+        if (!prefs.getBoolean(mPresenter.auth().getEmail(), false)) {
+            val editor = prefs.edit()
+            editor.putBoolean(mPresenter.auth().getEmail(),true)
+            editor.commit()
+            mPresenter.goToTutorial()
+        }
     }
 }

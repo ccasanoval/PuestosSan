@@ -62,11 +62,10 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
             progressDialog!!.setMessage(getString(R.string.cargando))
             progressDialog!!.isIndeterminate = true
         }
-
-        progressDialog?.show()
+            progressDialog?.show()
     }
     fun hideLoadingDialog(){
-        progressDialog?.hide()
+        progressDialog?.dismiss()
     }
 
     fun showInfoScreenDialog(text: Int) {
@@ -77,12 +76,9 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
         InfoScreenDialog.getInstance().dismiss()
     }
 
-
-
-
-
-
-
-
+    override fun onPause() {
+        super.onPause()
+        hideLoadingDialog()
+    }
 }
 

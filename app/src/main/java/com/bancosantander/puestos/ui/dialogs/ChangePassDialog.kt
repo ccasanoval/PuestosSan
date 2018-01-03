@@ -17,11 +17,13 @@ class ChangePassDialog {
 			val dialog = dialogBuilder
 					.setView(dialogView)
 					.setTitle(title)
+					.setCancelable(false)
 					.setPositiveButton("Cambiar", { dialog, whichButton ->
 						callback(dialogView.etOldPassword.text.toString(),dialogView.etPassword.text.toString())
 						dialog.dismiss()
 					})
 					.setNegativeButton("Cancelar", { dialog, whichButton ->
+						callback("","")
 						dialog.dismiss()
 					})
 					.create()

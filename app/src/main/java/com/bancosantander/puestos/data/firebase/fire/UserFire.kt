@@ -26,4 +26,20 @@ object UserFire {
 				}
 			})
 	}
+
+	fun updateHadChangedPass(fire: Fire,name: String,callback: (User, Throwable?) -> Unit){
+		fire.getCol(ROOT_COLLECTION)
+				.whereEqualTo("name",name)
+				.get()
+				.addOnCompleteListener({task ->
+					if(task.isSuccessful) {
+						task.result.documents[0].reference.update("hadChangedPass",true)
+						callback(fire.translate(task.result.documents[0], User::class.java) as User,null)
+					}
+					else {
+						callback(User(), task.exception)
+						Log.e(TAG, "fillWorkstation:e:------------------------------------------------------", task.exception)
+					}
+				})
+	}
 }

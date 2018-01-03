@@ -17,10 +17,12 @@ object MainViewContract {
         fun showErrorMinLenght()
         fun disableWorkstationList()
         fun enableWorkstationList()
-        fun showTutorial();
+        fun showTutorial()
+        fun hadChangedPass()
     }
     interface Presenter : BaseMvpPresenter<View> {
         fun init()
         fun getEmail() : String
+        fun hadChangedPass(): Boolean
     }
 }

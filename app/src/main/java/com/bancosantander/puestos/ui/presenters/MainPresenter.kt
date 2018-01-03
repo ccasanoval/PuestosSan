@@ -2,6 +2,7 @@ package com.bancosantander.puestos.ui.presenters
 
 import android.os.Bundle
 import android.util.Log
+import com.bancosantander.puestos.data.firebase.fire.UserFire
 import com.bancosantander.puestos.data.firebase.fire.WorkstationFire
 import com.bancosantander.puestos.data.models.User
 import com.bancosantander.puestos.ui.views.MainViewContract
@@ -13,6 +14,8 @@ import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 
 class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Presenter {
 
+    var hadCahngedPass : Boolean = false
+    lateinit var userName : String
     override fun init() {
         mView?.showLoading()
         auth().getUserFire { user, throwable ->
@@ -27,7 +30,10 @@ class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Pr
 
                 }
             }
+            hadCahngedPass = user.hadChangedPass
+            userName = user.name
             mView?.hideLoading()
+            mView?.hadChangedPass()
         }
     }
     override fun getEmail(): String {
@@ -55,13 +61,20 @@ class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Pr
         else{
             mView?.showLoading()
             auth().changePassword(oldPass,newPass,{ status, error ->
-                mView?.hideLoading()
                 if (status){
-                    mView?.showSuccess()
-                    mView?.showTutorial()
+                    UserFire.updateHadChangedPass(fire(),userName,{user,error->
+                        if(error != null){
+                            mView?.hideLoading()
+                            mView?.showTutorial()
+                        }else{
+                            Log.e("CallToChangePassword", error.toString())
+                            mView?.hideLoading()
+                            mView?.getMyActivity()?.finish()
+                        }
+                    })
                 } else {
-                    mView?.showError("Error al cambiar la contraseña")
-                    mView?.showTutorial()
+                    mView?.hideLoading()
+                    mView?.getMyActivity()?.finish()
                     Log.e("CallToChangePassword", error.toString())
                 }
             })
@@ -70,5 +83,9 @@ class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Pr
 
     fun goToTutorial(){
         router().goToTutorial()
+    }
+
+    override fun hadChangedPass(): Boolean {
+        return hadCahngedPass
     }
 }
