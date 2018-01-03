@@ -25,7 +25,7 @@ class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : Bas
 
     fun setData() {
         mView?.showLoading()
-        WorkstationFire.getAllRT(fire(), { workstationList, error ->
+        WorkstationFire.getFreeWithDateRT(fire(),"040118", { workstationList, error ->
             mView?.hideLoading()
             if (error != null) {
 
@@ -33,12 +33,20 @@ class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : Bas
                 model.workstationsList?.value = workstationList
             }
         })
+        /*WorkstationFire.getAllRT(fire(), { workstationList, error ->
+            mView?.hideLoading()
+            if (error != null) {
+
+            } else {
+                model.workstationsList?.value = workstationList
+            }
+        })*/
     }
 
     fun fillWorkstation(idOwner: String) {
         auth().getEmail()?.let {
             mView?.showLoading()
-            WorkstationFire.fillWorkstation(fire(), idOwner, it, { workstation, error ->
+            WorkstationFire.fillWorkstationV2(fire(), idOwner, it,"040118", { workstation, error ->
                 mView?.hideLoading()
                 if (error != null) {
 
