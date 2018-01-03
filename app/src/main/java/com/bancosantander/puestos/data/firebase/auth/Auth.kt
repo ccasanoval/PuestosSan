@@ -22,7 +22,7 @@ class Auth private constructor() {
 	fun isLogedIn(): Boolean = auth.currentUser != null
 	fun isNotLogedIn(): Boolean = !isLogedIn()
 	fun getEmail(): String? = auth.currentUser?.email
-	fun getUserFire(func: (User,Throwable?) -> Unit) { UserFire.get(fire,getEmail()!!,func) }
+	fun getUserFire(func: (User,Throwable?) -> Unit) { UserFire.get(fire,getEmail(),func) }
 
 	fun addAuthStateListener(listener: FirebaseAuth.AuthStateListener) {
 		auth.addAuthStateListener(listener)
