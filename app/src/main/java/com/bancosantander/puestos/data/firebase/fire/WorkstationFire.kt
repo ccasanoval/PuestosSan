@@ -112,27 +112,99 @@ object WorkstationFire {
                 })
 	}
 	fun getWorkstationRT(context: AppCompatActivity, fire:Fire, user: String,type: String, callback: (Workstation?, Throwable?) -> Unit) {
-		fire.getCol(ROOT_COLLECTION)
-				.whereEqualTo(type,user)
-				.addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
-					lateinit var res: Workstation
-					if(error == null && data != null) {
-						if(data.isEmpty || data.documents.isEmpty()){
-							callback(null,null)
-						}else{
-							data.forEach { doc ->
-								val puesto = createPuestoHelper(fire, doc)
-								callback(puesto, null)
-							}
-						}
+        fire.getCol(ROOT_COLLECTION)
+                .whereEqualTo(type,user)
+                .addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
+                    lateinit var res: Workstation
+                    if(error == null && data != null) {
+                        if(data.isEmpty || data.documents.isEmpty()){
+                            callback(null,null)
+                        }else{
+                            data.forEach { doc ->
+                                val puesto = createPuestoHelper(fire, doc)
+                                callback(puesto, null)
+                            }
+                        }
 
-					}
-					else {
-						callback(res, error)
-						Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
-					}
-				})
-	}
+                    }
+                    else {
+                        callback(res, error)
+                        Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
+                    }
+                })
+    }
+    fun getWorkstationRTV2(context: AppCompatActivity, fire:Fire, user: String,type: String,date:String, callback: (Workstation?, Throwable?) -> Unit) {
+        val freeWorkstationIds = fire.getCol(ROOT_COLLECTION_DATES_FREE).document(date).collection(ROOT_SUBCOLLECTION)
+        val occupiedWorkstationIds = fire.getCol(ROOT_COLLECTION_DATES_OCCUPIED).document(date).collection(ROOT_SUBCOLLECTION)
+        var free = false
+        var occupied = false
+        doAsync {
+                fire.getCol(ROOT_COLLECTION)
+                        .whereEqualTo(type,user)
+                        .addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
+                            lateinit var res: Workstation
+                            if(error == null && data != null) {
+                                if(data.isEmpty || data.documents.isEmpty()){
+                                    callback(null,null)
+                                }else{
+                                    data.forEach { doc ->
+                                        val puesto = createPuestoHelper(fire, doc)
+                                        if (type.equals(User.IdType.idOwner.name)){
+                                            freeWorkstationIds.whereEqualTo("owner",user).get().addOnCompleteListener { task ->
+                                                lateinit var res: Workstation
+                                                if(task.isSuccessful and !task.result.documents.isEmpty()) {
+                                                    free = true
+                                                    occupied = false
+                                                    funCallback(free, occupied, puesto, user, callback)
+                                                }
+                                            }
+                                            occupiedWorkstationIds.whereEqualTo("owner",user).get().addOnCompleteListener { task ->
+                                                if (task.isSuccessful and !task.result.documents.isEmpty()){
+                                                    free = false
+                                                    occupied = true
+                                                    funCallback(free, occupied, puesto, user, callback)
+                                                }
+                                            }
+                                            funCallback(false, false, puesto, user, callback)
+                                        }else {
+                                            callback(puesto, null)
+                                        }
+                                    }
+                                }
+
+                            }
+                            else {
+                                callback(res, error)
+                                Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
+                            }
+                        })
+
+        }
+
+
+
+    }
+
+    private fun funCallback(free: Boolean, occupied: Boolean, puesto: Workstation?, user: String, callback: (Workstation?, Throwable?) -> Unit) {
+        val copy = puesto?.copy()
+        if (!free && !occupied) {
+            copy?.apply {
+                idUser = user
+                status = Workstation.Status.Occupied
+            }
+        } else if (free) {
+            copy?.apply {
+                idUser = ""
+                status = Workstation.Status.Free
+            }
+        } else {
+            copy?.apply {
+                status = Workstation.Status.Occupied
+            }
+        }
+        callback(copy, null)
+    }
+
     fun releaseMyWorkstation(fire:Fire,owner: String ,callback: (Workstation, Throwable?) -> Unit){
         fire.getCol(ROOT_COLLECTION)
                 .whereEqualTo("idOwner", owner)
@@ -162,9 +234,6 @@ object WorkstationFire {
         val queryFree = workstationsFree.whereEqualTo("owner", owner)
         doAsync {
             deleteQueryBatch(queryFree)
-        }
-
-        doAsync {
             val workstationsOccupied = fire.getCol(ROOT_COLLECTION_DATES_FREE).document(date).collection(ROOT_SUBCOLLECTION)
             val hashMap = HashMap<String, Any>()
             hashMap.put("owner",owner)
@@ -200,15 +269,14 @@ object WorkstationFire {
         val queryFree = workstationsFree.whereEqualTo("owner", owner)
         doAsync {
             deleteQueryBatch(queryFree)
-        }
 
-
-        doAsync {
             val workstationsOccupied = fire.getCol(ROOT_COLLECTION_DATES_OCCUPIED).document(date).collection(ROOT_SUBCOLLECTION)
             val hashMap = HashMap<String, Any>()
-            hashMap.put("owner",owner)
-            hashMap.put("idUser",user)
-            workstationsOccupied.add(hashMap)
+            if (owner != user){
+                hashMap.put("owner",owner)
+                hashMap.put("idUser",user)
+                workstationsOccupied.add(hashMap)
+            }
             uiThread {
                fillWorkstation(fire,owner,user,callback)
             }
