@@ -25,7 +25,8 @@ open class BasePresenter<V : BaseMvpView> : BaseMvpPresenter<V> {
     }
 
     override fun auth(): Auth {
-        return mView?.getMyActivity()?.app?.auth!!
+        val baseMvpActivity = mView as BaseMvpActivity<*, *>
+        return baseMvpActivity.app.auth
     }
     override fun fire(): Fire {
         return mView?.getMyActivity()?.app?.fire!!

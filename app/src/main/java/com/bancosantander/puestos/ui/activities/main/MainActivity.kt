@@ -100,5 +100,6 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
             editor.commit()
             mPresenter.goToTutorial()
         }
+
     }
 }
