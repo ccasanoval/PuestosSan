@@ -101,6 +101,6 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
 
     override fun showTutorial() {
         mPresenter.goToTutorial()
-        finish()
+        //finish()
     }
 }
