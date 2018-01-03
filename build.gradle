@@ -24,7 +24,6 @@ allprojects {
         google()
         jcenter()
         maven { url  "http://dl.bintray.com/piasy/maven" }//https://github.com/Piasy/BigImageViewer
-        maven { url 'https://jitpack.io' }
     }
 }
 

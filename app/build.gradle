@@ -79,8 +79,6 @@ dependencies {
     /// Leak Canary
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
 //    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
-
-    compile 'com.github.therealshabi:AutoImageFlipper:v1.4.1'
 }
 
 // Firebase

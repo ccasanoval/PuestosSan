@@ -18,11 +18,8 @@ import android.support.v4.content.ContextCompat
 import com.bancosantander.puestos.ui.dialogs.ChangePassDialog
 import com.bancosantander.puestos.ui.presenters.TutorialPresenter
 import com.bancosantander.puestos.ui.views.TutorialViewContract
-import kotlinx.android.synthetic.main.activity_configuration.*
-import android.widget.ImageView.ScaleType
+import com.bancosantander.puestos.ui.adapters.TutorialAdapter
 import kotlinx.android.synthetic.main.activity_tutorial.*
-import technolifestyle.com.imageslider.FlipperLayout
-import technolifestyle.com.imageslider.FlipperView
 
 
 class TutorialActivity : BaseMvpActivity<TutorialViewContract.View,
@@ -30,7 +27,8 @@ class TutorialActivity : BaseMvpActivity<TutorialViewContract.View,
         TutorialViewContract.View {
 
     override  var mPresenter: TutorialPresenter = TutorialPresenter()
-
+    private lateinit var pagerAdapter: TutorialAdapter
+    private lateinit var images: ArrayList<Int>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,16 +38,14 @@ class TutorialActivity : BaseMvpActivity<TutorialViewContract.View,
     }
 
     private fun setUpTutorial() {
-        val flipperLayout = findViewById<View>(R.id.flipper_layout) as FlipperLayout
-        val num_of_pages = 3
-        for (i in 0 until num_of_pages) {
-            val view = FlipperView(this)
-                    .setImageDrawable(R.drawable.silla) // Use one of setImageUrl() or setImageDrawable() functions, otherwise IllegalStateException will be thrown
-                    .setImageScaleType(ScaleType.CENTER_CROP) //You can use any ScaleType
-                    .setDescription("Description")
-            flipperLayout.scrollTimeInSec = 0
-                    flipperLayout.addFlipperView(view)
-        }
+        images = arrayListOf(
+                R.drawable.silla,
+                R.drawable.silla,
+                R.drawable.silla
+        )
+        pagerAdapter = TutorialAdapter(supportFragmentManager, images)
+        vpTutorial.adapter = pagerAdapter
+
 
     }
 
