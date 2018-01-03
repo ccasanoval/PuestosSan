@@ -114,6 +114,7 @@
             android:clickable="true"
             android:gravity="center"
             android:visibility="gone"
+            tools:visibility="visible"
             android:layout_alignParentBottom="true">
 
             <TextView
@@ -130,14 +131,16 @@
             android:layout_height="50dp"
             android:background="@drawable/linear_onclick_style"
             android:clickable="true"
-            android:text="@string/ocupar"
+
+            android:gravity="center"
             android:visibility="gone"
+            tools:visibility="visible"
             android:layout_alignParentBottom="true">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/liberar"
+                android:text="@string/ocupar"
                 android:textAllCaps="true"
                 android:textSize="20sp" />
         </LinearLayout>
