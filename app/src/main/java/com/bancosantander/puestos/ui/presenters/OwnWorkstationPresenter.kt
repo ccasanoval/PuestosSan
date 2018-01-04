@@ -37,14 +37,14 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
             when(user.type){
                 User.Type.Fixed -> {
                     auth().getEmail()?.let {
-                        WorkstationFire.getWorkstationRT(mView?.getMyActivity()!!,fire(),it,User.IdType.idOwner.name,{ workstation, error ->
+                        WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idOwner.name,"040118",{ workstation, error ->
                             retrieveWorkstation(workstation,error)
                         })
                     }
                 }
                 User.Type.Interim -> {
                     auth().getEmail()?.let{
-                        WorkstationFire.getWorkstationRT(mView?.getMyActivity()!!,fire(),it,User.IdType.idUser.name,{ workstation, error ->
+                        WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idUser.name,"040118",{ workstation, error ->
                             retrieveWorkstation(workstation,error)
                         })
                     }
@@ -81,7 +81,7 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
     fun releaseMyWorkstation() {
         mView?.showLoading()
         auth().getEmail()?.let {
-            WorkstationFire.releaseMyWorkstation(fire(),owner,{workstation, error ->
+            WorkstationFire.releaseMyWorkstationV2(fire(),owner,"040118",{workstation, error ->
                 retrieveWorkstation(workstation,error)
             })
         }
@@ -90,7 +90,7 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
     override fun fillWorkstation() {
         mView?.showLoading()
        auth().getEmail()?.let{
-           WorkstationFire.fillWorkstation(fire(), it, it, { workstation, error ->
+           WorkstationFire.fillWorkstationV2(fire(), it, it,"040118", { workstation, error ->
                mView?.hideLoading()
                if (error != null) {
 
