@@ -2,22 +2,21 @@ package com.bancosantander.puestos.ui.dialogs
 
 
 import android.os.Bundle
-import android.os.ProxyFileDescriptorCallback
 import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bancosantander.puestos.R
-import kotlinx.android.synthetic.main.info_layout.*
-import org.jetbrains.anko.support.v4.act
-import javax.security.auth.callback.Callback
+import kotlinx.android.synthetic.main.calendar_view_layout.*
 
 
 class CalendarViewDialog : DialogFragment() {
 
 	companion object{
 		private var INSTANCE : CalendarViewDialog?=null
-		fun getInstance() : CalendarViewDialog {
+		lateinit var callback : (date:String)->Unit
+		fun getInstance(callback:(date:String)->Unit):CalendarViewDialog {
+			this.callback = callback
 			return INSTANCE ?: CalendarViewDialog()
 		}
 	}
@@ -40,5 +39,9 @@ class CalendarViewDialog : DialogFragment() {
 
 	override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		calendarView.setOnDateChangedListener { widget, date, selected ->
+			callback("aaa"//TODO date.date.firebase)
+			)
+		}
 	}
 }

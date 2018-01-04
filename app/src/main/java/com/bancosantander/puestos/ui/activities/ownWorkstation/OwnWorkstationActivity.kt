@@ -1,10 +1,8 @@
 package com.bancosantander.puestos.ui.activities.ownWorkstation
 
-import android.app.Dialog
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
-import android.transition.Visibility
 import android.view.View
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.data.models.Workstation
@@ -16,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_own_workstation.*
 import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
 import com.bancosantander.puestos.ui.dialogs.CalendarViewDialog
-import com.bancosantander.puestos.ui.dialogs.InfoDialog
 
 
 class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
@@ -36,7 +33,10 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         setupToolbar()
         btnLiberar.setOnClickListener{ mPresenter.releaseMyWorkstation() }
         btnOcupar.setOnClickListener{mPresenter.fillWorkstation()}
-        ivCalendar.setOnClickListener{CalendarViewDialog.getInstance().show(supportFragmentManager,TAG_CALENDAR_DIALOG.name)}
+        ivCalendar.setOnClickListener{
+            CalendarViewDialog.getInstance(callback = { date ->
+                //TODO: llamar al presenter para comprobar el estado del date
+            })}
     }
 
     private fun setupToolbar() {
