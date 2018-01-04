@@ -15,6 +15,7 @@ import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_own_workstation.*
 import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
+import com.bancosantander.puestos.ui.dialogs.CalendarViewDialog
 import com.bancosantander.puestos.ui.dialogs.InfoDialog
 
 
@@ -22,6 +23,9 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         OwnWorkstationPresenter>(),
         OwnWorkstationViewContract.View {
 
+    object TAG_CALENDAR_DIALOG{
+        val name = "CalendarViewDialog"
+    }
 
     override  var mPresenter: OwnWorkstationPresenter = OwnWorkstationPresenter()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +36,7 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         setupToolbar()
         btnLiberar.setOnClickListener{ mPresenter.releaseMyWorkstation() }
         btnOcupar.setOnClickListener{mPresenter.fillWorkstation()}
+        ivCalendar.setOnClickListener{CalendarViewDialog.getInstance().show(supportFragmentManager,TAG_CALENDAR_DIALOG.name)}
     }
 
     private fun setupToolbar() {

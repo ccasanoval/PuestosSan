@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="calendar_dialog_width">350dp</dimen>
+    <dimen name="calendar_dialog_height">500dp</dimen>
 </resources>
