@@ -4,6 +4,9 @@ import android.app.Application
 import com.bancosantander.puestos.data.firebase.auth.Auth
 import com.bancosantander.puestos.data.firebase.fire.Fire
 import com.bancosantander.puestos.router.Router
+import org.greenrobot.eventbus.EventBus
+
+
 
 
 // ZOOM ImageView:
@@ -44,6 +47,9 @@ class App : Application() {
 		/// FIRE AUTH
 		auth = Auth.getInstance(this)
 		fire = Fire()
+
+		/// EVENT BUS
+		EventBus.builder().addIndex(com.bancosantander.puestos.RutaEventIndex()).installDefaultEventBus()
 	}
 	fun getRouter():Router{
 		return mRouter

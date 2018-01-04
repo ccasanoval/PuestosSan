@@ -9,16 +9,19 @@ import com.bancosantander.puestos.util.Log
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.data.firebase.auth.Auth
 import com.bancosantander.puestos.data.firebase.fire.Fire
-import com.bancosantander.puestos.data.firebase.fire.UserFire
 import com.bancosantander.puestos.data.firebase.fire.WorkstationFire
 import com.bancosantander.puestos.util.Plane
-import com.bancosantander.puestos.data.models.User
 import com.bancosantander.puestos.data.models.Workstation
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.lang.Math.abs
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 class MapaViewModel(app: Application) : AndroidViewModel(app) {
 	private val auth: Auth = getApplication<App>().auth
 	private val fire: Fire = getApplication<App>().fire
@@ -115,6 +118,38 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 		selected.value = seleccionado
 		return (seleccionado != null)
 	}
+
+	//______________________________________________________________________________________________
+	fun onStart() {
+		EventBus.getDefault().register(this)
+	}
+	//______________________________________________________________________________________________
+	fun onStop() {
+		EventBus.getDefault().unregister(this)
+	}
+	//______________________________________________________________________________________________
+	class RutaEvent(val ptoIni100: PointF, val ptoEnd100: PointF)
+	@Subscribe
+	fun calcRutaEventBus(event: RutaEvent) {
+		calcRuta(event.ptoIni100, event.ptoEnd100)
+	}
+	//______________________________________________________________________________________________
+	private fun calcRuta(ptoIni100: PointF, ptoEnd100: PointF) {
+		ini100.set(ptoIni100)
+		end100.set(ptoEnd100)
+		Observable.defer({
+			Observable.just(plane.calcRuta(ini100, end100))
+		})
+			.subscribeOn(Schedulers.newThread())
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe({it ->
+				camino.value = it.data
+				if(it.data == null) {
+					mensaje.value = getApplication<App>().getString(R.string.error_camino)
+				}
+				Log.e(TAG, "punto:calc-ruta: ok="+it.isOk+", pasosBusqueda="+it.pasosBusqueda+", pasos="+it.pasos)
+			})
+	}
 	//______________________________________________________________________________________________
 	private fun ruta(pto: PointF, pto100: PointF) {
 		camino.value = null
@@ -133,7 +168,6 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 			end.value = pto
 
 			/// En otro hilo
-
 			Observable.defer({
 				Observable.just(plane.calcRuta(ini100, end100))
 			})

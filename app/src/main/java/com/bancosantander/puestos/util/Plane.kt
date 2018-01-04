@@ -9,12 +9,14 @@ import java.io.InputStreamReader
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
 class Plane(context: Context) {
 	private var isReady: Boolean = false
 	private val data:  MutableList<Byte> = mutableListOf()
 	private var cols = 0
 	private var rows = 0
 
+	//______________________________________________________________________________________________
 	init {
 		var reader: BufferedReader? = null
 		try {
@@ -49,16 +51,19 @@ class Plane(context: Context) {
 			return false
 		return true
 	}
+	//______________________________________________________________________________________________
 	fun coordIn(pto: PointF): PointF {
 		val x = pto.x *cols/100f
 		val y = pto.y *rows/100f
 		return PointF(x, y)
 	}
+	//______________________________________________________________________________________________
 	fun coordOut(pto: Point): PointF {
 		val x = pto.x *100f/cols
 		val y = pto.y *100f/rows
 		return PointF(x, y)
 	}
+	//______________________________________________________________________________________________
 	fun calcRuta(ini: PointF, end: PointF): Solution {
 		Log.e(TAG, "calc0:------------0----------------"+data.size)
 
@@ -79,6 +84,7 @@ class Plane(context: Context) {
 		val res = Astar().calcMapa(iniMap, endMap, data.toByteArray(), cols, rows)
 		return translateRes(res)
 	}
+	//______________________________________________________________________________________________
 	private fun evitarMuros(ptoIn: PointF): PointF {
 		val ptoOut = PointF()
 		ptoOut.set(ptoIn)
@@ -134,6 +140,8 @@ class Plane(context: Context) {
 			return sol
 		}
 	}
+
+	//______________________________________________________________________________________________
 	data class Solution(
 		@Transient var isOk: Boolean,
 		@Transient var data: Array<PointF>? = null)
@@ -144,8 +152,9 @@ class Plane(context: Context) {
 		@SerializedName("pasosBusqueda") val pasosBusqueda: Int = 0
 	}
 
-
+	//______________________________________________________________________________________________
 	companion object {
 		private val TAG: String = Plane::class.java.simpleName
+		val entrada = PointF(50f,50f)
 	}
 }

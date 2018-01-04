@@ -135,4 +135,16 @@
         app:layout_constraintStart_toStartOf="@+id/txtUser"
         app:layout_constraintTop_toBottomOf="@+id/txtUser"/>
 
+    <Button
+        android:id="@+id/btnEntrada2Puesto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/ir_desde_entrada"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtStatus"/>
+
 </android.support.constraint.ConstraintLayout>

@@ -60,6 +60,10 @@ class PuestoDialog : AppCompatActivity() {
 	//______________________________________________________________________________________________
 	private fun iniBotones() {
 		btnCerrar.setOnClickListener { salir() }
+		btnEntrada2Puesto.setOnClickListener {
+			viewModel.entrada2puesto()
+			salir()
+		}
 	}
 
 	//______________________________________________________________________________________________
