@@ -41,7 +41,7 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         btnLiberar.setOnClickListener{ mPresenter.releaseMyWorkstation(date = date.firebase()) }
         btnOcupar.setOnClickListener{mPresenter.fillWorkstation(date = date.firebase())}
         ivCalendar.setOnClickListener{
-            CalendarViewDialog.getInstance(callback = { date ->
+            CalendarViewDialog.getInstance(date,callback = { date ->
               tvDateSelected.text = date.presentation()
                 mPresenter?.showCurrentWorkstation(date)
                 this.date =date

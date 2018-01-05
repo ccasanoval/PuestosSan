@@ -17,7 +17,9 @@ class CalendarViewDialog : DialogFragment() {
 	companion object{
 		private var INSTANCE : CalendarViewDialog?=null
 		lateinit var callback : (date:Date)->Unit
-		fun getInstance(callback:(date: Date)->Unit):CalendarViewDialog {
+		lateinit var date : Date
+		fun getInstance(date:Date,callback:(date: Date)->Unit):CalendarViewDialog {
+			this.date = date
 			this.callback = callback
 			return INSTANCE ?: CalendarViewDialog()
 		}
@@ -41,6 +43,7 @@ class CalendarViewDialog : DialogFragment() {
 
 	override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		calendarView.setSelectedDate(date)
 		calendarView.setOnDateChangedListener { widget, date, selected ->
 			dismiss()
 			callback(date.date)
