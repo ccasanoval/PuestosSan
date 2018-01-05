@@ -9,6 +9,7 @@ import com.bancosantander.puestos.ui.activities.workstations.WorkstationsActivit
 import com.bancosantander.puestos.ui.viewModels.listWorkstation.WorkstationsListViewModel
 import com.bancosantander.puestos.ui.views.WorkstationsViewFragmentContract
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
+import kotlinx.coroutines.experimental.async
 
 class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : BasePresenter<WorkstationsViewFragmentContract.View>(), WorkstationsViewFragmentContract.Presenter {
 
@@ -43,28 +44,29 @@ class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : Bas
         })*/
     }
 
-    fun fillWorkstation(idOwner: String) {
+    fun fillWorkstation(idOwner: String, date: String) {
         auth().getEmail()?.let {
             mView?.showLoading()
-            WorkstationFire.fillWorkstationV2(fire(), idOwner, it,"040118", { workstation, error ->
-                mView?.hideLoading()
-                if (error != null) {
+            async {
+                WorkstationFire.fillWorkstationV2(fire(), idOwner, it,date, { workstation, error ->
+                    mView?.hideLoading()
+                    if (error != null) {
 
-                } else {
-                    mView?.getMyActivity()?.showInfoScreenDialog(R.string.filled_workstation)
-//                    TODO("Faltan quitar todos los snakbar y poner INFOSCREEN DIALOG")
-//                    TODO("Salen dos dialoooooogs")
-                }
-            })
+                    } else {
+                        mView?.getMyActivity()?.showInfoScreenDialog(R.string.filled_workstation)
+                    }
+                })
+            }
+
         }
 
     }
 
-    fun checkIfUserHaveWorkstation(idOwner: String) {
+    fun checkIfUserHaveWorkstation(idOwner: String, date: String) {
         auth().getEmail()?.let{
             WorkstationFire.getWorkstationRT(mView?.getMyActivity()!!,fire(),it, User.IdType.idUser.name,{ workstation, error ->
                 if(workstation == null && error == null){
-                    fillWorkstation(idOwner)
+                    fillWorkstation(idOwner,date)
                 }
                 else{
                     if(workstation != null && !workstation.idOwner.equals(idOwner)){

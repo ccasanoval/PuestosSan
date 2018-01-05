@@ -22,6 +22,7 @@ object OwnWorkstationViewContract {
     }
     interface Presenter : BaseMvpPresenter<View> {
         fun init(model: OwnWorkstationViewModel)
-        fun fillWorkstation()
+        fun fillWorkstation(date:String)
+        fun releaseMyWorkstation(date: String)
     }
 }

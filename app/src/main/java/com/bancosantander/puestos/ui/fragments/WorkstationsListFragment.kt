@@ -1,9 +1,6 @@
 package com.bancosantander.puestos.ui.fragments
 
-import android.content.res.Configuration
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,14 +12,13 @@ import com.bancosantander.puestos.ui.activities.workstations.WorkstationsActivit
 import com.bancosantander.puestos.ui.adapters.WorkstationsListAdapter
 import com.bancosantander.puestos.ui.dialogs.InfoDialog
 import com.bancosantander.puestos.ui.dialogs.SiNoDialog
-import com.bancosantander.puestos.ui.presenters.WorkstationsPresenter
 import com.bancosantander.puestos.ui.presenters.fragments.WorkstationsListFragmentPresenter
-import com.bancosantander.puestos.ui.views.MainViewContract
-import com.bancosantander.puestos.ui.views.WorkstationsViewContract
 import com.bancosantander.puestos.ui.views.WorkstationsViewFragmentContract
+import com.bancosantander.puestos.util.firebase
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpFragment
 import kotlinx.android.synthetic.main.workstations_list_fragment.*
+import java.util.*
 
 /**
  * Created by bangulo on 19/12/2017.
@@ -66,7 +62,7 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
     override fun onItemClickListener(view: View, workstation: Workstation) {
         SiNoDialog.showSiNo(context,
                 getString(R.string.fill_workstation),
-                { si -> if(si) mPresenter.checkIfUserHaveWorkstation(workstation.idOwner)  })
+                { si -> if(si) mPresenter.checkIfUserHaveWorkstation(workstation.idOwner,Date().firebase())  })
     }
 
     override fun showLoading() {

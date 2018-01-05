@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.activity_own_workstation.*
 import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
 import com.bancosantander.puestos.ui.dialogs.CalendarViewDialog
+import com.bancosantander.puestos.util.firebase
+import java.util.*
 
 
 class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
@@ -31,8 +33,8 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         val model = ViewModelProviders.of(this).get(OwnWorkstationViewModel::class.java)
         mPresenter.init(model)
         setupToolbar()
-        btnLiberar.setOnClickListener{ mPresenter.releaseMyWorkstation() }
-        btnOcupar.setOnClickListener{mPresenter.fillWorkstation()}
+        btnLiberar.setOnClickListener{ mPresenter.releaseMyWorkstation(Date().firebase()) }
+        btnOcupar.setOnClickListener{mPresenter.fillWorkstation(Date().firebase())}
         ivCalendar.setOnClickListener{
             CalendarViewDialog.getInstance(callback = { date ->
                 //TODO: llamar al presenter para comprobar el estado del date

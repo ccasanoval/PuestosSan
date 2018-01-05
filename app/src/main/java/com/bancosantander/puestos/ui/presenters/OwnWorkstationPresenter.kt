@@ -8,7 +8,10 @@ import com.bancosantander.puestos.data.models.Workstation
 import com.bancosantander.puestos.ui.activities.ownWorkstation.OwnWorkstationActivity
 import com.bancosantander.puestos.ui.viewModels.ownWorkstation.OwnWorkstationViewModel
 import com.bancosantander.puestos.ui.views.OwnWorkstationViewContract
+import com.bancosantander.puestos.util.firebase
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
+import kotlinx.coroutines.experimental.async
+import java.util.*
 
 
 class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(), OwnWorkstationViewContract.Presenter {
@@ -31,20 +34,20 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
         })
     }
 
-    private fun showCurrentWorkstation(){
+    private fun showCurrentWorkstation(date: String = Date().firebase()){
         mView?.showLoading()
         auth().getUserFire { user, throwable ->
             when(user.type){
                 User.Type.Fixed -> {
                     auth().getEmail()?.let {
-                        WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idOwner.name,"040118",{ workstation, error ->
+                        WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idOwner.name,date,{ workstation, error ->
                             retrieveWorkstation(workstation,error)
                         })
                     }
                 }
                 User.Type.Interim -> {
                     auth().getEmail()?.let{
-                        WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idUser.name,"040118",{ workstation, error ->
+                        WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idUser.name,date,{ workstation, error ->
                             retrieveWorkstation(workstation,error)
                         })
                     }
@@ -78,26 +81,30 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
             }
         }
     }
-    fun releaseMyWorkstation() {
+    override fun releaseMyWorkstation(date: String) {
         mView?.showLoading()
         auth().getEmail()?.let {
-            WorkstationFire.releaseMyWorkstationV2(fire(),owner,"040118",{workstation, error ->
-                retrieveWorkstation(workstation,error)
-            })
+            async {
+                WorkstationFire.releaseMyWorkstationV2(fire(),owner,date,{workstation, error ->
+                    retrieveWorkstation(workstation,error)
+                })
+            }
         }
     }
 
-    override fun fillWorkstation() {
+    override fun fillWorkstation(date: String) {
         mView?.showLoading()
        auth().getEmail()?.let{
-           WorkstationFire.fillWorkstationV2(fire(), it, it,"040118", { workstation, error ->
-               mView?.hideLoading()
-               if (error != null) {
+           async {
+               WorkstationFire.fillWorkstationV2(fire(), it, it,date, { workstation, error ->
+                   mView?.hideLoading()
+                   if (error != null) {
 
-               } else {
+                   } else {
 
-               }
-           })
+                   }
+               })
+           }
        }
     }
 }
