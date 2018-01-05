@@ -66,7 +66,7 @@ class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : Bas
 
     fun checkIfUserHaveWorkstation(idOwner: String, date: String) {
         auth().getEmail()?.let{
-            WorkstationFire.getWorkstationRT(mView?.getMyActivity()!!,fire(),it, User.IdType.idUser.name,{ workstation, error ->
+            WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it, User.IdType.idUser.name,date,{ workstation, error ->
                 if(workstation == null && error == null){
                     fillWorkstation(idOwner,date)
                 }

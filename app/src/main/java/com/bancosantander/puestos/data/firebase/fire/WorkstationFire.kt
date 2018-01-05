@@ -135,28 +135,67 @@ object WorkstationFire {
     fun getWorkstationRTV2(context: AppCompatActivity, fire:Fire, user: String,type: String,date:String, callback: (Workstation?, Throwable?) -> Unit) {
         val freeWorkstationIds = fire.getCol(ROOT_COLLECTION_DATES_FREE).document(date).collection(ROOT_SUBCOLLECTION)
         val occupiedWorkstationIds = fire.getCol(ROOT_COLLECTION_DATES_OCCUPIED).document(date).collection(ROOT_SUBCOLLECTION)
-
-        fire.getCol(ROOT_COLLECTION)
-                .whereEqualTo(type,user)
-                .addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
-                    var res: Workstation?
-                    if (error != null){
-                        callback(null, error)
-                        Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
-                    } else if(data != null && (data.isEmpty || data.documents.isEmpty())){
-                        callback(null, null)
-                    } else{
-                        data?.forEach { doc ->
-                            res = createPuestoHelper(fire, doc)
-                            if (type.equals(User.IdType.idOwner.name)) {
-                                isFreeOrOccupied(freeWorkstationIds,occupiedWorkstationIds,res,user,callback )
-                            } else {
-                                callback(res, null)
+        if (type.equals(User.IdType.idOwner.name)) {
+            fire.getCol(ROOT_COLLECTION)
+                    .whereEqualTo("idOwner",user)
+                    .addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
+                        var res: Workstation?
+                        if (error != null){
+                            callback(null, error)
+                            Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
+                        } else if(data != null && (data.isEmpty || data.documents.isEmpty())){
+                            callback(null, null)
+                        } else{
+                            data?.forEach { doc ->
+                                res = createPuestoHelper(fire, doc)
+                                if (type.equals(User.IdType.idOwner.name)) {
+                                    isFreeOrOccupied(freeWorkstationIds,occupiedWorkstationIds,res,user,callback )
+                                } else {
+                                    callback(res, null)
+                                }
                             }
                         }
-                    }
 
-                })
+                    })
+        }else {
+
+            occupiedWorkstationIds.whereEqualTo("idUser",user).addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
+                if (error != null){
+                    callback(null, error)
+                    Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
+                } else if(data != null && (data.isEmpty || data.documents.isEmpty())){
+                    callback(null, null)
+                } else{
+                    data?.forEach { doc ->
+                        val owner = doc.get("owner")
+                        fire.getCol(ROOT_COLLECTION)
+                                .whereEqualTo("idOwner",owner)
+                                .addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
+                                    var res: Workstation?
+                                    if (error != null){
+                                        callback(null, error)
+                                        Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
+                                    } else if(data != null && (data.isEmpty || data.documents.isEmpty())){
+                                        callback(null, null)
+                                    } else{
+                                        data?.forEach { doc ->
+                                            res = createPuestoHelper(fire, doc)
+                                            if (type.equals(User.IdType.idOwner.name)) {
+                                                isFreeOrOccupied(freeWorkstationIds,occupiedWorkstationIds,res,user,callback )
+                                            } else {
+                                                callback(res, null)
+                                            }
+                                        }
+                                    }
+
+                                })
+                    }
+                }
+
+            })
+        }
+
+
     }
 
     private fun isFreeOrOccupied(freeRef:CollectionReference,occupiedRef:CollectionReference,workstation: Workstation?, user:String, callback: (Workstation?, Throwable?) -> Unit){
