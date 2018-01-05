@@ -39,9 +39,11 @@ class TutorialActivity : BaseMvpActivity<TutorialViewContract.View,
 
     private fun setUpTutorial() {
         images = arrayListOf(
-                R.drawable.silla,
-                R.drawable.silla,
-                R.drawable.silla
+                R.drawable.main_tutorial,
+                R.drawable.own_tutorial,
+                R.drawable.list_tutorial,
+                R.drawable.map_tutorial,
+                R.drawable.calendar_tutorial
         )
         pagerAdapter = TutorialAdapter(supportFragmentManager, images)
         vpTutorial.adapter = pagerAdapter

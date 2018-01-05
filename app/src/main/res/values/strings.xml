@@ -76,5 +76,6 @@
     <string name="change_pass_first_time">Por su seguridad, cambie la contraseña por defecto</string>
     <string name="liberar_puesto">Debes liberar el puesto antes de ocupar otro</string>
     <string name="ir_desde_entrada">Ir desde entrada</string>
+    <string name="mostrar_tutorial">Ver tutorial</string>
 
 </resources>

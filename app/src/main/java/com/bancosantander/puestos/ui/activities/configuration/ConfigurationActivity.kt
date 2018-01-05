@@ -28,6 +28,7 @@ class ConfigurationActivity :  BaseMvpActivity<ConfigurationViewContract.View,
         mPresenter.init()
         setupToolbar()
         btnChangePassword.setOnClickListener{mPresenter.changePassword()}
+        btnShowTutorial.setOnClickListener{mPresenter.goToTutorial()}
     }
 
     override fun changePassword() {
