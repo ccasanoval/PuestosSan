@@ -55,6 +55,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
             android:hint="Puesto numero" />
 
         <TextView
@@ -76,6 +78,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textStyle="bold"
+            android:textSize="20sp"
             android:gravity="center"
             android:hint="Propietario" />
 
@@ -99,6 +103,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
             android:hint="Usuario" />
 
         <TextView
@@ -121,6 +127,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
             android:hint="Estado" />
 
         <TextView
