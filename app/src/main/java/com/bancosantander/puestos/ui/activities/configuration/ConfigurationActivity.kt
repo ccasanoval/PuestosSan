@@ -3,6 +3,8 @@ package com.bancosantander.puestos.ui.activities.configuration
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.Toolbar
+import android.view.View
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.ui.dialogs.ChangePassDialog
 import com.bancosantander.puestos.ui.presenters.ConfigurationPresenter
@@ -24,6 +26,7 @@ class ConfigurationActivity :  BaseMvpActivity<ConfigurationViewContract.View,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_configuration)
         mPresenter.init()
+        setupToolbar()
         btnChangePassword.setOnClickListener{mPresenter.changePassword()}
     }
 
@@ -34,6 +37,13 @@ class ConfigurationActivity :  BaseMvpActivity<ConfigurationViewContract.View,
        ChangePassDialog.newInstance(activity = this,callback={oldPass,newPass->
            mPresenter.callToChangePassword(oldPass,newPass)
        })
+    }
+
+    private fun setupToolbar() {
+        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        supportActionBar?.setDisplayShowHomeEnabled(true);
     }
     override fun showErrorMinLenght() {
         Snackbar.make(llConfigurationLayout,"Contraseña no valida, longitud minima 6 caracteres",Snackbar.LENGTH_SHORT).show()
@@ -52,5 +62,10 @@ class ConfigurationActivity :  BaseMvpActivity<ConfigurationViewContract.View,
 
     override fun hideLoading() {
         super.hideLoadingDialog()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

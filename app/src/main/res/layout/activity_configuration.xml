@@ -8,6 +8,13 @@
     android:id="@+id/llConfigurationLayout"
     android:background="@android:color/white"
     tools:context="com.bancosantander.puestos.ui.activities.configuration.ConfigurationActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+
     <LinearLayout
         android:id="@+id/btnChangePassword"
         android:layout_width="match_parent"
