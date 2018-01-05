@@ -23,6 +23,7 @@
         android:gravity="center"
         android:clickable="true"
         android:paddingTop="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/linear_onclick_style">
         <ImageView
             android:layout_width="60dp"
@@ -32,5 +33,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cambiar_password"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btnShowTutorial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:clickable="true"
+        android:paddingTop="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/linear_onclick_style">
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@android:drawable/ic_menu_report_image"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mostrar_tutorial"/>
     </LinearLayout>
 </LinearLayout>

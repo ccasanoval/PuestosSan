@@ -33,4 +33,8 @@ class ConfigurationPresenter : BasePresenter<ConfigurationViewContract.View>(), 
         }
 
     }
+
+    override fun goToTutorial() {
+        router().goToTutorial()
+    }
 }

@@ -21,5 +21,6 @@ object ConfigurationViewContract {
         fun init()
         fun callToChangePassword(oldPass: String, pass:String)
         fun changePassword()
+        fun goToTutorial()
     }
 }
