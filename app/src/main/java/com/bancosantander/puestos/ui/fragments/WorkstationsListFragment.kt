@@ -8,16 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.data.models.Workstation
+import com.bancosantander.puestos.ui.activities.ownWorkstation.OwnWorkstationActivity
 import com.bancosantander.puestos.ui.activities.workstations.WorkstationsActivity
 import com.bancosantander.puestos.ui.adapters.WorkstationsListAdapter
+import com.bancosantander.puestos.ui.dialogs.CalendarViewDialog
 import com.bancosantander.puestos.ui.dialogs.InfoDialog
 import com.bancosantander.puestos.ui.dialogs.SiNoDialog
 import com.bancosantander.puestos.ui.presenters.fragments.WorkstationsListFragmentPresenter
 import com.bancosantander.puestos.ui.views.WorkstationsViewFragmentContract
 import com.bancosantander.puestos.util.firebase
+import com.bancosantander.puestos.util.presentation
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpFragment
+import kotlinx.android.synthetic.main.workstations_activity.*
 import kotlinx.android.synthetic.main.workstations_list_fragment.*
+import org.jetbrains.anko.contentView
 import java.util.*
 
 /**
@@ -26,7 +31,7 @@ import java.util.*
 class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContract.View,WorkstationsListFragmentPresenter>(), WorkstationsViewFragmentContract.View, WorkstationsListAdapter.OnItemClickListener {
 
     var adapter : WorkstationsListAdapter?  = null
-
+    var date : Date = Date()
 
     override lateinit var mPresenter: WorkstationsListFragmentPresenter
 
@@ -42,18 +47,21 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
         val mLayoutManager = LinearLayoutManager(activity);
         workstations_list.layoutManager = mLayoutManager;
         adapter = WorkstationsListAdapter()
-        setData()
+        mPresenter.setData()
+        activity.tvDateSelected.text = date.presentation()
         workstations_list.adapter = adapter
+        activity.ivCalendar.setOnClickListener{
+            CalendarViewDialog.getInstance(date,callback = { date ->
+                activity.tvDateSelected.text = date.presentation()
+                mPresenter?.setData(date)
+                this.date =date
+            }).show(activity.supportFragmentManager, OwnWorkstationActivity.TAG_CALENDAR_DIALOG.name)}
     }
 
     override fun getMyActivity(): BaseMvpActivity<*,*> {
         return activity as WorkstationsActivity
     }
 
-
-    private fun setData() {
-        mPresenter.setData()
-    }
 
     override fun setDataAdapter(list: ArrayList<Workstation>) {
 
@@ -62,7 +70,7 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
     override fun onItemClickListener(view: View, workstation: Workstation) {
         SiNoDialog.showSiNo(context,
                 getString(R.string.fill_workstation),
-                { si -> if(si) mPresenter.checkIfUserHaveWorkstation(workstation.idOwner,Date().firebase())  })
+                { si -> if(si) mPresenter.checkIfUserHaveWorkstation(workstation.idOwner,date.firebase())  })
     }
 
     override fun showLoading() {

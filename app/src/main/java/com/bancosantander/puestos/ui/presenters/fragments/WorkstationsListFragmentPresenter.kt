@@ -8,8 +8,10 @@ import com.bancosantander.puestos.data.models.User
 import com.bancosantander.puestos.ui.activities.workstations.WorkstationsActivity
 import com.bancosantander.puestos.ui.viewModels.listWorkstation.WorkstationsListViewModel
 import com.bancosantander.puestos.ui.views.WorkstationsViewFragmentContract
+import com.bancosantander.puestos.util.firebase
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 import kotlinx.coroutines.experimental.async
+import java.util.*
 
 class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : BasePresenter<WorkstationsViewFragmentContract.View>(), WorkstationsViewFragmentContract.Presenter {
 
@@ -24,9 +26,9 @@ class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : Bas
         })
     }
 
-    fun setData() {
+    fun setData(date: Date = Date()) {
         mView?.showLoading()
-        WorkstationFire.getFreeWithDateRT(fire(),"050118", { workstationList, error ->
+        WorkstationFire.getFreeWithDateRT(fire(), date.firebase(), { workstationList, error ->
             mView?.hideLoading()
             if (error != null) {
 

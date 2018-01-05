@@ -38,7 +38,6 @@ class InfoScreenDialog : DialogFragment() {
 		tvInfo.text = infoText
 		ivCloseInfo.setOnClickListener {
 			dismiss()
-			activity.finish()
 		}
 	}
 }
