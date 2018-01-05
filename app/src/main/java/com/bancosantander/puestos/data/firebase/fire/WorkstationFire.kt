@@ -73,7 +73,7 @@ object WorkstationFire {
                                     callback(res, null)
                                 }
                                 else {
-                                    callback(res, null)
+                                    callback(res, throwable)
                                     Log.e(TAG, "getWorkstation:e:----------------------------------------------------", throwable)
                                 }
                             })

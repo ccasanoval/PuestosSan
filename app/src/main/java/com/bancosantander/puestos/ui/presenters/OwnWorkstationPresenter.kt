@@ -34,20 +34,20 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
         })
     }
 
-    private fun showCurrentWorkstation(date: String = Date().firebase()){
+     override fun showCurrentWorkstation(date: Date){
         mView?.showLoading()
         auth().getUserFire { user, throwable ->
             when(user.type){
                 User.Type.Fixed -> {
                     auth().getEmail()?.let {
-                        WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idOwner.name,date,{ workstation, error ->
+                        WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idOwner.name,date.firebase(),{ workstation, error ->
                             retrieveWorkstation(workstation,error)
                         })
                     }
                 }
                 User.Type.Interim -> {
                     auth().getEmail()?.let{
-                        WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idUser.name,date,{ workstation, error ->
+                        WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idUser.name,date.firebase(),{ workstation, error ->
                             retrieveWorkstation(workstation,error)
                         })
                     }

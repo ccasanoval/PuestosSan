@@ -26,7 +26,7 @@ class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : Bas
 
     fun setData() {
         mView?.showLoading()
-        WorkstationFire.getFreeWithDateRT(fire(),"040118", { workstationList, error ->
+        WorkstationFire.getFreeWithDateRT(fire(),"050118", { workstationList, error ->
             mView?.hideLoading()
             if (error != null) {
 

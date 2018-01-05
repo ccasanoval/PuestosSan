@@ -4,6 +4,7 @@ import com.bancosantander.puestos.data.models.Workstation
 import com.bancosantander.puestos.ui.viewModels.ownWorkstation.OwnWorkstationViewModel
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpPresenter
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpView
+import java.util.*
 
 /**
  * Created by mbalduciel on 16/12/17.
@@ -24,5 +25,6 @@ object OwnWorkstationViewContract {
         fun init(model: OwnWorkstationViewModel)
         fun fillWorkstation(date:String)
         fun releaseMyWorkstation(date: String)
+        fun showCurrentWorkstation(date: Date = Date())
     }
 }

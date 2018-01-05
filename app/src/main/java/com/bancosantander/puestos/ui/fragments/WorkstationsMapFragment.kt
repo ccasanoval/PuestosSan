@@ -74,7 +74,7 @@ class WorkstationsMapFragment : BaseMvpFragment<WorkstationsMapViewFragmentContr
 	private fun iniViewModel(view: View) {
 		viewModel = ViewModelProviders.of(this@WorkstationsMapFragment).get(MapaViewModel::class.java)
 		viewModel.mensaje.observe(this, Observer { mensaje ->
-			Toast.makeText(activity, mensaje, Toast.LENGTH_LONG).show()
+//			Toast.makeText(activity, mensaje, Toast.LENGTH_LONG).show()
 		})
 		viewModel.camino.observe(this, Observer<Array<PointF>> { camino ->
 			if(camino == null)	delCamino()

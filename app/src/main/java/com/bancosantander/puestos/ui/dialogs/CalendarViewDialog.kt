@@ -7,15 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bancosantander.puestos.R
+import com.bancosantander.puestos.util.firebase
 import kotlinx.android.synthetic.main.calendar_view_layout.*
+import java.util.*
 
 
 class CalendarViewDialog : DialogFragment() {
 
 	companion object{
 		private var INSTANCE : CalendarViewDialog?=null
-		lateinit var callback : (date:String)->Unit
-		fun getInstance(callback:(date:String)->Unit):CalendarViewDialog {
+		lateinit var callback : (date:Date)->Unit
+		fun getInstance(callback:(date: Date)->Unit):CalendarViewDialog {
 			this.callback = callback
 			return INSTANCE ?: CalendarViewDialog()
 		}
@@ -40,8 +42,8 @@ class CalendarViewDialog : DialogFragment() {
 	override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		calendarView.setOnDateChangedListener { widget, date, selected ->
-			callback("aaa"//TODO date.date.firebase)
-			)
+			dismiss()
+			callback(date.date)
 		}
 	}
 }

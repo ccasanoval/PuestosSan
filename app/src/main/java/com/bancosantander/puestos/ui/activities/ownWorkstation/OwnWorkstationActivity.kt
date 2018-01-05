@@ -12,9 +12,12 @@ import com.bancosantander.puestos.ui.views.OwnWorkstationViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_own_workstation.*
 import android.content.DialogInterface
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import com.bancosantander.puestos.ui.dialogs.CalendarViewDialog
 import com.bancosantander.puestos.util.firebase
+import com.bancosantander.puestos.util.presentation
+import org.jetbrains.anko.contentView
 import java.util.*
 
 
@@ -26,6 +29,8 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         val name = "CalendarViewDialog"
     }
 
+    var date : Date = Date()
+
     override  var mPresenter: OwnWorkstationPresenter = OwnWorkstationPresenter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,17 +38,20 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         val model = ViewModelProviders.of(this).get(OwnWorkstationViewModel::class.java)
         mPresenter.init(model)
         setupToolbar()
-        btnLiberar.setOnClickListener{ mPresenter.releaseMyWorkstation(Date().firebase()) }
-        btnOcupar.setOnClickListener{mPresenter.fillWorkstation(Date().firebase())}
+        btnLiberar.setOnClickListener{ mPresenter.releaseMyWorkstation(date = date.firebase()) }
+        btnOcupar.setOnClickListener{mPresenter.fillWorkstation(date = date.firebase())}
         ivCalendar.setOnClickListener{
             CalendarViewDialog.getInstance(callback = { date ->
-                //TODO: llamar al presenter para comprobar el estado del date
-            })}
+              tvDateSelected.text = date.presentation()
+                mPresenter?.showCurrentWorkstation(date)
+                this.date =date
+            }).show(supportFragmentManager,TAG_CALENDAR_DIALOG.name)}
     }
 
     private fun setupToolbar() {
             val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
             setSupportActionBar(toolbar)
+            tvDateSelected.text = Date().presentation()
             supportActionBar?.setDisplayHomeAsUpEnabled(true);
             supportActionBar?.setDisplayShowHomeEnabled(true);
     }

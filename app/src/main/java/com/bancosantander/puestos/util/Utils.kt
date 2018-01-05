@@ -10,3 +10,7 @@ val Activity.app: App get() = application as App
 fun Date.firebase():String{
     return android.text.format.DateFormat.format("ddMMyy ", this).toString()
 }
+
+fun Date.presentation():String{
+    return android.text.format.DateFormat.format("dd-MM-yyyy ", this).toString()
+}
