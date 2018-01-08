@@ -77,6 +77,7 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
                 when(workstation.status){
                     Workstation.Status.Occupied -> mView?.showBtnLiberar()
                     Workstation.Status.Free -> mView?.showBtnOcupar()
+                    else -> mView?.hideButtons()
                 }
             }
         }

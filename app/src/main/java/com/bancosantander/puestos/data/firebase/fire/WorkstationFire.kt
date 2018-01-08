@@ -20,7 +20,7 @@ object WorkstationFire {
 	private val ROOT_SUBCOLLECTION = "puestos"
 	private val POSITION_FIELD = "position"
 
-	fun getAll(fire: Fire, callback: (ArrayList<Workstation>, Throwable?) -> Unit) {
+	/*fun getAll(fire: Fire, callback: (ArrayList<Workstation>, Throwable?) -> Unit) {
 		fire.getCol(ROOT_COLLECTION)
 			.get()
 			.addOnCompleteListener({ task ->
@@ -37,8 +37,8 @@ object WorkstationFire {
 					Log.e(TAG, "getAll:e:------------------------------------------------------", task.exception)
 				}
 			})
-	}
-	fun getAllRT(fire: Fire, callback: (ArrayList<Workstation>, Throwable?) -> Unit) {
+	}*/
+	/*fun getAllRT(fire: Fire, callback: (ArrayList<Workstation>, Throwable?) -> Unit) {
 		fire.getCol(ROOT_COLLECTION)
                 .whereEqualTo("status", Workstation.Status.Free.name)
 				.addSnapshotListener({ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
@@ -55,7 +55,7 @@ object WorkstationFire {
 						Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
 					}
 				})
-		}
+		}*/
 	fun getFreeWithDateRT(fire: Fire, date: String, callback: (ArrayList<Workstation>, Throwable?) -> Unit) {
 		val document = fire.getCol(ROOT_COLLECTION_DATES_FREE).document(date)
 		document.collection(ROOT_SUBCOLLECTION)
@@ -110,7 +110,7 @@ object WorkstationFire {
 					}
                 })
 	}
-	fun getWorkstationRT(context: AppCompatActivity, fire:Fire, user: String,type: String, callback: (Workstation?, Throwable?) -> Unit) {
+	/*fun getWorkstationRT(context: AppCompatActivity, fire:Fire, user: String,type: String, callback: (Workstation?, Throwable?) -> Unit) {
         fire.getCol(ROOT_COLLECTION)
                 .whereEqualTo(type,user)
                 .addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
@@ -131,7 +131,7 @@ object WorkstationFire {
                         Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
                     }
                 })
-    }
+    }*/
     fun getWorkstationRTV2(context: AppCompatActivity, fire:Fire, user: String,type: String,date:String, callback: (Workstation?, Throwable?) -> Unit) {
         val freeWorkstationIds = fire.getCol(ROOT_COLLECTION_DATES_FREE).document(date).collection(ROOT_SUBCOLLECTION)
         val occupiedWorkstationIds = fire.getCol(ROOT_COLLECTION_DATES_OCCUPIED).document(date).collection(ROOT_SUBCOLLECTION)
@@ -148,17 +148,12 @@ object WorkstationFire {
                         } else{
                             data?.forEach { doc ->
                                 res = createPuestoHelper(fire, doc)
-                                if (type.equals(User.IdType.idOwner.name)) {
-                                    isFreeOrOccupied(freeWorkstationIds,occupiedWorkstationIds,res,user,callback )
-                                } else {
-                                    callback(res, null)
-                                }
+                                isFreeOrOccupied(freeWorkstationIds,occupiedWorkstationIds,res,user,callback )
                             }
                         }
 
                     })
         }else {
-
             occupiedWorkstationIds.whereEqualTo("idUser",user).addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
                 if (error != null){
                     callback(null, error)
@@ -167,7 +162,7 @@ object WorkstationFire {
                     callback(null, null)
                 } else{
                     data?.forEach { doc ->
-                        val owner = doc.get("owner")
+                        val owner = doc.get("owner") as String
                         fire.getCol(ROOT_COLLECTION)
                                 .whereEqualTo("idOwner",owner)
                                 .addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
@@ -180,11 +175,8 @@ object WorkstationFire {
                                     } else{
                                         data?.forEach { doc ->
                                             res = createPuestoHelper(fire, doc)
-                                            if (type.equals(User.IdType.idOwner.name)) {
-                                                isFreeOrOccupied(freeWorkstationIds,occupiedWorkstationIds,res,user,callback )
-                                            } else {
-                                                callback(res, null)
-                                            }
+                                            isFreeOrOccupied(freeWorkstationIds,occupiedWorkstationIds,res,owner,callback )
+                                            //callback(res, null)
                                         }
                                     }
 
@@ -202,39 +194,49 @@ object WorkstationFire {
 
         freeRef.whereEqualTo("owner",user).get().addOnCompleteListener { task ->
             if(task.isSuccessful and !task.result.documents.isEmpty()) {
-                callbackWithStatus(true,false,workstation,user,callback)
+                workstation?.status = Workstation.Status.Free
+                callback(workstation,null)
+                //callbackWithStatus(true,false,workstation,user,callback)
             }else {
                 occupiedRef.whereEqualTo("owner",user).get().addOnCompleteListener { task ->
                     if(task.isSuccessful and !task.result.documents.isEmpty()) {
-                        callbackWithStatus(false,true,workstation,user,callback)
+                        workstation?.status = Workstation.Status.Occupied
+
+                        val idUser = task.result.documents[0].get("idUser")
+                        workstation?.idUser = idUser as String
+                        callback(workstation,null)
+                        //callbackWithStatus(false,true,workstation,user,callback)
                     }else {
-                        callbackWithStatus(false, false,  workstation, user, callback)
+                        workstation?.status = Workstation.Status.Occupied
+                        workstation?.idUser = user
+                        callback(workstation,null)
+                        //callbackWithStatus(false, false,  workstation, user, callback)
                     }
                 }
             }
         }
     }
 
-    private fun callbackWithStatus(free: Boolean, occupied: Boolean, puesto: Workstation?, user: String, callback: (Workstation?, Throwable?) -> Unit) {
-        val copy = puesto?.copy()
-        if (!free && !occupied) {
-            copy?.apply {
-                idUser = user
-                status = Workstation.Status.Occupied
-            }
-        } else if (free) {
-            copy?.apply {
-                idUser = ""
-                status = Workstation.Status.Free
-            }
-        } else {
-            copy?.apply {
+   /* private fun callbackWithStatus(free: Boolean, occupied: Boolean, puesto: Workstation?, user: String, callback: (Workstation?, Throwable?) -> Unit) {
+       val copy = puesto?.copy()
+        /*  if (!free && !occupied) {
+             copy?.apply {
+                 idUser = user
+                 status = Workstation.Status.Occupied
+             }
+         } else if (free) {
+             copy?.apply {
+                 idUser = ""
+                 status = Workstation.Status.Free
+             }
+         } else {
+             copy?.apply {
 
-                status = Workstation.Status.Occupied
-            }
-        }
+                 status = Workstation.Status.Occupied
+             }
+         }*/
         callback(copy, null)
-    }
+    }*/
 
     fun releaseMyWorkstation(fire:Fire,owner: String ,callback: (Workstation, Throwable?) -> Unit){
         fire.getCol(ROOT_COLLECTION)
@@ -243,12 +245,12 @@ object WorkstationFire {
                 .addOnCompleteListener({task ->
                     lateinit var res: Workstation
                     if(task.isSuccessful) {
-                        task.result.documents[0].reference.update("status",Workstation.Status.Free.name)
-                        task.result.documents[0].reference.update("idUser","")
+                        //task.result.documents[0].reference.update("status",Workstation.Status.Free.name)
+                        //task.result.documents[0].reference.update("idUser","")
                         val puesto = createPuestoHelper(fire, task.result.documents[0])
                         puesto?.let {
-                            puesto.status = Workstation.Status.Free
-							puesto.idUser = "";
+                            //puesto.status = Workstation.Status.Free
+							//puesto.idUser = "";
                             callback(puesto,null)
                         }
                     }
@@ -265,11 +267,11 @@ object WorkstationFire {
                 .addOnCompleteListener({task ->
                     lateinit var res: Workstation
                     if(task.isSuccessful) {
-                        task.result.documents[0].reference.update("status",Workstation.Status.Occupied.name)
-                        task.result.documents[0].reference.update("idUser",user)
+                        //task.result.documents[0].reference.update("status",Workstation.Status.Occupied.name)
+                        //task.result.documents[0].reference.update("idUser",user)
                         val puesto = createPuestoHelper(fire, task.result.documents[0])
                         puesto?.let {
-                            puesto.status = Workstation.Status.Occupied
+                            //puesto.status = Workstation.Status.Occupied
                             callback(puesto,null)
                         }
                     }
