@@ -38,46 +38,23 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 	val end100 = PointF()
 	val plane = Plane(getApplication())
 
-	/*enum class Modo { Ruta, Info, Puestos, Anadir, Borrar }
-	var modo = Modo.Ruta
-		set(value) {
-			field = value
-			if(modo == Modo.Puestos) {
-				getPuestosRT()
-			}
-		}*/
+	var fecha : Date = Date()
 
 	init {
 		puestos.value = listOf()
-		//val fire = Fire()
-		/*if(auth.getEmail() != null)
-		UserFire.get(fire, auth.getEmail().toString(), { user: idUser, error ->
-			if(error == null) {
-				usuario.value = user.name +" : "+user.type
-			}
-			else {
-				usuario.value = auth.getEmail()
-				Log.e(TAG, "init:userFire.get:e:---------------------------------------------"+auth.getEmail().toString(), error)
-			}
-		})*/
 		getPuestosRT()
 	}
 
-	//fun logout() { auth.logout() }
-
 	fun punto(pto: PointF, pto100: PointF) {
-		/*when(modo) {
-			Modo.Ruta -> ruta(pto, pto100)
-			Modo.Info -> info(pto, pto100)
-			else -> info(pto, pto100)
-		}*/
 		if(!info(pto, pto100))
 			ruta(pto, pto100)
 	}
 
 	//______________________________________________________________________________________________
-	private fun getPuestosRT() {
-		WorkstationFire.getFreeWithDateRT(fire, Date().firebase(),{ lista, error ->
+	fun getPuestosRT() {
+
+		WorkstationFire.getFreeWithDateRT(fire, fecha.firebase(), { lista, error ->
+		//WorkstationFire.getAllRT(fire, { lista, error ->
 			if(error == null) {
 				puestos.value = lista.toList()
 				Log.e(TAG, "getPuestosRT:------------------------------------------------------"+lista.size)
@@ -92,6 +69,8 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 
 	//______________________________________________________________________________________________
 	private fun info(pto: PointF, pto100: PointF): Boolean {
+		Log.e(TAG, "info: ------------ info: PTO="+pto+" -- "+pto100+" -- "+puestos.value)
+
 		if(puestos.value != null && puestos.value!!.isNotEmpty()) {
 			return infoHelper(puestos.value!!, pto, pto100)
 		}
@@ -101,6 +80,8 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 	}
 	//______________________________________________________________________________________________
 	private fun infoHelper(puestos: List<Workstation>, pto: PointF, pto100: PointF): Boolean {
+		Log.e(TAG, "infoHelper: ------------ info: PTO="+pto+" -- "+pto100+" -- ")
+
 		val MAX = 2f
 		val candidatos = puestos.filter { puesto ->
 			abs(puesto.x - pto100.x) < MAX && abs(puesto.y - pto100.y) < MAX
@@ -159,29 +140,25 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 			Log.e(TAG, "punto:e:out of boundaries--------------"+pto+" : "+pto100+" :: "+ini.value+" : "+end.value)
 			return
 		}
-		if(ini.value == null || end.value != null) {
-			ini100.set(pto100)
-			ini.value = pto
-			end.value = null
-		}
-		else {
-			end100.set(pto100)
-			end.value = pto
 
-			/// En otro hilo
-			Observable.defer({
-				Observable.just(plane.calcRuta(ini100, end100))
+		ini100.set(Plane.entrada)
+		end100.set(pto100)
+		end.value = pto
+
+		/// En otro hilo
+		Observable.defer({
+			Observable.just(plane.calcRuta(ini100, end100))
 			})
-				.subscribeOn(Schedulers.newThread())
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe({it ->
-					camino.value = it.data
-					if(it.data == null) {
-						mensaje.value = getApplication<App>().getString(R.string.error_camino)
-					}
-					Log.e(TAG, "punto:calc-ruta: ok="+it.isOk+", pasosBusqueda="+it.pasosBusqueda+", pasos="+it.pasos)
-				})
-		}
+			.subscribeOn(Schedulers.newThread())
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe({ it ->
+				camino.value = it.data
+				if(it.data == null) {
+					mensaje.value = getApplication<App>().getString(R.string.error_camino)
+				}
+				Log.e(TAG, "punto:calc-ruta: ok="+it.isOk+", pasosBusqueda="+it.pasosBusqueda+", pasos="+it.pasos)
+			})
+
 	}
 	companion object {
 		private val TAG: String = MapaViewModel::class.java.simpleName

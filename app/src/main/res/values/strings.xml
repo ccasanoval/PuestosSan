@@ -80,5 +80,7 @@
     <string name="multiple_free">Liberar varios dias</string>
     <string name="select_day">Seleccionar día</string>
     <string name="aceptar">aceptar</string>
+    <string name="ver_mapa">Ver en el mapa</string>
+
 
 </resources>
