@@ -36,14 +36,7 @@ class WorkstationsListFragmentPresenter(val context: WorkstationsActivity) : Bas
                 model.workstationsList?.value = workstationList
             }
         })
-        /*WorkstationFire.getAllRT(fire(), { workstationList, error ->
-            mView?.hideLoading()
-            if (error != null) {
 
-            } else {
-                model.workstationsList?.value = workstationList
-            }
-        })*/
     }
 
     fun fillWorkstation(idOwner: String, date: String) {

@@ -43,5 +43,4 @@ abstract class BaseActivity: AppCompatActivity() {
 		(application as App).auth.delAuthStateListener(authListener)
 	}
 
-
 }

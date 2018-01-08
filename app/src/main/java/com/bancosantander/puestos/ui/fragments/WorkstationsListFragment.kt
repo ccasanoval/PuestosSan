@@ -51,10 +51,12 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
         activity.tvDateSelected.text = date.presentation()
         workstations_list.adapter = adapter
         activity.ivCalendar.setOnClickListener{
-            CalendarViewDialog.getInstance(date,callback = { date ->
-                activity.tvDateSelected.text = date.presentation()
-                mPresenter?.setData(date)
-                this.date =date
+            CalendarViewDialog.getInstance(false,date,callback = { date ->
+                date?.get(0)?.let {
+                    activity.tvDateSelected.text = it.presentation()
+                    mPresenter?.setData(it)
+                    this.date =it
+                }
             }).show(activity.supportFragmentManager, OwnWorkstationActivity.TAG_CALENDAR_DIALOG.name)}
     }
 

@@ -7,7 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bancosantander.puestos.R
-import com.bancosantander.puestos.util.firebase
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView.SELECTION_MODE_MULTIPLE
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView.SELECTION_MODE_SINGLE
 import kotlinx.android.synthetic.main.calendar_view_layout.*
 import java.util.*
 
@@ -16,10 +17,12 @@ class CalendarViewDialog : DialogFragment() {
 
 	companion object{
 		private var INSTANCE : CalendarViewDialog?=null
-		lateinit var callback : (date:Date)->Unit
+		lateinit var callback : (date: List<Date>?)->Unit
 		lateinit var date : Date
-		fun getInstance(date:Date,callback:(date: Date)->Unit):CalendarViewDialog {
+		private var multipleSelection : Boolean = false
+		fun getInstance(multipleSelection:Boolean,date:Date,callback:(date: List<Date>?)->Unit):CalendarViewDialog {
 			this.date = date
+			this.multipleSelection = multipleSelection
 			this.callback = callback
 			return INSTANCE ?: CalendarViewDialog()
 		}
@@ -43,10 +46,16 @@ class CalendarViewDialog : DialogFragment() {
 
 	override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		when(multipleSelection){
+            true -> calendarView.selectionMode = SELECTION_MODE_MULTIPLE
+            false -> calendarView.selectionMode = SELECTION_MODE_SINGLE
+        }
 		calendarView.setSelectedDate(date)
 		calendarView.setOnDateChangedListener { widget, date, selected ->
-			dismiss()
-			callback(date.date)
+            if(!multipleSelection){
+                    dismiss()
+                    callback(calendarView.selectedDates.map{it.date})
+            }
 		}
 	}
 }

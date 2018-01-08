@@ -2,6 +2,8 @@ package com.bancosantander.puestos.util
 
 import android.app.Activity
 import com.bancosantander.puestos.application.App
+import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.util.*
 
 
@@ -13,4 +15,9 @@ fun Date.firebase():String{
 
 fun Date.presentation():String{
     return android.text.format.DateFormat.format("dd-MM-yyyy ", this).toString()
+}
+
+fun consume(f: ()->Unit) : Boolean{
+    f()
+    return true
 }
