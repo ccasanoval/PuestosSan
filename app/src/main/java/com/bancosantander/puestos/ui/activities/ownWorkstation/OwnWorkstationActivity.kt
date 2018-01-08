@@ -1,9 +1,11 @@
 package com.bancosantander.puestos.ui.activities.ownWorkstation
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.ViewModelProviders
 import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.support.v7.view.menu.MenuBuilder
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
@@ -44,8 +46,10 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
 
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater?.inflate(R.menu.menu_ownworkstation, menu)
+        (menu as MenuBuilder).setOptionalIconsVisible(true)
         return true
     }
 

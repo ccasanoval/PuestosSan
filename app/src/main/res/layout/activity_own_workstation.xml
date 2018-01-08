@@ -29,28 +29,6 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="20dp"/>
 
-            <ImageView
-                android:id="@+id/ivCalendar"
-                android:clickable="true"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:src="@android:drawable/ic_menu_my_calendar"
-                android:tint="@android:color/white"
-                />
-
-            <ImageView
-                android:id="@+id/ivMultipleFree"
-                android:clickable="true"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/liberacion_multiple"
-                android:tint="@android:color/white"
-                />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
@@ -59,13 +37,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
+        android:layout_marginLeft="10dp"
         android:weightSum="2">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
             android:textStyle="bold"
             android:textSize="20sp"
             android:hint="Puesto numero" />
@@ -83,6 +61,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
+        android:layout_marginLeft="10dp"
         android:weightSum="2">
 
         <TextView
@@ -91,7 +70,6 @@
             android:layout_weight="1"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:gravity="center"
             android:hint="Propietario" />
 
         <TextView
@@ -107,13 +85,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
+        android:layout_marginLeft="10dp"
         android:weightSum="2">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
             android:textStyle="bold"
             android:textSize="20sp"
             android:hint="Usuario" />
@@ -131,13 +109,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
+        android:layout_marginLeft="10dp"
         android:weightSum="2">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
             android:textStyle="bold"
             android:textSize="20sp"
             android:hint="Estado" />

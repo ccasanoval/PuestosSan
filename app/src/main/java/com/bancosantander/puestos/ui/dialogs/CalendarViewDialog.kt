@@ -6,11 +6,15 @@ import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import com.bancosantander.puestos.R
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.SELECTION_MODE_MULTIPLE
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.SELECTION_MODE_SINGLE
 import kotlinx.android.synthetic.main.calendar_view_layout.*
 import java.util.*
+import android.widget.TableLayout
+
+
 
 
 class CalendarViewDialog : DialogFragment() {
@@ -47,15 +51,26 @@ class CalendarViewDialog : DialogFragment() {
 	override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		when(multipleSelection){
-            true -> calendarView.selectionMode = SELECTION_MODE_MULTIPLE
-            false -> calendarView.selectionMode = SELECTION_MODE_SINGLE
+            true -> {
+                calendarView.selectionMode = SELECTION_MODE_MULTIPLE
+                calendarView.layoutParams =LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 2f)
+                llCalendarMultipleSelection.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f)
+            }
+            false -> {
+                calendarView.selectionMode = SELECTION_MODE_SINGLE
+                calendarView.layoutParams =LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 3f)
+                llCalendarMultipleSelection.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 0f)
+            }
         }
 		calendarView.setSelectedDate(date)
 		calendarView.setOnDateChangedListener { widget, date, selected ->
             if(!multipleSelection){
                     dismiss()
                     callback(calendarView.selectedDates.map{it.date})
+            }else{
+                tvNumDatesSelected.text = "Dias a liberar: ${calendarView.selectedDates.size} dia/s"
             }
 		}
+        btnLiberar.setOnClickListener { callback(calendarView.selectedDates.map { it.date }) }
 	}
 }

@@ -48,7 +48,6 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
         workstations_list.layoutManager = mLayoutManager;
         adapter = WorkstationsListAdapter()
         mPresenter.setData()
-        activity.tvDateSelected.text = date.presentation()
         workstations_list.adapter = adapter
         activity.ivCalendar.setOnClickListener{
             CalendarViewDialog.getInstance(false,date,callback = { date ->
