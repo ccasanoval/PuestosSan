@@ -31,7 +31,7 @@ class Plane(context: Context) {
 				line = reader.readLine()
 				rows++
 			}
-			Log.e(TAG, "init:---------------SIZE:"+cols+"--"+rows+"--------------------------------------")
+			//Log.e(TAG, "init:---------------SIZE:"+cols+"--"+rows+"--------------------------------------")
 			isReady = true
 		}
 		catch(e: IOException) {
@@ -46,7 +46,7 @@ class Plane(context: Context) {
 	}
 	private val isValid: Boolean
 	get() {
-		Log.e(TAG, "isValid:---------------"+(cols*rows)+" === "+data.size)
+		//Log.e(TAG, "isValid:---------------"+(cols*rows)+" === "+data.size)
 		if(!isReady || data.size < 4 || data.size != cols*rows)
 			return false
 		return true
@@ -65,7 +65,7 @@ class Plane(context: Context) {
 	}
 	//______________________________________________________________________________________________
 	fun calcRuta(ini: PointF, end: PointF): Solution {
-		Log.e(TAG, "calc0:------------0----------------"+data.size)
+		//Log.e(TAG, "calc0:------------0----------------"+data.size)
 
 		val err = Solution(false, null)
 		if(!isValid) return err
@@ -80,7 +80,7 @@ class Plane(context: Context) {
 		iniMap.set(evitarMuros(iniMap))
 		endMap.set(evitarMuros(endMap))
 
-		Log.e(TAG, "CALC: ------------"+iniMap+" === "+data[iniMap.y.toInt()*cols+iniMap.x.toInt()]+" / "+endMap +" === "+data[endMap.y.toInt()*cols+endMap.x.toInt()])
+		//Log.e(TAG, "CALC: ------------"+iniMap+" === "+data[iniMap.y.toInt()*cols+iniMap.x.toInt()]+" / "+endMap +" === "+data[endMap.y.toInt()*cols+endMap.x.toInt()])
 		val res = Astar().calcMapa(iniMap, endMap, data.toByteArray(), cols, rows)
 		return translateRes(res)
 	}

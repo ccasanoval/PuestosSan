@@ -77,5 +77,6 @@
     <string name="liberar_puesto">Debes liberar el puesto antes de ocupar otro</string>
     <string name="ir_desde_entrada">Ir desde entrada</string>
     <string name="mostrar_tutorial">Ver tutorial</string>
+    <string name="ver_mapa">Ver en el mapa</string>
 
 </resources>

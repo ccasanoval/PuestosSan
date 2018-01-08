@@ -9,17 +9,23 @@ import android.view.*
 import android.widget.Toast
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.data.models.Workstation
+import com.bancosantander.puestos.ui.activities.ownWorkstation.OwnWorkstationActivity
 import com.bancosantander.puestos.ui.activities.workstations.WorkstationsActivity
+import com.bancosantander.puestos.ui.dialogs.CalendarViewDialog
 import com.bancosantander.puestos.ui.dialogs.PuestoDialog
 import com.bancosantander.puestos.ui.presenters.fragments.WorkstationsMapFragmentPresenter
 import com.bancosantander.puestos.ui.viewModels.map.MapaViewModel
 import com.bancosantander.puestos.ui.views.map.WorkstationsMapViewFragmentContract
 import com.bancosantander.puestos.util.Log
 import com.bancosantander.puestos.util.WorkstationParcelable
+import com.bancosantander.puestos.util.presentation
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpFragment
 import kotlinx.android.synthetic.main.act_main.*
+import kotlinx.android.synthetic.main.workstations_activity.*
+import kotlinx.android.synthetic.main.workstations_list_fragment.*
+import java.util.*
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 class WorkstationsMapFragment : BaseMvpFragment<WorkstationsMapViewFragmentContract.View, WorkstationsMapFragmentPresenter>(), WorkstationsMapViewFragmentContract.View {
@@ -47,6 +53,14 @@ class WorkstationsMapFragment : BaseMvpFragment<WorkstationsMapViewFragmentContr
 		imgPlano.setOnTouchListener(imgListener)
 
 		iniViewModel(view!!)
+
+		activity.tvDateSelected.text = viewModel.fecha.presentation()
+		activity.ivCalendar.setOnClickListener{
+			CalendarViewDialog.getInstance(viewModel.fecha, callback = { date ->
+				activity.tvDateSelected.text = date.presentation()
+				viewModel.fecha = date
+				viewModel.getPuestosRT()
+			}).show(activity.supportFragmentManager, OwnWorkstationActivity.TAG_CALENDAR_DIALOG.name)}
 	}
 
 	//______________________________________________________________________________________________
