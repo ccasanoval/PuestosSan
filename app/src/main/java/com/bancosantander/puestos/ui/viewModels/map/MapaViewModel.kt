@@ -12,13 +12,14 @@ import com.bancosantander.puestos.data.firebase.fire.Fire
 import com.bancosantander.puestos.data.firebase.fire.WorkstationFire
 import com.bancosantander.puestos.util.Plane
 import com.bancosantander.puestos.data.models.Workstation
+import com.bancosantander.puestos.util.firebase
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.lang.Math.abs
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-
+import java.util.*
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,7 +77,7 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 
 	//______________________________________________________________________________________________
 	private fun getPuestosRT() {
-		WorkstationFire.getAllRT(fire, { lista, error ->
+		WorkstationFire.getFreeWithDateRT(fire, Date().firebase(),{ lista, error ->
 			if(error == null) {
 				puestos.value = lista.toList()
 				Log.e(TAG, "getPuestosRT:------------------------------------------------------"+lista.size)
