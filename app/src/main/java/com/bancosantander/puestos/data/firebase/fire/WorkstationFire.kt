@@ -194,32 +194,23 @@ object WorkstationFire {
 
         freeRef.whereEqualTo("owner",user).get().addOnCompleteListener { task ->
             if(task.isSuccessful and !task.result.documents.isEmpty()) {
-                workstation?.status = Workstation.Status.Free
-                callback(workstation,null)
-                //callbackWithStatus(true,false,workstation,user,callback)
+                callback(changeWorkstationStatus(true,false,workstation,user),null)
             }else {
                 occupiedRef.whereEqualTo("owner",user).get().addOnCompleteListener { task ->
                     if(task.isSuccessful and !task.result.documents.isEmpty()) {
-                        workstation?.status = Workstation.Status.Occupied
-
-                        val idUser = task.result.documents[0].get("idUser")
-                        workstation?.idUser = idUser as String
-                        callback(workstation,null)
-                        //callbackWithStatus(false,true,workstation,user,callback)
+                        val idUser = task.result.documents[0].get("idUser") as String
+                        callback(changeWorkstationStatus(false,true,workstation,idUser),null)
                     }else {
-                        workstation?.status = Workstation.Status.Occupied
-                        workstation?.idUser = user
-                        callback(workstation,null)
-                        //callbackWithStatus(false, false,  workstation, user, callback)
+                        callback(changeWorkstationStatus(false,false,workstation,user),null)
                     }
                 }
             }
         }
     }
 
-   /* private fun callbackWithStatus(free: Boolean, occupied: Boolean, puesto: Workstation?, user: String, callback: (Workstation?, Throwable?) -> Unit) {
+   private fun changeWorkstationStatus(free: Boolean, occupied: Boolean, puesto: Workstation?, user: String) : Workstation {
        val copy = puesto?.copy()
-        /*  if (!free && !occupied) {
+          if (!free && !occupied) {
              copy?.apply {
                  idUser = user
                  status = Workstation.Status.Occupied
@@ -234,9 +225,10 @@ object WorkstationFire {
 
                  status = Workstation.Status.Occupied
              }
-         }*/
-        callback(copy, null)
-    }*/
+         }
+       return copy!!
+
+    }
 
     fun releaseMyWorkstation(fire:Fire,owner: String ,callback: (Workstation, Throwable?) -> Unit){
         fire.getCol(ROOT_COLLECTION)
@@ -245,13 +237,11 @@ object WorkstationFire {
                 .addOnCompleteListener({task ->
                     lateinit var res: Workstation
                     if(task.isSuccessful) {
-                        //task.result.documents[0].reference.update("status",Workstation.Status.Free.name)
-                        //task.result.documents[0].reference.update("idUser","")
                         val puesto = createPuestoHelper(fire, task.result.documents[0])
                         puesto?.let {
-                            //puesto.status = Workstation.Status.Free
-							//puesto.idUser = "";
-                            callback(puesto,null)
+                            puesto.status = Workstation.Status.Free
+							puesto.idUser = "";
+                            callback(changeWorkstationStatus(true,false,puesto,""),null)
                         }
                     }
                     else {
@@ -261,18 +251,16 @@ object WorkstationFire {
                 })
     }
     fun fillWorkstation (fire:Fire,owner: String,user : String ,callback: (Workstation, Throwable?) -> Unit) {
+
         fire.getCol(ROOT_COLLECTION)
                 .whereEqualTo("idOwner", owner)
                 .get()
                 .addOnCompleteListener({task ->
                     lateinit var res: Workstation
                     if(task.isSuccessful) {
-                        //task.result.documents[0].reference.update("status",Workstation.Status.Occupied.name)
-                        //task.result.documents[0].reference.update("idUser",user)
                         val puesto = createPuestoHelper(fire, task.result.documents[0])
                         puesto?.let {
-                            //puesto.status = Workstation.Status.Occupied
-                            callback(puesto,null)
+                            callback(changeWorkstationStatus(false,true,puesto,user),null)
                         }
                     }
                     else {
@@ -318,19 +306,28 @@ object WorkstationFire {
     }
 
     suspend private fun addReleaseWorkstation(fire: Fire, date: String, owner: String) {
-        val workstationsOccupied = fire.getCol(ROOT_COLLECTION_DATES_FREE).document(date).collection(ROOT_SUBCOLLECTION)
-        val hashMap = HashMap<String, Any>()
-        hashMap.put("owner", owner)
-        workstationsOccupied.add(hashMap)
+
+        val workstationsFree = fire.getCol(ROOT_COLLECTION_DATES_FREE).document(date).collection(ROOT_SUBCOLLECTION)
+        workstationsFree.whereEqualTo("owner",owner).get().addOnCompleteListener { task ->
+            if(task.isSuccessful and task.result.isEmpty){
+                val hashMap = HashMap<String, Any>()
+                hashMap.put("owner", owner)
+                workstationsFree.add(hashMap)
+            }
+        }
     }
 
     suspend private fun addFillWorkstation(fire: Fire, date: String, owner: String, user: String) {
         val workstationsOccupied = fire.getCol(ROOT_COLLECTION_DATES_OCCUPIED).document(date).collection(ROOT_SUBCOLLECTION)
-        val hashMap = HashMap<String, Any>()
-        if (owner != user) {
-            hashMap.put("owner", owner)
-            hashMap.put("idUser", user)
-            workstationsOccupied.add(hashMap)
+        workstationsOccupied.whereEqualTo("owner",owner).get().addOnCompleteListener { task ->
+            if(task.isSuccessful and task.result.isEmpty){
+                val hashMap = HashMap<String, Any>()
+                if (owner != user) {
+                    hashMap.put("owner", owner)
+                    hashMap.put("idUser", user)
+                    workstationsOccupied.add(hashMap)
+                }
+            }
         }
     }
 

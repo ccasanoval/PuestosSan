@@ -98,12 +98,7 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
        auth().getEmail()?.let{
            async {
                WorkstationFire.fillWorkstationV2(fire(), it, it,date, { workstation, error ->
-                   mView?.hideLoading()
-                   if (error != null) {
-
-                   } else {
-
-                   }
+                   retrieveWorkstation(workstation,error)
                })
            }
        }
