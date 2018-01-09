@@ -56,10 +56,12 @@ class WorkstationsMapFragment : BaseMvpFragment<WorkstationsMapViewFragmentContr
 
 		activity.tvDateSelected.text = viewModel.fecha.presentation()
 		activity.ivCalendar.setOnClickListener{
-			CalendarViewDialog.getInstance(viewModel.fecha, callback = { date ->
-				activity.tvDateSelected.text = date.presentation()
-				viewModel.fecha = date
-				viewModel.getPuestosRT()
+			CalendarViewDialog.getInstance(false,viewModel.fecha, callback = { date ->
+				date?.get(0)?.let {
+					activity.tvDateSelected.text = it.presentation()
+					viewModel.fecha = it
+					viewModel.getPuestosRT()
+				}
 			}).show(activity.supportFragmentManager, OwnWorkstationActivity.TAG_CALENDAR_DIALOG.name)}
 	}
 
