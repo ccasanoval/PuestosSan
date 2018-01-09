@@ -62,12 +62,10 @@ class WorkstationsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             workstation = item
             itemView.tvEstado.text = workstation.status.toString()
             itemView.tvPropietario.text = workstation.idOwner
-			//itemView.tvPosicion.text = workstation.x.toString()+"º" + " " + workstation.y.toString()+"º"
 			itemView.btnVerMapa.setOnClickListener {
 				val ptoIni100 = Plane.entrada
 				val ptoEnd100 = PointF(workstation.x, workstation.y)
 				EventBus.getDefault().post(MapaViewModel.RutaEvent(ptoIni100, ptoEnd100))
-
 
 				val context = itemView.context as WorkstationsActivity
 				val tabhost = context.findViewById(R.id.tabs) as TabLayout
