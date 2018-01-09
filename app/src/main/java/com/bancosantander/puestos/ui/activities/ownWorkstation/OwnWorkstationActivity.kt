@@ -33,6 +33,7 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
     }
 
     var date: Date = Date()
+    lateinit var mOptionsMenu : Menu
 
     override var mPresenter: OwnWorkstationPresenter = OwnWorkstationPresenter()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,16 +50,17 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
     @SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater?.inflate(R.menu.menu_ownworkstation, menu)
-        (menu as MenuBuilder).setOptionalIconsVisible(true)
+        mOptionsMenu = menu!!
+        (mOptionsMenu as MenuBuilder).setOptionalIconsVisible(true)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
-        R.id.multiple_free -> consume {
+        R.id.multiple_free_menuItem -> consume {
             date= Date()
             showCalendar(true)
         }
-        R.id.select_day -> consume { showCalendar(false) }
+        R.id.select_day_menuItem -> consume { showCalendar(false) }
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -89,6 +91,14 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         tvDateSelected.text = Date().presentation()
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         supportActionBar?.setDisplayShowHomeEnabled(true);
+    }
+
+    override fun configMenuFixed() {
+        mOptionsMenu.findItem(R.id.multiple_free_menuItem).setVisible(true)
+    }
+
+    override fun configMenuInterim() {
+        mOptionsMenu.findItem(R.id.multiple_free_menuItem).setVisible(false)
     }
 
     override fun showWorkstation(idOwner: String, idUser: String, status: Workstation.Status, number: String) {

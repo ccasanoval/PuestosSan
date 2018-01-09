@@ -20,6 +20,8 @@ object OwnWorkstationViewContract {
         fun showMyDialog(no_tiene_puesto_ocupado: Int)
         fun showLoading()
         fun hideLoading()
+        fun configMenuFixed()
+        fun configMenuInterim()
     }
     interface Presenter : BaseMvpPresenter<View> {
         fun init(model: OwnWorkstationViewModel)
