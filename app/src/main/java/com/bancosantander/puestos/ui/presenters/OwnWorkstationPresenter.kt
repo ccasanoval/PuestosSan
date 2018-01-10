@@ -41,6 +41,7 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
                 User.Type.Fixed -> {
                     auth().getEmail()?.let {
                         WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idOwner.name,date.firebase(),{ workstation, error ->
+                            mView?.configMenuFixed()
                             retrieveWorkstation(workstation,error)
                         })
                     }
@@ -48,6 +49,7 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
                 User.Type.Interim -> {
                     auth().getEmail()?.let{
                         WorkstationFire.getWorkstationRTV2(mView?.getMyActivity()!!,fire(),it,User.IdType.idUser.name,date.firebase(),{ workstation, error ->
+                            mView?.configMenuInterim()
                             retrieveWorkstation(workstation,error)
                         })
                     }

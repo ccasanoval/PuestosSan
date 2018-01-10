@@ -2,14 +2,14 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/multiple_free"
+        android:id="@+id/multiple_free_menuItem"
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/multiple_free"
         app:showAsAction="never"
         android:iconTint="@color/blanco"
         />
     <item
-        android:id="@+id/select_day"
+        android:id="@+id/select_day_menuItem"
         android:icon="@android:drawable/ic_menu_my_calendar"
         android:title="@string/select_day"
         app:showAsAction="never"
