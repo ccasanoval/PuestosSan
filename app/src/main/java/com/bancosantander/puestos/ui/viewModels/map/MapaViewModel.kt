@@ -42,7 +42,7 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 
 	init {
 		puestos.value = listOf()
-		getPuestosRT()
+
 	}
 
 	fun punto(pto: PointF, pto100: PointF) {
@@ -50,21 +50,7 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 			ruta(pto, pto100)
 	}
 
-	//______________________________________________________________________________________________
-	fun getPuestosRT() {
 
-		WorkstationFire.getFreeWithDateRT(fire, fecha.firebase(), { lista, error ->
-		//WorkstationFire.getAllRT(fire, { lista, error ->
-			if(error == null) {
-				puestos.value = lista.toList()
-				Log.e(TAG, "getPuestosRT:------------------------------------------------------"+lista.size)
-			}
-			else {
-				Log.e(TAG, "getPuestosRT:e:------------------------------------------------------",error)
-				mensaje.value = getApplication<App>().getString(R.string.puestos_get_error)
-			}
-		})
-	}
 
 
 	//______________________________________________________________________________________________

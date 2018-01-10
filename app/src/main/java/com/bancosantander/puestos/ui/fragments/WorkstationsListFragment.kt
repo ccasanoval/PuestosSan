@@ -31,7 +31,6 @@ import java.util.*
 class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContract.View,WorkstationsListFragmentPresenter>(), WorkstationsViewFragmentContract.View, WorkstationsListAdapter.OnItemClickListener {
 
     var adapter : WorkstationsListAdapter?  = null
-    var date : Date = Date()
 
     override lateinit var mPresenter: WorkstationsListFragmentPresenter
 
@@ -49,14 +48,7 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
         adapter = WorkstationsListAdapter()
         mPresenter.setData()
         workstations_list.adapter = adapter
-        activity.ivCalendar.setOnClickListener{
-            CalendarViewDialog.getInstance(false,date,callback = { date ->
-                date?.get(0)?.let {
-                    activity.tvDateSelected.text = it.presentation()
-                    mPresenter?.setData(it)
-                    this.date =it
-                }
-            }).show(activity.supportFragmentManager, OwnWorkstationActivity.TAG_CALENDAR_DIALOG.name)}
+
     }
 
     override fun getMyActivity(): BaseMvpActivity<*,*> {
@@ -71,7 +63,7 @@ class WorkstationsListFragment : BaseMvpFragment<WorkstationsViewFragmentContrac
     override fun onItemClickListener(view: View, workstation: Workstation) {
         SiNoDialog.showSiNo(context,
                 getString(R.string.fill_workstation),
-                { si -> if(si) mPresenter.checkIfUserHaveWorkstation(workstation.idOwner,date.firebase())  })
+                { si -> if(si) mPresenter.checkIfUserHaveWorkstation(workstation.idOwner,(activity as WorkstationsActivity).date.firebase())  })
     }
 
     override fun showLoading() {
