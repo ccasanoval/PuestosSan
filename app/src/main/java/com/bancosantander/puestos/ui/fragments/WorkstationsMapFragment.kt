@@ -24,8 +24,7 @@ import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpFragment
 import kotlinx.android.synthetic.main.act_main.*
 import kotlinx.android.synthetic.main.workstations_activity.*
-import kotlinx.android.synthetic.main.workstations_list_fragment.*
-import java.util.*
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 class WorkstationsMapFragment : BaseMvpFragment<WorkstationsMapViewFragmentContract.View, WorkstationsMapFragmentPresenter>(), WorkstationsMapViewFragmentContract.View {

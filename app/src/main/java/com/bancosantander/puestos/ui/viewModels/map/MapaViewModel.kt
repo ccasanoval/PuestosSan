@@ -113,6 +113,7 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 	class RutaEvent(val ptoIni100: PointF, val ptoEnd100: PointF)
 	@Subscribe
 	fun calcRutaEventBus(event: RutaEvent) {
+		end.value = null
 		calcRuta(event.ptoIni100, event.ptoEnd100)
 	}
 	//______________________________________________________________________________________________

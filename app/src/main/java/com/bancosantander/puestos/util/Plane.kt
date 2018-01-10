@@ -155,6 +155,6 @@ class Plane(context: Context) {
 	//______________________________________________________________________________________________
 	companion object {
 		private val TAG: String = Plane::class.java.simpleName
-		val entrada = PointF(50f,50f)
+		val entrada = PointF(67f,68f)
 	}
 }
