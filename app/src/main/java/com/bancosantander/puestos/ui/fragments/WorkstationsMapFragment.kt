@@ -38,6 +38,7 @@ class WorkstationsMapFragment : BaseMvpFragment<WorkstationsMapViewFragmentContr
 		super.onViewCreated(view, savedInstanceState)
 		mPresenter.init()
 		imgPlano.setImage(ImageSource.asset("plano.jpg"))
+		mPresenter.setData()
 		val gesture = getGestureDetector()
 		imgListener = View.OnTouchListener { _, motionEvent ->
 			gesture.onTouchEvent(motionEvent)
