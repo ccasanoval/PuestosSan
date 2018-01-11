@@ -100,7 +100,7 @@ object WorkstationFire {
 				.get()
 				.addOnCompleteListener({ task ->
 					lateinit var res: Workstation
-					if(task.isSuccessful) {
+					if(task.isSuccessful && task.result.documents.size > 0) {
 							val puesto = createPuestoHelper(fire, task.result.documents[0])
 							if (puesto?.idOwner == owner ) callback(puesto, null)
 					}
