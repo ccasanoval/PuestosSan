@@ -57,11 +57,12 @@ class WorkstationsMapFragmentPresenter(val context: WorkstationsActivity) : Base
     fun setData(date: Date = Date()) {
         mView?.showLoading()
         model.fecha = date
+		model.camino.value = null
         WorkstationFire.getFreeWithDateRT(fire(), date.firebase(), { workstationList, error ->
             mView?.hideLoading()
             if(error == null) {
                 model.puestos.value = workstationList.toList()
-                com.bancosantander.puestos.util.Log.e("MapaViewModel", "getPuestosRT:------------------------------------------------------"+workstationList.size)
+                com.bancosantander.puestos.util.Log.e("MapaViewModel", "getPuestosRT:--------------------------------------------"+workstationList.size)
             }
             else {
                 model.puestos.value = listOf()
