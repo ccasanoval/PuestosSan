@@ -81,6 +81,7 @@
     <string name="select_day">Seleccionar día</string>
     <string name="aceptar">aceptar</string>
     <string name="ver_mapa">Ver en el mapa</string>
+    <string name="name">Nombre</string>
 
 
 </resources>
