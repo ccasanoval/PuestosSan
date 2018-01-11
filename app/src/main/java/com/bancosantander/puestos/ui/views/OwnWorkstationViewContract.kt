@@ -22,11 +22,14 @@ object OwnWorkstationViewContract {
         fun hideLoading()
         fun configMenuFixed()
         fun configMenuInterim()
+        fun noWorkstationFill()
+        fun workstationFill()
     }
     interface Presenter : BaseMvpPresenter<View> {
         fun init(model: OwnWorkstationViewModel)
-        fun fillWorkstation(date:String)
-        fun releaseMyWorkstation(date: String)
+        fun fillWorkstation(date:Date)
+        fun releaseMyWorkstation(date: Date)
         fun showCurrentWorkstation(date: Date = Date())
+        fun goToWorkstationList()
     }
 }

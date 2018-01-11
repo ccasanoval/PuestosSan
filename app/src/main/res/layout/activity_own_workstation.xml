@@ -31,7 +31,12 @@
 
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
-
+    <LinearLayout
+        android:id="@+id/llWithWorkstation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -170,5 +175,46 @@
                 android:textAllCaps="true"
                 android:textSize="20sp" />
         </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llWithoutWorkstation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/no_sit"
+                android:layout_above="@id/tvNoSitFill"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
+                android:id="@+id/tvNoSitFill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/no_tiene_puesto_ocupado"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+
+            <Button
+                android:id="@+id/btnGoToWorkstationList"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:text="@string/go_to_workstationList"
+                android:background="@drawable/login_button_style"
+                android:textColor="@android:color/white"/>
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

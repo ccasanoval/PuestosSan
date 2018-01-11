@@ -82,6 +82,7 @@
     <string name="aceptar">aceptar</string>
     <string name="ver_mapa">Ver en el mapa</string>
     <string name="name">Nombre</string>
+    <string name="go_to_workstationList">Ir a lista disponibles</string>
 
 
 </resources>

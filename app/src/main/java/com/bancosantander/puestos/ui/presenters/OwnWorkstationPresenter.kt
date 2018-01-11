@@ -11,6 +11,7 @@ import com.bancosantander.puestos.ui.views.OwnWorkstationViewContract
 import com.bancosantander.puestos.util.firebase
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 import kotlinx.coroutines.experimental.async
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -71,7 +72,7 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
             if(workstation == null) {
                 model.currentWorkstation?.value = Workstation()
                 mView?.hideButtons()
-                mView?.getMyActivity()?.showInfoScreenDialog(R.string.no_tiene_puesto_ocupado)
+                mView?.noWorkstationFill()
             }
             else {
                 model.currentWorkstation?.value = workstation
@@ -81,28 +82,34 @@ class OwnWorkstationPresenter: BasePresenter<OwnWorkstationViewContract.View>(),
                     Workstation.Status.Free -> mView?.showBtnOcupar()
                     else -> mView?.hideButtons()
                 }
+                mView?.workstationFill()
             }
         }
     }
-    override fun releaseMyWorkstation(date: String) {
+    override fun releaseMyWorkstation(date: Date) {
         mView?.showLoading()
         auth().getEmail()?.let {
             async {
-                WorkstationFire.releaseMyWorkstationV2(fire(),owner,date,{workstation, error ->
-                    retrieveWorkstation(workstation,error)
+                WorkstationFire.releaseMyWorkstationV2(fire(),owner,date.firebase(),{workstation, error ->
+                    showCurrentWorkstation(date)
                 })
             }
         }
     }
 
-    override fun fillWorkstation(date: String) {
+    override fun fillWorkstation(date: Date) {
         mView?.showLoading()
        auth().getEmail()?.let{
            async {
-               WorkstationFire.fillWorkstationV2(fire(), it, it,date, { workstation, error ->
+               WorkstationFire.fillWorkstationV2(fire(), it, it,date.firebase(), { workstation, error ->
                    retrieveWorkstation(workstation,error)
                })
            }
        }
+    }
+
+    override fun goToWorkstationList() {
+        router().goToFillWorkstation()
+        mView?.getMyActivity()?.finish()
     }
 }

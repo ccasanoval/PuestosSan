@@ -221,8 +221,9 @@ object WorkstationFire {
                  status = Workstation.Status.Free
              }
          } else {
-             copy?.apply {
 
+             copy?.apply {
+                 idUser = user
                  status = Workstation.Status.Occupied
              }
          }

@@ -42,8 +42,9 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         val model = ViewModelProviders.of(this).get(OwnWorkstationViewModel::class.java)
         mPresenter.init(model)
         setupToolbar()
-        btnLiberar.setOnClickListener { mPresenter.releaseMyWorkstation(date = date.firebase()) }
-        btnOcupar.setOnClickListener { mPresenter.fillWorkstation(date = date.firebase()) }
+        btnLiberar.setOnClickListener { mPresenter.releaseMyWorkstation(date = date) }
+        btnOcupar.setOnClickListener { mPresenter.fillWorkstation(date = date) }
+        btnGoToWorkstationList.setOnClickListener { mPresenter.goToWorkstationList() }
 
     }
 
@@ -72,7 +73,7 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
                     tvDateSelected.text = Date().presentation()
                     mPresenter?.showCurrentWorkstation(Date())
                     this.date = Date()
-                    date?.forEach { mPresenter?.releaseMyWorkstation(it.firebase())}
+                    date?.forEach { mPresenter?.releaseMyWorkstation(it)}
                 }
                 false -> consume {
                     date?.get(0)?.let {
@@ -147,4 +148,13 @@ class OwnWorkstationActivity : BaseMvpActivity<OwnWorkstationViewContract.View,
         super.hideLoadingDialog()
     }
 
+    override fun noWorkstationFill() {
+        llWithWorkstation.visibility = View.GONE
+        llWithoutWorkstation.visibility = View.VISIBLE
+    }
+
+    override fun workstationFill() {
+        llWithWorkstation.visibility = View.VISIBLE
+        llWithoutWorkstation.visibility = View.GONE
+    }
 }
