@@ -27,6 +27,7 @@ import com.bancosantander.puestos.ui.views.WorkstationsViewContract
 import com.bancosantander.puestos.ui.views.WorkstationsViewFragmentContract
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpFragment
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.tutorial_fragment.*
 import kotlinx.android.synthetic.main.workstations_list_fragment.*
 
@@ -35,21 +36,29 @@ import kotlinx.android.synthetic.main.workstations_list_fragment.*
  */
 class TutorialFragment : Fragment(){
 
-    companion object{
-        private var INSTANCE : TutorialFragment?=null
-        private var imageTuto:Int? = 0
-        fun getInstance(imageTuto :Int) : TutorialFragment {
-            this.imageTuto = imageTuto
-            return INSTANCE ?: TutorialFragment()
+    private var imageTuto: Int = 0
+    companion object {
+        fun newInstance(imageTuto :Int): TutorialFragment {
+
+            val fragment = TutorialFragment()
+            val bundle = Bundle()
+            bundle.putInt("image", imageTuto)
+            fragment.arguments = bundle
+            return fragment
         }
     }
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        imageTuto = arguments.getInt("image")
+    }
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.tutorial_fragment,container,false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ivTutorial.setImageDrawable(ContextCompat.getDrawable(activity,imageTuto!!))
+        Picasso.with(activity).load(imageTuto).into(ivTutorial)
     }
 }

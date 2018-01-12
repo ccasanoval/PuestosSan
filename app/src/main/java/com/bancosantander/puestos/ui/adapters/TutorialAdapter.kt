@@ -14,11 +14,10 @@ import com.mibaldi.viewmodelexamplemvp.base.BaseMvpFragment
  */
 class TutorialAdapter(fm: FragmentManager, private val tutoImages :ArrayList<Int>) : FragmentStatePagerAdapter(fm){
 
-    override fun getItem(position: Int): Fragment {
-        return TutorialFragment.getInstance(tutoImages[position])
-    }
+    override fun getItem(position: Int): Fragment = TutorialFragment.newInstance(tutoImages[position])
 
-    override fun getCount(): Int {
-      return tutoImages.size
-    }
+    override fun getCount() = tutoImages.size
+
+
+
 }
