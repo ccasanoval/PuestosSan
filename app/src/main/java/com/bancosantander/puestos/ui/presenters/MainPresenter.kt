@@ -85,6 +85,10 @@ class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Pr
         router().goToTutorial()
     }
 
+    override fun goToSearchUser() {
+        router().gotoSearchUser()
+    }
+
     override fun hadChangedPass(): Boolean {
         return hadCahngedPass
     }

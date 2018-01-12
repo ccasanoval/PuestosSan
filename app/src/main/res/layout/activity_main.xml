@@ -39,73 +39,109 @@
         android:layout_height="0dp"
         android:layout_weight="6"
         android:gravity="center"
-        android:weightSum="3"
+        android:weightSum="2"
         android:orientation="vertical">
         <LinearLayout
-            android:id="@+id/btnFill"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:background="@drawable/linear_onclick_style">
-            <ImageView
-                android:id="@+id/ivFill"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:tint="@color/colorPrimary"
-                android:src="@drawable/list"
-                />
-            <TextView
-                android:id="@+id/tvFill"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/light_grey"
-                android:paddingTop="5dp"
-                android:text="@string/available_list"/>
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <LinearLayout
+                android:id="@+id/btnFill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:background="@drawable/linear_onclick_style">
+                <ImageView
+                    android:id="@+id/ivFill"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:tint="@color/colorPrimary"
+                    android:src="@drawable/list"
+                    />
+                <TextView
+                    android:id="@+id/tvFill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light_grey"
+                    android:paddingTop="5dp"
+                    android:text="@string/available_list"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnManage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:background="@drawable/linear_onclick_style">
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:tint="@color/colorPrimary"
+                    android:src="@drawable/avatar"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light_grey"
+                    android:paddingTop="5dp"
+                    android:text="@string/workstation_manage"/>
+            </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
-            android:id="@+id/btnManage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:background="@drawable/linear_onclick_style">
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:tint="@color/colorPrimary"
-                android:src="@drawable/avatar"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/light_grey"
-                android:paddingTop="5dp"
-                android:text="@string/workstation_manage"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/btnConfiguration"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:background="@drawable/linear_onclick_style">
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:tint="@color/colorPrimary"
-                android:src="@drawable/gear"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/light_grey"
-                android:paddingTop="5dp"
-                android:text="@string/configuration"/>
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <LinearLayout
+                android:id="@+id/btnSearchUser"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:background="@drawable/linear_onclick_style">
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:tint="@color/colorPrimary"
+                    android:src="@drawable/search"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light_grey"
+                    android:paddingTop="5dp"
+                    android:text="@string/search_user"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnConfiguration"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:background="@drawable/linear_onclick_style">
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:tint="@color/colorPrimary"
+                    android:src="@drawable/gear"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light_grey"
+                    android:paddingTop="5dp"
+                    android:text="@string/configuration"/>
+            </LinearLayout>
         </LinearLayout>
 
 
