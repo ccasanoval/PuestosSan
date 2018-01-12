@@ -15,7 +15,7 @@ class SearchUserActivity : BaseMvpActivity<SearchUserViewContract.View,
         SearchUserPresenter>(),
         SearchUserViewContract.View {
 
-    private val os = arrayOf("Android", "Windows Vista", "Windows 7", "Windows 8", "Ubuntu 12.04", "Ubuntu 12.10", "Mac OSX", "iOS 5", "iOS 6", "Solaris", "Kubuntu", "Suse")
+    private val os = arrayOf("Mikel", "Cesar", "Borja", "Fran", "Ubuntu 12.04", "Ubuntu 12.10", "Mac OSX", "iOS 5", "iOS 6", "Solaris", "Kubuntu", "Suse")
 
     override  var mPresenter: SearchUserPresenter = SearchUserPresenter()
 
@@ -23,7 +23,7 @@ class SearchUserActivity : BaseMvpActivity<SearchUserViewContract.View,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_user)
         mPresenter.init()
-        var adapter :ArrayAdapter<String> = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,os)
+        var adapter :ArrayAdapter<String> = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,mPresenter.getUsers())
         autoCompleteTextView.threshold = 3
         autoCompleteTextView.setAdapter(adapter)
     }

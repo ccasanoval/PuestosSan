@@ -19,4 +19,15 @@ class SearchUserPresenter : BasePresenter<SearchUserViewContract.View>(), Search
     override fun init() {
 
     }
+
+    fun getUsers():List<String>{
+        var listUserString : List<String> = mutableListOf()
+        UserFire.getAll(fire(),{usersList, throwable ->
+            if(throwable == null){
+                listUserString =usersList.map { it.name }
+            }
+    })
+        return listUserString
+}
+
 }

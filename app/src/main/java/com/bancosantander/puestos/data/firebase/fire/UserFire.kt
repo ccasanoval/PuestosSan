@@ -30,6 +30,22 @@ object UserFire {
 
 	}
 
+	fun getAll(fire: Fire, callback: (List<User>, Throwable?) -> Unit) {
+			fire.getCol(ROOT_COLLECTION)
+					.get()
+					.addOnCompleteListener({ task ->
+						if(task.isSuccessful) {
+							val user = fire.translate(task.result, User::class.java) as List<User>
+							callback(user, null)
+						}
+						else {
+							Log.e(TAG, "loadUserList:Firebase:e:------------------------ ", task.exception)
+							callback(listOf(), task.exception)
+						}
+					})
+
+	}
+
 	fun updateHadChangedPass(fire: Fire,name: String,callback: (User, Throwable?) -> Unit){
 		fire.getCol(ROOT_COLLECTION)
 				.whereEqualTo("name",name)

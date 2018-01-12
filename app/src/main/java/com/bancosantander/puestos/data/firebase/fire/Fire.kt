@@ -1,10 +1,7 @@
 package com.bancosantander.puestos.data.firebase.fire
 
 import com.bancosantander.puestos.util.Log
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.*
 
 class Fire {
 
@@ -22,6 +19,17 @@ class Fire {
 		}
 		catch(e: Exception) {
 			Log.e("Fire", "translate:e:----------------------------------------------------"+res.data,e)
+		}
+		return null
+	}
+
+	fun translate(res: QuerySnapshot, clase: Class<*>): Any? {
+
+		try {
+			return res.documents
+		}
+		catch(e: Exception) {
+			Log.e("Fire", "translate:e:----------------------------------------------------",e)
 		}
 		return null
 	}
