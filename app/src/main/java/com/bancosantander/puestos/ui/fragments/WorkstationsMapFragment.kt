@@ -84,6 +84,7 @@ class WorkstationsMapFragment : BaseMvpFragment<WorkstationsMapViewFragmentContr
 	private fun singleTapConfirmed(me: MotionEvent) {
 		val pto = imgPlano.viewToSourceCoord(me.x, me.y)
 		val pto100 = imgPlano.coordImgTo100(pto)
+		Log.e("POINT",pto100.toString())
 		mPresenter.setPoint(pto,pto100)
 	}
 
