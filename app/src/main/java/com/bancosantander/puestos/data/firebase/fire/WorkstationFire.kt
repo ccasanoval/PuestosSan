@@ -89,8 +89,10 @@ object WorkstationFire {
 	fun createPuestoHelper(fire: Fire, doc: DocumentSnapshot): Workstation? {
 		val puesto = fire.translate(doc, Workstation::class.java) as Workstation?
 		if(puesto != null) {
-			val pos: GeoPoint = doc.get(POSITION_FIELD) as GeoPoint
-			return puesto.setPosition(pos.longitude.toFloat(), pos.latitude.toFloat())
+            val positionX = doc.get("positionX") as Long
+            val positionY = doc.get("positionY") as Long
+			//val pos: GeoPoint = doc.get(POSITION_FIELD) as GeoPoint
+			return puesto.setPosition( positionX.toFloat(), positionY.toFloat())
 		}
 		return null
 	}
@@ -105,6 +107,7 @@ object WorkstationFire {
 							if (puesto?.idOwner == owner ) callback(puesto, null)
 					}
 					else {
+                        res = Workstation()
 						callback(res, task.exception)
 						Log.e(TAG, "getAll:e:------------------------------------------------------", task.exception)
 					}
