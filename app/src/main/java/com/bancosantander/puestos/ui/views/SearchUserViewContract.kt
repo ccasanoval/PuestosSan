@@ -14,6 +14,7 @@ object SearchUserViewContract {
         fun hideLoading()
         fun showSuccess()
         fun showError(s: String)
+        fun setAdapter(listUserString: List<String>)
     }
     interface Presenter : BaseMvpPresenter<View> {
         fun init()

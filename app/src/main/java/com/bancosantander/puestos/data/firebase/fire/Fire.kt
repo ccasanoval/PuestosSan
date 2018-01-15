@@ -26,7 +26,7 @@ class Fire {
 	fun translate(res: QuerySnapshot, clase: Class<*>): Any? {
 
 		try {
-			return res.documents
+			return res.documents.map { it.toObject(clase) }
 		}
 		catch(e: Exception) {
 			Log.e("Fire", "translate:e:----------------------------------------------------",e)

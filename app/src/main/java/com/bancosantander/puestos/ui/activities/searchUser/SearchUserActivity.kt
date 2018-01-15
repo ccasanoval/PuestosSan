@@ -29,6 +29,10 @@ class SearchUserActivity : BaseMvpActivity<SearchUserViewContract.View,
     }
 
 
+    override fun setAdapter(listUserString: List<String>) {
+
+    }
+
     override fun showLoading() {
         super.showLoadingDialog()
     }

@@ -25,6 +25,7 @@ class SearchUserPresenter : BasePresenter<SearchUserViewContract.View>(), Search
         UserFire.getAll(fire(),{usersList, throwable ->
             if(throwable == null){
                 listUserString =usersList.map { it.name }
+                mView?.setAdapter(listUserString)
             }
     })
         return listUserString
