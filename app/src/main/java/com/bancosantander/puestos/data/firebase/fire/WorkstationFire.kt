@@ -10,52 +10,33 @@ import kotlin.collections.HashMap
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.*
 import kotlinx.coroutines.experimental.async
+import kotlin.collections.ArrayList
 
 
 object WorkstationFire {
 	private val TAG: String = WorkstationFire::class.java.simpleName
 	private val ROOT_COLLECTION = "workstations"
+	private val ROOT_COLLECTION_COMMON_AREAS = "commonAreas"
 	private val ROOT_COLLECTION_DATES_FREE = "datesFree"
 	private val ROOT_COLLECTION_DATES_OCCUPIED = "datesOccupied"
 	private val ROOT_SUBCOLLECTION = "puestos"
-	private val POSITION_FIELD = "position"
 
-	/*fun getAll(fire: Fire, callback: (ArrayList<Workstation>, Throwable?) -> Unit) {
-		fire.getCol(ROOT_COLLECTION)
-			.get()
-			.addOnCompleteListener({ task ->
-				val res = arrayListOf<Workstation>()
-				if(task.isSuccessful) {
-					for(doc in task.result) {
-						val puesto = createPuestoHelper(fire, doc)
-						if(puesto != null) res.add(puesto)
-					}
-					callback(res, null)
-				}
-				else {
-					callback(res, task.exception)
-					Log.e(TAG, "getAll:e:------------------------------------------------------", task.exception)
-				}
-			})
-	}*/
-	/*fun getAllRT(fire: Fire, callback: (ArrayList<Workstation>, Throwable?) -> Unit) {
-		fire.getCol(ROOT_COLLECTION)
-                .whereEqualTo("status", Workstation.Status.Free.name)
-				.addSnapshotListener({ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
-					val res = arrayListOf<Workstation>()
-					if(error == null && data != null) {
-						data.forEach { doc ->
-							val puesto = createPuestoHelper(fire, doc)
-							if(puesto != null) res.add(puesto)
-						}
-						callback(res, null)
-					}
-					else {
-						callback(res, error)
-						Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
-					}
-				})
-		}*/
+    fun getCommonAreas(fire: Fire,callback:(ArrayList<Workstation>,Throwable?) -> Unit){
+        val collection = fire.getCol(ROOT_COLLECTION_COMMON_AREAS)
+        collection.addSnapshotListener({ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
+            val res = arrayListOf<Workstation>()
+            if(error == null && data != null) {
+                if (data.isEmpty) callback(res,null)
+                data.forEach { doc ->res.add(createPuestoHelper(fire,doc)!!) }
+            }
+            else {
+                callback(res, error)
+                Log.e(TAG, "getCommonAreas:e:----------------------------------------------------", error)
+            }
+        })
+    }
+
+
 	fun getFreeWithDateRT(fire: Fire, date: String, callback: (ArrayList<Workstation>, Throwable?) -> Unit) {
 		val document = fire.getCol(ROOT_COLLECTION_DATES_FREE).document(date)
 		document.collection(ROOT_SUBCOLLECTION)
@@ -86,6 +67,8 @@ object WorkstationFire {
 
 				})
 	}
+
+
 	fun createPuestoHelper(fire: Fire, doc: DocumentSnapshot): Workstation? {
 		val puesto = fire.translate(doc, Workstation::class.java) as Workstation?
 		if(puesto != null) {
@@ -113,28 +96,7 @@ object WorkstationFire {
 					}
                 })
 	}
-	/*fun getWorkstationRT(context: AppCompatActivity, fire:Fire, user: String,type: String, callback: (Workstation?, Throwable?) -> Unit) {
-        fire.getCol(ROOT_COLLECTION)
-                .whereEqualTo(type,user)
-                .addSnapshotListener(context,{ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
-                    lateinit var res: Workstation
-                    if(error == null && data != null) {
-                        if(data.isEmpty || data.documents.isEmpty()){
-                            callback(null,null)
-                        }else{
-                            data.forEach { doc ->
-                                val puesto = createPuestoHelper(fire, doc)
-                                callback(puesto, null)
-                            }
-                        }
 
-                    }
-                    else {
-                        callback(res, error)
-                        Log.e(TAG, "getAllRT:e:----------------------------------------------------", error)
-                    }
-                })
-    }*/
     fun getWorkstationRTV2(context: AppCompatActivity, fire:Fire, user: String,type: String,date:String, callback: (Workstation?, Throwable?) -> Unit) {
         val freeWorkstationIds = fire.getCol(ROOT_COLLECTION_DATES_FREE).document(date).collection(ROOT_SUBCOLLECTION)
         val occupiedWorkstationIds = fire.getCol(ROOT_COLLECTION_DATES_OCCUPIED).document(date).collection(ROOT_SUBCOLLECTION)
@@ -189,8 +151,6 @@ object WorkstationFire {
 
             })
         }
-
-
     }
 
     private fun isFreeOrOccupied(freeRef:CollectionReference,occupiedRef:CollectionReference,workstation: Workstation?, user:String, callback: (Workstation?, Throwable?) -> Unit){
