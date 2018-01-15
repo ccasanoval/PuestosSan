@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"> <!-- pandroid:theme="@style/AppTheme" -->
-        <activity android:name=".ui.activities.login.LoginActivity"
+        <activity android:name=".ui.activities.login.LoginActivity" android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity
             android:name=".ui.dialogs.PuestoDialog"
@@ -26,6 +26,7 @@
         <activity android:name=".ui.activities.workstations.WorkstationsActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.configuration.ConfigurationActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.tutorial.TutorialActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.searchUser.SearchUserActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
