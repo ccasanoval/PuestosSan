@@ -21,12 +21,16 @@ class SearchUserPresenter : BasePresenter<SearchUserViewContract.View>(), Search
     }
 
     fun getUsers():List<String>{
+        mView?.showLoading()
         var listUserString : List<String> = mutableListOf()
         UserFire.getAll(fire(),{usersList, throwable ->
             if(throwable == null){
                 listUserString =usersList.map { it.name }
                 mView?.setAdapter(listUserString)
+            }else{
+
             }
+            mView?.hideLoading()
     })
         return listUserString
 }

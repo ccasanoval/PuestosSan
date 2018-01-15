@@ -5,6 +5,8 @@ import com.bancosantander.puestos.R
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.design.widget.Snackbar
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.ArrayAdapter
 import com.bancosantander.puestos.ui.presenters.SearchUserPresenter
 import com.bancosantander.puestos.ui.views.SearchUserViewContract
@@ -26,11 +28,17 @@ class SearchUserActivity : BaseMvpActivity<SearchUserViewContract.View,
         var adapter :ArrayAdapter<String> = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,mPresenter.getUsers())
         autoCompleteTextView.threshold = 3
         autoCompleteTextView.setAdapter(adapter)
+
+        autoCompleteTextView.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
     }
 
 
     override fun setAdapter(listUserString: List<String>) {
-
+        autoCompleteTextView.setAdapter(ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,listUserString))
     }
 
     override fun showLoading() {
