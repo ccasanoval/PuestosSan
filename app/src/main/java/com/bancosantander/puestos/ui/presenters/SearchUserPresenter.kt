@@ -25,7 +25,7 @@ class SearchUserPresenter : BasePresenter<SearchUserViewContract.View>(), Search
         var listUserString : List<String> = mutableListOf()
         UserFire.getAll(fire(),{usersList, throwable ->
             if(throwable == null){
-                listUserString =usersList.map { it.name }
+                listUserString =usersList.map { it.fullname }
                 mView?.setAdapter(listUserString)
             }else{
 
