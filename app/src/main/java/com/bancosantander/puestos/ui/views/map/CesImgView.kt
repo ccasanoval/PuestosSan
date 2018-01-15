@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import com.bancosantander.puestos.util.Log
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.bancosantander.puestos.R.drawable
+import com.bancosantander.puestos.data.models.CommonArea
 import com.bancosantander.puestos.data.models.Workstation
 
 
@@ -28,6 +29,8 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 	private val path = Path()
 	private var caminoOrg: Array<PointF>? = null
 	private var camino: Array<PointF>? = null
+
+	private var commons: List<CommonArea>? = null
 
 	private var puestos: List<Workstation>? = null
 	private var puestos100: List<Workstation>? = null
@@ -128,6 +131,13 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 			invalidate()
 		}
 	}
+	fun setCommons(thecommons: List<CommonArea>) {
+		commons = List(thecommons.size, { it ->
+			val coord: PointF = coord100ToImg(PointF(thecommons[it].positionX, thecommons[it].positionY))
+			thecommons[it].setPosition(coord.x, coord.y)
+		})
+		invalidate()
+	}
 	//______________________________________________________________________________________________
 	fun setSeleccionado(puesto: Workstation?) {
 		if(puesto != null) {
@@ -191,6 +201,8 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 		drawCamino(canvas)
 		/// PUESTOS
 		drawPuestos(canvas)
+		/// COMMONS
+		drawCommons(canvas)
 		/// SELECCIONADO
 		drawSeleccionado(canvas)
 		/// USING & OWNNING
@@ -246,6 +258,21 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 					Workstation.Status.Free -> imgFree!!
 					Workstation.Status.Occupied -> imgOccupied!!
 					Workstation.Status.Unavailable -> imgUnavailable!!
+				}
+				val x = ptoView.x - img.width /2
+				val y = ptoView.y - img.height /2
+				canvas.drawBitmap(img, x, y, paint)
+			}
+		}
+	}
+	//______________________________________________________________________________________________
+	private fun drawCommons(canvas: Canvas) {
+		if(commons != null) {
+			for(common in commons!!) {
+				sourceToViewCoord(PointF(common.positionX, common.positionY), ptoView)
+				val img = when(common.type) {
+					"" -> imgFree!!
+					else -> imgUnavailable!!
 				}
 				val x = ptoView.x - img.width /2
 				val y = ptoView.y - img.height /2

@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.application.App
 import com.bancosantander.puestos.data.firebase.fire.WorkstationFire
+import com.bancosantander.puestos.data.models.CommonArea
 import com.bancosantander.puestos.data.models.Workstation
 import com.bancosantander.puestos.ui.activities.workstations.WorkstationsActivity
 import com.bancosantander.puestos.ui.viewModels.listWorkstation.WorkstationsListViewModel
@@ -33,6 +34,9 @@ class WorkstationsMapFragmentPresenter(val context: WorkstationsActivity) : Base
                 if(camino == null)	it.delCamino()
                 else				it.showCamino(camino)
             })
+			model.commons.observe(context, Observer<List<CommonArea>> { commons ->
+				it.showCommons(commons!!)
+			})
             model.puestos.observe(context, Observer<List<Workstation>> { puestos ->
                 //Log.e(TAG, "------------------------------- PUESTOS OBSERVER")
                 when {

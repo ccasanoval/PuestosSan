@@ -1,6 +1,7 @@
 package com.bancosantander.puestos.application
 
 import android.app.Application
+import android.support.multidex.MultiDexApplication
 import com.bancosantander.puestos.data.firebase.auth.Auth
 import com.bancosantander.puestos.data.firebase.fire.Fire
 import com.bancosantander.puestos.router.Router
@@ -37,7 +38,7 @@ import org.greenrobot.eventbus.EventBus
 //						Permite reservar puestos de trabajo
 //TODO: showWorkstations, showFreeWorkstations(day), ...
 
-class App : Application() {
+class App : MultiDexApplication() {
 	lateinit var auth: Auth
 	lateinit var fire: Fire
 	var mRouter: Router = Router(this)

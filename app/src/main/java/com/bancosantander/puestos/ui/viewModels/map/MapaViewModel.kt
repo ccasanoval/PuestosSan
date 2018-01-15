@@ -10,9 +10,9 @@ import com.bancosantander.puestos.R
 import com.bancosantander.puestos.data.firebase.auth.Auth
 import com.bancosantander.puestos.data.firebase.fire.Fire
 import com.bancosantander.puestos.data.firebase.fire.WorkstationFire
+import com.bancosantander.puestos.data.models.CommonArea
 import com.bancosantander.puestos.util.Plane
 import com.bancosantander.puestos.data.models.Workstation
-import com.bancosantander.puestos.util.firebase
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -30,6 +30,7 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 	val mensaje = MutableLiveData<String>()
 	//val usuario = MutableLiveData<String>()
 	val puestos = MutableLiveData<List<Workstation>>()
+	val commons = MutableLiveData<List<CommonArea>>()
 	val selected = MutableLiveData<Workstation>()
 	val camino = MutableLiveData<Array<PointF>>()
 	val ini = MutableLiveData<PointF>()
@@ -101,6 +102,14 @@ class MapaViewModel(app: Application) : AndroidViewModel(app) {
 	fun calcRutaEventBus(event: RutaEvent) {
 		end.value = null
 		calcRuta(event.ptoIni100, event.ptoEnd100)
+	}
+	class CommonAreasEvent
+	@Subscribe
+	fun CommonAreasEventBus(event: CommonAreasEvent) {
+		WorkstationFire.getCommonAreas(fire, {lista, error ->
+			commons.value = lista
+			Log.e(TAG, "Mostrar areas comunes "+lista)
+		})
 	}
 	//______________________________________________________________________________________________
 	private fun calcRuta(ptoIni100: PointF, ptoEnd100: PointF) {

@@ -13,7 +13,6 @@ class Fire {
 			= db.collection(collection).document(document)
 
 	fun translate(res: DocumentSnapshot, clase: Class<*>): Any? {
-
 		try {
 			return res.toObject(clase)
 		}

@@ -1,6 +1,7 @@
 package com.bancosantander.puestos.ui.views.map
 
 import android.graphics.PointF
+import com.bancosantander.puestos.data.models.CommonArea
 import com.bancosantander.puestos.data.models.Workstation
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpFragmentView
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpPresenter
@@ -19,6 +20,7 @@ object WorkstationsMapViewFragmentContract {
         fun delCamino()
         fun showCamino(camino: Array<PointF>)
         fun showPuestos(puestos: List<Workstation>)
+		fun showCommons(commons: List<CommonArea>)
         fun showSeleccionado(puesto: Workstation?)
         fun showPointF(initial: Boolean, pto: PointF?)
     }

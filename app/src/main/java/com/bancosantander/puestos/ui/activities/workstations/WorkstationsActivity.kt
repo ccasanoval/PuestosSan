@@ -1,9 +1,8 @@
 package com.bancosantander.puestos.ui.activities.workstations
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.support.design.widget.TabLayout
 import android.support.v7.widget.Toolbar
-import android.view.Menu
 import android.view.View
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.ui.activities.ownWorkstation.OwnWorkstationActivity
@@ -12,11 +11,13 @@ import com.bancosantander.puestos.ui.dialogs.CalendarViewDialog
 import com.bancosantander.puestos.ui.fragments.WorkstationsMapFragment
 import com.bancosantander.puestos.ui.fragments.WorkstationsListFragment
 import com.bancosantander.puestos.ui.presenters.WorkstationsPresenter
+import com.bancosantander.puestos.ui.viewModels.map.MapaViewModel
 import com.bancosantander.puestos.ui.views.WorkstationsViewContract
 import com.bancosantander.puestos.util.presentation
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpFragment
 import kotlinx.android.synthetic.main.workstations_activity.*
+import org.greenrobot.eventbus.EventBus
 import java.util.*
 
 /**
@@ -37,6 +38,13 @@ class WorkstationsActivity : BaseMvpActivity<WorkstationsViewContract.View,
         mPresenter.init()
         setupToolbar()
         setupTabLayout()
+		ivCommonAreas.setOnClickListener {
+			//TODO: Show mapas con ips
+			EventBus.getDefault().post(MapaViewModel.CommonAreasEvent())
+			val context = this
+			val tabhost = context.findViewById(R.id.tabs) as TabLayout
+			tabhost.getTabAt(1)!!.select()
+		}
         ivCalendar.setOnClickListener{
             CalendarViewDialog.getInstance(false,date, { date ->
                 date?.get(0)?.let {

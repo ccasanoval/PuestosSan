@@ -85,6 +85,7 @@
     <string name="go_to_workstationList">Ir a lista disponibles</string>
     <string name="search_user">Busqueda de usuario</string>
     <string name="user_name">Nombre de usuario . . .</string>
+    <string name="lugares_interes">Lugares de interes</string>
 
 
 </resources>

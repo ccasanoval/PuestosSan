@@ -2,6 +2,7 @@ package com.bancosantander.puestos.data.firebase.fire
 
 import android.support.annotation.WorkerThread
 import android.support.v7.app.AppCompatActivity
+import com.bancosantander.puestos.data.models.CommonArea
 import com.bancosantander.puestos.data.models.User
 import com.bancosantander.puestos.data.models.Workstation
 import com.bancosantander.puestos.util.Log
@@ -21,14 +22,18 @@ object WorkstationFire {
 	private val ROOT_COLLECTION_DATES_OCCUPIED = "datesOccupied"
 	private val ROOT_SUBCOLLECTION = "puestos"
 
-    fun getCommonAreas(fire: Fire,callback:(ArrayList<Workstation>,Throwable?) -> Unit){
+    fun getCommonAreas(fire: Fire,callback:(ArrayList<CommonArea>,Throwable?) -> Unit){
         val collection = fire.getCol(ROOT_COLLECTION_COMMON_AREAS)
         collection.addSnapshotListener({ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
-            val res = arrayListOf<Workstation>()
+            val res = arrayListOf<CommonArea>()
             if(error == null && data != null) {
-                if (data.isEmpty) callback(res,null)
-                data.forEach { doc ->res.add(createPuestoHelper(fire,doc)!!) }
-            }
+                data.forEach { doc -> res.add(CommonArea(
+						doc.get("type") as String,
+						(doc.get("positionX") as Double).toFloat(),
+						(doc.get("positionY") as Double).toFloat())
+				)}
+				callback(res, error)
+			}
             else {
                 callback(res, error)
                 Log.e(TAG, "getCommonAreas:e:----------------------------------------------------", error)
