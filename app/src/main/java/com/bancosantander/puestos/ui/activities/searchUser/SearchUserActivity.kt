@@ -1,5 +1,6 @@
 package com.bancosantander.puestos.ui.activities.searchUser
 
+import android.content.Context
 import android.os.Bundle
 import com.bancosantander.puestos.R
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
@@ -7,29 +8,60 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.support.design.widget.Snackbar
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.view.View
+import android.widget.Adapter
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.bancosantander.puestos.data.models.User
 import com.bancosantander.puestos.ui.adapters.SearchUserAdapter
 import com.bancosantander.puestos.ui.presenters.SearchUserPresenter
 import com.bancosantander.puestos.ui.views.SearchUserViewContract
 import kotlinx.android.synthetic.main.activity_search_user.*
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.view.inputmethod.InputMethodManager
+import org.jetbrains.anko.contentView
 
 
 class SearchUserActivity : BaseMvpActivity<SearchUserViewContract.View,
         SearchUserPresenter>(),
         SearchUserViewContract.View {
 
-    private val os = arrayOf("Mikel", "Cesar", "Borja", "Fran", "Ubuntu 12.04", "Ubuntu 12.10", "Mac OSX", "iOS 5", "iOS 6", "Solaris", "Kubuntu", "Suse")
-
     override  var mPresenter: SearchUserPresenter = SearchUserPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_user)
+        val viewActivity = contentView
         var adapter  = SearchUserAdapter(this,R.layout.activity_search_user,R.id.lbl_searched_name, mutableListOf())
         autoCompleteTextView.threshold = 3
         autoCompleteTextView.setAdapter(adapter)
         mPresenter.getUsers()
+
+        autoCompleteTextView.setOnItemClickListener{ parent: AdapterView<out Adapter?>?, view: View?, position: Int, id: Long ->
+            printUserView(parent?.getItemAtPosition(position) as User)
+            autoCompleteTextView.clearFocus()
+            if (viewActivity != null) {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(viewActivity.windowToken, 0)
+            }
+        }
+
+        ivCloseUserSearched.setOnClickListener {
+            hideUserView()
+            autoCompleteTextView.setText("")
+        }
+    }
+
+    private fun printUserView(user: User) {
+        tvChannelSearched.text = user.channel
+        tvFullNameSearched.text = user.fullname
+        tvEmailSearched.text = user.email
+        cvUserSearched.visibility = View.VISIBLE
+    }
+
+    private fun hideUserView(){
+        cvUserSearched.visibility = View.GONE
     }
 
 
