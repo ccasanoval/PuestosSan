@@ -8,6 +8,8 @@ import android.support.design.widget.Snackbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.ArrayAdapter
+import com.bancosantander.puestos.data.models.User
+import com.bancosantander.puestos.ui.adapters.SearchUserAdapter
 import com.bancosantander.puestos.ui.presenters.SearchUserPresenter
 import com.bancosantander.puestos.ui.views.SearchUserViewContract
 import kotlinx.android.synthetic.main.activity_search_user.*
@@ -24,21 +26,15 @@ class SearchUserActivity : BaseMvpActivity<SearchUserViewContract.View,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_user)
-        mPresenter.init()
-        var adapter :ArrayAdapter<String> = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,mPresenter.getUsers())
+        var adapter  = SearchUserAdapter(this,R.layout.activity_search_user,R.id.lbl_searched_name, mutableListOf())
         autoCompleteTextView.threshold = 3
         autoCompleteTextView.setAdapter(adapter)
-
-        autoCompleteTextView.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) { }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
+        mPresenter.getUsers()
     }
 
 
-    override fun setAdapter(listUserString: List<String>) {
-        autoCompleteTextView.setAdapter(ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,listUserString))
+    override fun setMyAdapter(listUser: MutableList<User>) {
+        autoCompleteTextView.setAdapter(SearchUserAdapter(this,R.layout.activity_search_user,R.id.lbl_searched_name,listUser))
     }
 
     override fun showLoading() {

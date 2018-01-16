@@ -1,11 +1,6 @@
 package com.bancosantander.puestos.ui.presenters
 
-import android.os.Bundle
-import android.util.Log
 import com.bancosantander.puestos.data.firebase.fire.UserFire
-import com.bancosantander.puestos.data.firebase.fire.WorkstationFire
-import com.bancosantander.puestos.data.models.User
-import com.bancosantander.puestos.ui.views.MainViewContract
 import com.bancosantander.puestos.ui.views.SearchUserViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
 
@@ -20,19 +15,16 @@ class SearchUserPresenter : BasePresenter<SearchUserViewContract.View>(), Search
 
     }
 
-    fun getUsers():List<String>{
+    fun getUsers(){
         mView?.showLoading()
-        var listUserString : List<String> = mutableListOf()
         UserFire.getAll(fire(),{usersList, throwable ->
             if(throwable == null){
-                listUserString =usersList.map { it.fullname }
-                mView?.setAdapter(listUserString)
+                mView?.setMyAdapter(usersList.toMutableList())
             }else{
 
             }
             mView?.hideLoading()
     })
-        return listUserString
 }
 
 }

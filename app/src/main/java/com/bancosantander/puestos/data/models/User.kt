@@ -9,4 +9,8 @@ data class User(
 	val type: Type = Type.Interim){
 	enum class Type(name: String) { Admin("Admin"), Fixed("Fixed"), Interim("Interim") }
 	enum class IdType(name: String){ idOwner("idOwner"), idUser("idUser")}
+
+	override fun toString(): String {
+		return fullname
+	}
 }

@@ -1,5 +1,6 @@
 package com.bancosantander.puestos.ui.views
 
+import com.bancosantander.puestos.data.models.User
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpPresenter
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpView
 
@@ -14,7 +15,7 @@ object SearchUserViewContract {
         fun hideLoading()
         fun showSuccess()
         fun showError(s: String)
-        fun setAdapter(listUserString: List<String>)
+        fun setMyAdapter(listUserString: MutableList<User>)
     }
     interface Presenter : BaseMvpPresenter<View> {
         fun init()
