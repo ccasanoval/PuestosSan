@@ -30,7 +30,9 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
         setupView()
 
         btnManage.setOnClickListener { mPresenter.goToManageOwnWorkstation() }
-        btnFill.setOnClickListener { mPresenter.goToFillWorkstation() }
+        btnFill.setOnClickListener {
+            mPresenter.goToFillWorkstation()
+        }
         btnLogout.setOnClickListener { mPresenter.logout() }
         btnConfiguration.setOnClickListener{mPresenter.gotToConfiguration()}
         btnSearchUser.setOnClickListener{mPresenter.goToSearchUser()}
@@ -82,16 +84,14 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
         Snackbar.make(llMain,"Contraseña no valida, longitud minima 6 caracteres",Snackbar.LENGTH_SHORT).show()
     }
 
-    override fun disableWorkstationList() {
-        ivFill.setColorFilter(ContextCompat.getColor(this,R.color.very_light_grey), android.graphics.PorterDuff.Mode.MULTIPLY)
-        tvFill.setTextColor(ContextCompat.getColor(this,R.color.very_light_grey))
-        btnFill.isClickable = false
+    override fun showWorkstationInMap() {
+        tvFill.text = getString(R.string.map_position)
+        ivFill.setImageDrawable(ContextCompat.getDrawable(this,android.R.drawable.ic_menu_mapmode))
     }
 
     override fun enableWorkstationList() {
-        ivFill.clearColorFilter()
-        tvFill.setTextColor(ContextCompat.getColor(this,R.color.light_grey))
-        btnFill.isClickable = true
+        tvFill.text = getString(R.string.available_list)
+        ivFill.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.list))
     }
 
     override fun showTutorial() {

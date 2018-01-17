@@ -1,9 +1,7 @@
 package com.bancosantander.puestos.ui.presenters
 
-import android.os.Bundle
 import android.util.Log
 import com.bancosantander.puestos.data.firebase.fire.UserFire
-import com.bancosantander.puestos.data.firebase.fire.WorkstationFire
 import com.bancosantander.puestos.data.models.User
 import com.bancosantander.puestos.ui.views.MainViewContract
 import com.mibaldi.viewmodelexamplemvp.base.BasePresenter
@@ -16,12 +14,14 @@ class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Pr
 
     var hadCahngedPass : Boolean = false
     lateinit var userName : String
+    lateinit var user: User
     override fun init() {
         mView?.showLoading()
         auth().getUserFire { user, throwable ->
+            this.user = user
             when(user.type){
                 User.Type.Fixed -> {
-                    mView?.disableWorkstationList()
+                    mView?.showWorkstationInMap()
                 }
                 User.Type.Interim -> {
                     mView?.enableWorkstationList()
@@ -36,6 +36,7 @@ class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Pr
             mView?.hadChangedPass()
         }
     }
+
     override fun getEmail(): String {
         return auth().getEmail() ?: "Undefined"
     }
@@ -45,7 +46,12 @@ class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Pr
     }
 
     fun goToFillWorkstation() {
-        router().goToFillWorkstation()
+        if(user.type.equals(User.Type.Interim)){
+            router().goToFillWorkstation()
+        }else{
+            router().goToTutorial()
+        }
+
     }
 
     fun logout() {

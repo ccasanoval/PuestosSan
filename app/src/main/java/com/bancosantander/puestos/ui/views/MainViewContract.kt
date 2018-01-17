@@ -15,7 +15,7 @@ object MainViewContract {
         fun showSuccess()
         fun showError(s: String)
         fun showErrorMinLenght()
-        fun disableWorkstationList()
+        fun showWorkstationInMap()
         fun enableWorkstationList()
         fun showTutorial()
         fun hadChangedPass()
