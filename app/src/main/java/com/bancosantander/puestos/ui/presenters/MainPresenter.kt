@@ -98,4 +98,8 @@ class MainPresenter: BasePresenter<MainViewContract.View>(), MainViewContract.Pr
     override fun hadChangedPass(): Boolean {
         return hadCahngedPass
     }
+
+	override fun goToMap() {
+		router().goToMap()
+	}
 }

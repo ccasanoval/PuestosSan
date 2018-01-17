@@ -8,11 +8,11 @@ import android.widget.Toast
 import com.bancosantander.puestos.R
 import com.bancosantander.puestos.data.models.CommonArea
 import com.bancosantander.puestos.data.models.Workstation
-import com.bancosantander.puestos.ui.activities.workstations.WorkstationsActivity
+import com.bancosantander.puestos.ui.activities.ownWorkstation.OwnWorkstationMapActivity
 import com.bancosantander.puestos.ui.dialogs.InfoDialog
 import com.bancosantander.puestos.ui.dialogs.PuestoDialog
-import com.bancosantander.puestos.ui.presenters.fragments.WorkstationsMapFragmentPresenter
-import com.bancosantander.puestos.ui.views.map.WorkstationsMapViewFragmentContract
+import com.bancosantander.puestos.ui.presenters.fragments.OwnWorkstationsMapFragmentPresenter
+import com.bancosantander.puestos.ui.views.map.OwnWorkstationsMapViewFragmentContract
 import com.bancosantander.puestos.util.Log
 import com.bancosantander.puestos.util.WorkstationParcelable
 import com.davemorrissey.labs.subscaleview.ImageSource
@@ -22,14 +22,13 @@ import kotlinx.android.synthetic.main.act_main.*
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-class WorkstationsMapFragment : BaseMvpFragment<WorkstationsMapViewFragmentContract.View, WorkstationsMapFragmentPresenter>(), WorkstationsMapViewFragmentContract.View {
+class OwnWorkstationsMapFragment : BaseMvpFragment<OwnWorkstationsMapViewFragmentContract.View, OwnWorkstationsMapFragmentPresenter>(), OwnWorkstationsMapViewFragmentContract.View {
 
-
-	override lateinit var mPresenter: WorkstationsMapFragmentPresenter
+	override lateinit var mPresenter: OwnWorkstationsMapFragmentPresenter
 	private var imgListener: View.OnTouchListener ?=null
 
 	override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-		mPresenter = WorkstationsMapFragmentPresenter(activity as WorkstationsActivity)
+		mPresenter = OwnWorkstationsMapFragmentPresenter(activity as OwnWorkstationMapActivity)
 		return inflater!!.inflate(R.layout.act_main, container, false)
 	}
 
@@ -83,7 +82,6 @@ class WorkstationsMapFragment : BaseMvpFragment<WorkstationsMapViewFragmentContr
 	private fun singleTapConfirmed(me: MotionEvent) {
 		val pto = imgPlano.viewToSourceCoord(me.x, me.y)
 		val pto100 = imgPlano.coordImgTo100(pto)
-		//Log.e("POINT",pto100.toString())
 		mPresenter.setPoint(pto,pto100)
 	}
 
@@ -118,7 +116,7 @@ class WorkstationsMapFragment : BaseMvpFragment<WorkstationsMapViewFragmentContr
 
 	//______________________________________________________________________________________________
 	override fun getMyActivity(): BaseMvpActivity<*,*> {
-		return activity as WorkstationsActivity
+		return activity as OwnWorkstationMapActivity
 	}
 
 	override fun showLoading() {
@@ -137,6 +135,6 @@ class WorkstationsMapFragment : BaseMvpFragment<WorkstationsMapViewFragmentContr
 
 	//______________________________________________________________________________________________
 	companion object {
-		private val TAG: String = WorkstationsMapFragment::class.java.simpleName
+		private val TAG: String = OwnWorkstationsMapFragment::class.java.simpleName
 	}
 }

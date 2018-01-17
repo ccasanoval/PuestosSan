@@ -87,6 +87,7 @@
     <string name="user_name">Nombre de usuario . . .</string>
     <string name="lugares_interes">Lugares de interes</string>
     <string name="map_position">Ver en mapa</string>
+    <string name="mi_puesto">Mi puesto</string>
 
 
 </resources>

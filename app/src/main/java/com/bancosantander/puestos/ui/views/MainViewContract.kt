@@ -25,5 +25,6 @@ object MainViewContract {
         fun getEmail() : String
         fun hadChangedPass(): Boolean
         fun goToSearchUser()
+		fun goToMap()
     }
 }

@@ -36,6 +36,8 @@ class MainActivity : BaseMvpActivity<MainViewContract.View,
         btnLogout.setOnClickListener { mPresenter.logout() }
         btnConfiguration.setOnClickListener{mPresenter.gotToConfiguration()}
         btnSearchUser.setOnClickListener{mPresenter.goToSearchUser()}
+
+		imgUser.setOnClickListener { mPresenter.goToMap() }
     }
 
     private fun setupView() {

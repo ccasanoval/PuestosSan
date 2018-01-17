@@ -14,6 +14,7 @@ import kotlinx.coroutines.experimental.async
 import kotlin.collections.ArrayList
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
 object WorkstationFire {
 	private val TAG: String = WorkstationFire::class.java.simpleName
 	private val ROOT_COLLECTION = "workstations"
@@ -22,16 +23,31 @@ object WorkstationFire {
 	private val ROOT_COLLECTION_DATES_OCCUPIED = "datesOccupied"
 	private val ROOT_SUBCOLLECTION = "puestos"
 
+	//______________________________________________________________________________________________
     fun getCommonAreas(fire: Fire,callback:(ArrayList<CommonArea>,Throwable?) -> Unit){
         val collection = fire.getCol(ROOT_COLLECTION_COMMON_AREAS)
         collection.addSnapshotListener({ data: QuerySnapshot?, error: FirebaseFirestoreException? ->
             val res = arrayListOf<CommonArea>()
             if(error == null && data != null) {
-                data.forEach { doc -> res.add(CommonArea(
-						doc.get("type") as String,
-						(doc.get("positionX") as Double).toFloat(),
-						(doc.get("positionY") as Double).toFloat())
-				)}
+                data.forEach { doc ->
+					if(doc != null) {
+						try{
+							res.add(fire.translate(doc, CommonArea::class.java) as CommonArea)
+						}
+						catch(e: Exception) {
+							res.add(CommonArea(
+									when(doc.get("type")){
+										CommonArea.Type.Restrooms.name -> CommonArea.Type.Restrooms
+										CommonArea.Type.Reception.name -> CommonArea.Type.Reception
+										CommonArea.Type.Meetingroom.name -> CommonArea.Type.Meetingroom
+										CommonArea.Type.Canteen.name -> CommonArea.Type.Canteen
+										else -> CommonArea.Type.Restrooms
+									},
+									doc.get("positionX") as Long,
+									doc.get("positionY") as Long))
+						}
+					}
+				}
 				callback(res, error)
 			}
             else {
@@ -79,25 +95,25 @@ object WorkstationFire {
 		if(puesto != null) {
             val positionX = doc.get("positionX") as Long
             val positionY = doc.get("positionY") as Long
-			//val pos: GeoPoint = doc.get(POSITION_FIELD) as GeoPoint
 			return puesto.setPosition( positionX.toFloat(), positionY.toFloat())
 		}
 		return null
 	}
-	fun getWorkstation(fire:Fire,owner:String,callback: (Workstation, Throwable?) -> Unit) {
+
+	fun getWorkstation(fire:Fire, owner:String, callback: (Workstation, Throwable?) -> Unit) {
 		fire.getCol(ROOT_COLLECTION)
                 .whereEqualTo("idOwner", owner)
 				.get()
 				.addOnCompleteListener({ task ->
-					lateinit var res: Workstation
+					//Log.e(TAG, "getWorkstation:-----"+owner+"--"+task.isSuccessful+"---"+task.result.documents.size+"--------------------------------------------", task.exception)
 					if(task.isSuccessful && task.result.documents.size > 0) {
 							val puesto = createPuestoHelper(fire, task.result.documents[0])
-							if (puesto?.idOwner == owner ) callback(puesto, null)
+							if (puesto?.idOwner == owner )
+								callback(puesto, null)
 					}
 					else {
-                        res = Workstation()
-						callback(res, task.exception)
-						Log.e(TAG, "getAll:e:------------------------------------------------------", task.exception)
+						callback(Workstation(), task.exception)
+						Log.e(TAG, "getWorkstation:e:------------------------------------------------------", task.exception)
 					}
                 })
 	}

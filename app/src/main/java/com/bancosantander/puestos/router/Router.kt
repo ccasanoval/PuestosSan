@@ -5,6 +5,7 @@ import android.content.Intent
 import com.bancosantander.puestos.ui.activities.configuration.ConfigurationActivity
 import com.bancosantander.puestos.ui.activities.login.LoginActivity
 import com.bancosantander.puestos.ui.activities.ownWorkstation.OwnWorkstationActivity
+import com.bancosantander.puestos.ui.activities.ownWorkstation.OwnWorkstationMapActivity
 import com.bancosantander.puestos.ui.activities.searchUser.SearchUserActivity
 import com.bancosantander.puestos.ui.activities.tutorial.TutorialActivity
 import com.bancosantander.puestos.ui.activities.workstations.WorkstationsActivity
@@ -44,4 +45,11 @@ class Router(val context:Context){
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
     }
+
+	fun goToMap() {
+		val intent = Intent(context, OwnWorkstationMapActivity::class.java)
+		intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+		context.startActivity(intent)
+	}
+
 }

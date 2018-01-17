@@ -22,6 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activities.ownWorkstation.OwnWorkstationMapActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.ownWorkstation.OwnWorkstationActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.workstations.WorkstationsActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activities.configuration.ConfigurationActivity" android:screenOrientation="portrait"/>
