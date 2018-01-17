@@ -62,6 +62,7 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
             progressDialog!!.setMessage(getString(R.string.cargando))
             progressDialog!!.isIndeterminate = true
         }
+            progressDialog?.setCancelable(false)
             progressDialog?.show()
     }
     fun hideLoadingDialog(){

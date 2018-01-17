@@ -19,8 +19,12 @@ import com.bancosantander.puestos.ui.presenters.SearchUserPresenter
 import com.bancosantander.puestos.ui.views.SearchUserViewContract
 import kotlinx.android.synthetic.main.activity_search_user.*
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.support.v7.widget.Toolbar
 import android.view.inputmethod.InputMethodManager
+import com.bancosantander.puestos.util.presentation
+import kotlinx.android.synthetic.main.activity_own_workstation.*
 import org.jetbrains.anko.contentView
+import java.util.*
 
 
 class SearchUserActivity : BaseMvpActivity<SearchUserViewContract.View,
@@ -33,6 +37,7 @@ class SearchUserActivity : BaseMvpActivity<SearchUserViewContract.View,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_user)
         val viewActivity = contentView
+        setupToolbar()
         var adapter  = SearchUserAdapter(this,R.layout.activity_search_user,R.id.lbl_searched_name, mutableListOf())
         autoCompleteTextView.threshold = 3
         autoCompleteTextView.setAdapter(adapter)
@@ -53,11 +58,25 @@ class SearchUserActivity : BaseMvpActivity<SearchUserViewContract.View,
         }
     }
 
+    private fun setupToolbar() {
+        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        supportActionBar?.setDisplayShowHomeEnabled(true);
+    }
+
     private fun printUserView(user: User) {
         tvChannelSearched.text = user.channel
         tvFullNameSearched.text = user.fullname
         tvEmailSearched.text = user.email
         cvUserSearched.visibility = View.VISIBLE
+        if (user.type.equals(User.Type.Fixed)){
+            tvWorkstationNameSearched.text = "Puesto: ${user.workstation}"
+            llWorkstationSearched.visibility = View.VISIBLE
+        } else{
+            llWorkstationSearched.visibility = View.GONE
+        }
+
     }
 
     private fun hideUserView(){
@@ -83,6 +102,11 @@ class SearchUserActivity : BaseMvpActivity<SearchUserViewContract.View,
 
     override fun showError(error: String) {
         Snackbar.make(llMain,error,Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
 }

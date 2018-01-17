@@ -106,7 +106,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="2"
                     android:orientation="vertical"
-                    android:weightSum="3">
+                    android:weightSum="4">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -133,10 +133,19 @@
                             android:textSize="20sp"/>
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/llWorkstationSearched"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center">
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tvWorkstationNameSearched"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:layout_marginBottom="10dp"/>
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

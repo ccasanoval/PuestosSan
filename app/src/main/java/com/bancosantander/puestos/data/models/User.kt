@@ -7,6 +7,7 @@ data class User(
 	val fullname: String = "",
 	val email: String = "",
 	val channel: String = "",
+	val workstation: String = "",
 	val hadChangedPass: Boolean = false,
 	val type: Type = Type.Interim){
 	enum class Type(name: String) { Admin("Admin"), Fixed("Fixed"), Interim("Interim") }
