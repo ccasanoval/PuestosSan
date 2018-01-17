@@ -6,23 +6,16 @@ import com.bancosantander.puestos.R
 import com.mibaldi.viewmodelexamplemvp.base.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.design.widget.Snackbar
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Adapter
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import com.bancosantander.puestos.data.models.User
 import com.bancosantander.puestos.ui.adapters.SearchUserAdapter
 import com.bancosantander.puestos.ui.presenters.SearchUserPresenter
 import com.bancosantander.puestos.ui.views.SearchUserViewContract
 import kotlinx.android.synthetic.main.activity_search_user.*
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.support.v7.widget.Toolbar
 import android.view.inputmethod.InputMethodManager
-import com.bancosantander.puestos.util.presentation
-import kotlinx.android.synthetic.main.activity_own_workstation.*
 import org.jetbrains.anko.contentView
 import java.util.*
 
@@ -74,6 +67,7 @@ class SearchUserActivity : BaseMvpActivity<SearchUserViewContract.View,
             tvWorkstationNameSearched.text = "Puesto: ${user.workstation}"
             llWorkstationSearched.visibility = View.VISIBLE
         } else{
+            tvWorkstationNameSearched.text = "Sin puesto asignado"
             llWorkstationSearched.visibility = View.GONE
         }
 
