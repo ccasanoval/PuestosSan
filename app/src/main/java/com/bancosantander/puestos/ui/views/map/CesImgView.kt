@@ -47,6 +47,11 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 	private var wsUse: Workstation? = null
 	private var wsUse100: Workstation? = null
 
+	private var imgCanteen: Bitmap? = null
+	private var imgMeetingroom: Bitmap? = null
+	private var imgReception: Bitmap? = null
+	private var imgRestrooms: Bitmap? = null
+
 
 	//______________________________________________________________________________________________
 	init {
@@ -75,6 +80,18 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 		imgOccupied = Bitmap.createScaledBitmap(imgOccupied!!, w.toInt(), h.toInt(), true)
 		imgUnavailable = Bitmap.createScaledBitmap(imgUnavailable!!, w.toInt(), h.toInt(), true)
 		imgSelected = Bitmap.createScaledBitmap(imgSelected!!, w.toInt(), h.toInt(), true)
+
+		/// Areas Comunes
+		imgCanteen = BitmapFactory.decodeResource(resources, drawable.canteen)
+		imgMeetingroom = BitmapFactory.decodeResource(resources, drawable.meetingroom)
+		imgReception = BitmapFactory.decodeResource(resources, drawable.reception)
+		imgRestrooms = BitmapFactory.decodeResource(resources, drawable.restrooms)
+		w = density / 380f * imgFree!!.width
+		h = density / 380f * imgFree!!.height
+		imgCanteen = Bitmap.createScaledBitmap(imgCanteen!!, w.toInt(), h.toInt(), true)
+		imgMeetingroom = Bitmap.createScaledBitmap(imgMeetingroom!!, w.toInt(), h.toInt(), true)
+		imgReception = Bitmap.createScaledBitmap(imgReception!!, w.toInt(), h.toInt(), true)
+		imgRestrooms = Bitmap.createScaledBitmap(imgRestrooms!!, w.toInt(), h.toInt(), true)
 
 		/// Home
 		/*imgWSOwn = BitmapFactory.decodeResource(resources, drawable.pto_home)
@@ -133,8 +150,8 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 	}
 	fun setCommons(thecommons: List<CommonArea>) {
 		commons = List(thecommons.size, { it ->
-			val coord: PointF = coord100ToImg(PointF(thecommons[it].positionX, thecommons[it].positionY))
-			thecommons[it].setPosition(coord.x, coord.y)
+			val coord: PointF = coord100ToImg(PointF(thecommons[it].positionX.toFloat(), thecommons[it].positionY.toFloat()))
+			thecommons[it].setPosition(coord.x.toLong(), coord.y.toLong())
 		})
 		invalidate()
 	}
@@ -268,11 +285,13 @@ class CesImgView @JvmOverloads constructor(context: Context, attr: AttributeSet?
 	//______________________________________________________________________________________________
 	private fun drawCommons(canvas: Canvas) {
 		if(commons != null) {
-			for(common in commons!!) {
-				sourceToViewCoord(PointF(common.positionX, common.positionY), ptoView)
+			for(common in commons!!) {//TODO: Si se requiere solo precision Long, pasar todas las posiciones a Long
+				sourceToViewCoord(PointF(common.positionX.toFloat(), common.positionY.toFloat()), ptoView)
 				val img = when(common.type) {
-					"" -> imgFree!!
-					else -> imgUnavailable!!
+					CommonArea.Type.Reception -> imgReception!!
+					CommonArea.Type.Restrooms -> imgRestrooms!!
+					CommonArea.Type.Meetingroom -> imgMeetingroom!!
+					CommonArea.Type.Canteen -> imgCanteen!!
 				}
 				val x = ptoView.x - img.width /2
 				val y = ptoView.y - img.height /2
